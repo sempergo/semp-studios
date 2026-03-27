@@ -1059,6 +1059,301 @@
     .modal-fallback .contact-btn--mail:hover { background: var(--orange-dim); }
     .modal-fallback .contact-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
+    /* ── SPÄTNACHT ────────────────────────────────── */
+    .spaetnacht {
+      position: relative;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .spaetnacht__bg { position: absolute; inset: 0; }
+    .spaetnacht__bg img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      filter: brightness(.32) saturate(.65);
+    }
+    .spaetnacht__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(13,8,0,.95) 0%, rgba(13,8,0,.65) 55%, rgba(44,26,0,.88) 100%);
+    }
+    @keyframes beam-slide {
+      0%   { transform: translateX(-25%) rotate(-1.5deg); opacity: 0; }
+      25%  { opacity: 1; }
+      75%  { opacity: 1; }
+      100% { transform: translateX(25%) rotate(1.5deg); opacity: 0; }
+    }
+    .spaetnacht__beam {
+      position: absolute;
+      top: 38%;
+      left: -50%;
+      width: 200%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(249,115,22,.18) 40%, rgba(249,115,22,.18) 60%, transparent);
+      pointer-events: none;
+      animation: beam-slide 10s ease-in-out infinite;
+    }
+    .spaetnacht__beam-2 {
+      top: 62%;
+      animation-delay: -5s;
+      animation-duration: 14s;
+    }
+    .spaetnacht__content { position: relative; z-index: 2; padding: 8rem 0; }
+    .spaetnacht__time {
+      font-family: var(--ff-head);
+      font-size: clamp(6rem, 20vw, 18rem);
+      line-height: .85;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(249,115,22,.35);
+      letter-spacing: -.03em;
+      display: block;
+      margin-bottom: .1em;
+      user-select: none;
+      transition: -webkit-text-stroke .6s;
+    }
+    .spaetnacht:hover .spaetnacht__time { -webkit-text-stroke: 1.5px rgba(249,115,22,.75); }
+    .spaetnacht__headline {
+      font-family: var(--ff-head);
+      font-size: clamp(1.6rem, 4vw, 3.2rem);
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+      max-width: 700px;
+    }
+    .spaetnacht__headline em { font-style: normal; color: var(--orange); }
+    .spaetnacht__sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.85;
+      margin-bottom: 2.5rem;
+    }
+    .spaetnacht__badges { display: flex; flex-wrap: wrap; gap: .65rem; }
+    .spaetnacht__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem 1rem;
+      background: rgba(249,115,22,.07);
+      border: 1px solid rgba(249,115,22,.2);
+      border-radius: 60px;
+      font-size: .75rem;
+      font-weight: 600;
+      color: rgba(245,237,224,.75);
+      letter-spacing: .04em;
+      transition: border-color .2s, background .2s;
+    }
+    .spaetnacht__badge:hover { background: rgba(249,115,22,.14); border-color: rgba(249,115,22,.4); }
+    .spaetnacht__badge svg {
+      width: 13px; height: 13px;
+      stroke: var(--orange);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .spaetnacht__side {
+      position: absolute;
+      right: 2.5rem; top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .75rem;
+      z-index: 2;
+    }
+    .spaetnacht__side-text {
+      writing-mode: vertical-rl;
+      font-size: .62rem;
+      font-weight: 600;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+    }
+    .spaetnacht__side-line {
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(to bottom, rgba(249,115,22,.5), transparent);
+    }
+    @media (max-width: 768px) {
+      .spaetnacht__time { font-size: clamp(5rem, 22vw, 9rem); }
+      .spaetnacht__side { display: none; }
+      .spaetnacht__content { padding: 6rem 0; }
+    }
+
+    /* ── BAR SPOTLIGHT ────────────────────────────── */
+    .bar-spot {
+      position: relative;
+      overflow: hidden;
+      background: var(--dark);
+    }
+    .bar-spot__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 660px;
+    }
+    .bar-spot__visual { position: relative; overflow: hidden; }
+    .bar-spot__visual img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 1.1s var(--ease);
+      filter: saturate(1.15) brightness(.85);
+    }
+    .bar-spot:hover .bar-spot__visual img { transform: scale(1.04); }
+    .bar-spot__visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, transparent 50%, rgba(13,8,0,.95) 100%);
+    }
+    @keyframes glow-drift {
+      0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: .7; }
+      50%       { transform: translate(-40%,-55%) scale(1.15); opacity: 1; }
+    }
+    .bar-spot__glow {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(249,115,22,.12) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      pointer-events: none;
+      animation: glow-drift 14s ease-in-out infinite;
+      z-index: 0;
+    }
+    .bar-spot__body {
+      padding: 5rem 4rem 5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.4rem;
+      position: relative;
+      z-index: 1;
+    }
+    .bar-spot__heading {
+      font-family: var(--ff-head);
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.12;
+      color: var(--text);
+    }
+    .bar-spot__heading span { color: var(--amber); }
+    .bar-spot__divider {
+      width: 36px; height: 2px;
+      background: linear-gradient(to right, var(--orange), transparent);
+      border-radius: 2px;
+    }
+    .bar-spot__desc { font-size: .95rem; color: var(--muted); line-height: 1.85; max-width: 400px; }
+    .bar-spot__drinks { display: flex; flex-direction: column; gap: .55rem; }
+    .bar-spot__drink {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: .83rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .bar-spot__drink::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 6px var(--orange);
+      flex-shrink: 0;
+    }
+    @media (max-width: 768px) {
+      .bar-spot__grid { grid-template-columns: 1fr; }
+      .bar-spot__visual { min-height: 340px; }
+      .bar-spot__visual::after { background: linear-gradient(to bottom, transparent 55%, rgba(13,8,0,.97) 100%); }
+      .bar-spot__body { padding: 2.5rem 1.5rem; }
+    }
+
+    /* ── IN ZAHLEN ────────────────────────────────── */
+    .zahlen {
+      background: var(--dark-3);
+      padding: 7rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .zahlen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(249,115,22,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(249,115,22,.05) 1px, transparent 1px);
+      background-size: 72px 72px;
+      pointer-events: none;
+    }
+    .zahlen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 25%, var(--dark-3) 85%);
+      pointer-events: none;
+    }
+    .zahlen__inner { position: relative; z-index: 1; }
+    .zahlen__header { text-align: center; margin-bottom: 4rem; }
+    .zahlen__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .zahlen__item {
+      padding: 2.75rem 1.5rem;
+      text-align: center;
+      position: relative;
+      transition: background .3s;
+    }
+    .zahlen__item:hover { background: rgba(249,115,22,.04); }
+    .zahlen__item + .zahlen__item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 18%; bottom: 18%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(249,115,22,.2), transparent);
+    }
+    .zahlen__num {
+      font-family: var(--ff-head);
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      line-height: 1;
+      color: var(--orange);
+      display: block;
+      position: relative;
+      padding-bottom: .5em;
+      margin-bottom: .4rem;
+    }
+    .zahlen__num::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 2px;
+      background: var(--orange);
+      border-radius: 2px;
+      box-shadow: 0 0 10px rgba(249,115,22,.6);
+      transition: width .7s var(--ease);
+    }
+    .zahlen__item.in .zahlen__num::after { width: 32px; }
+    .zahlen__label {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+      margin-bottom: .4rem;
+    }
+    .zahlen__desc { font-size: .8rem; color: var(--muted); line-height: 1.65; }
+    @media (max-width: 800px) {
+      .zahlen__grid { grid-template-columns: repeat(2, 1fr); }
+      .zahlen__item:nth-child(3)::before,
+      .zahlen__item:nth-child(4)::before { display: none; }
+      .zahlen__item:nth-child(3),
+      .zahlen__item:nth-child(4) { border-top: 1px solid rgba(249,115,22,.12); }
+    }
+    @media (max-width: 420px) { .zahlen__grid { grid-template-columns: 1fr; } }
+
     /* ── REDUCED MOTION ──────────────────────────── */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -1253,6 +1548,47 @@
     </div>
   </div>
 
+  <!-- SPÄTNACHT — Late Night Statement -->
+  <section class="spaetnacht" aria-labelledby="spaetnachtTitle">
+    <div class="spaetnacht__bg">
+      <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1440,fit=crop/A85VROz7qKI3QoBE/_dsc1431-E5HKwvWlCSvfOAJa.jpg"
+           alt="" aria-hidden="true" loading="lazy">
+    </div>
+    <div class="spaetnacht__overlay"></div>
+    <div class="spaetnacht__beam" aria-hidden="true"></div>
+    <div class="spaetnacht__beam spaetnacht__beam-2" aria-hidden="true"></div>
+
+    <div class="wrap spaetnacht__content">
+      <span class="spaetnacht__time" aria-hidden="true">02:00</span>
+      <h2 class="spaetnacht__headline" id="spaetnachtTitle" data-a>
+        Während andere schließen,<br>
+        <em>fangen wir erst an.</em>
+      </h2>
+      <p class="spaetnacht__sub" data-a data-delay="60">
+        Küche täglich bis 02:00 Uhr. Freitag und Samstag bis 03:30. Für alle, die den Abend noch nicht aufgeben wollen — wir auch nicht.
+      </p>
+      <div class="spaetnacht__badges" data-a data-delay="120">
+        <div class="spaetnacht__badge">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Mo – Do bis 02:00 Uhr
+        </div>
+        <div class="spaetnacht__badge">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Fr & Sa bis 03:30 Uhr
+        </div>
+        <div class="spaetnacht__badge">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Schillerstraße 10 · Frankfurt
+        </div>
+      </div>
+    </div>
+
+    <div class="spaetnacht__side" aria-hidden="true">
+      <span class="spaetnacht__side-text">Seit dem ersten Tag</span>
+      <div class="spaetnacht__side-line"></div>
+    </div>
+  </section>
+
   <!-- ABOUT -->
   <section class="about sec" id="about" aria-labelledby="aboutTitle">
     <div class="wrap">
@@ -1424,6 +1760,38 @@
     </div>
   </section>
 
+  <!-- BAR SPOTLIGHT -->
+  <section class="bar-spot" aria-labelledby="barSpotTitle">
+    <div class="bar-spot__glow" aria-hidden="true"></div>
+    <div class="bar-spot__grid">
+      <div class="bar-spot__visual" data-scale>
+        <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=768,fit=crop/A85VROz7qKI3QoBE/pink_pornstar-1-96w7Z9l7IZRatSiA.jpg"
+             alt="Kiwis Cocktailbar — Pink Pornstar Martini" loading="lazy">
+      </div>
+      <div class="bar-spot__body" data-a>
+        <div class="label">Die Bar</div>
+        <h2 class="bar-spot__heading" id="barSpotTitle">
+          Die Bar,<br>die den Abend<br><span>rettet.</span>
+        </h2>
+        <div class="bar-spot__divider" aria-hidden="true"></div>
+        <p class="bar-spot__desc">
+          Von Klassikern bis zu unseren Eigenkreationen — unsere Bar ist mehr als ein Begleiter zum Essen. Sie ist der Grund, warum manche Abende einfach nie enden wollen.
+        </p>
+        <div class="bar-spot__drinks" aria-label="Cocktail-Highlights">
+          <div class="bar-spot__drink">Pink Pornstar — Passionsfrucht, Vanille, Prosecco</div>
+          <div class="bar-spot__drink">Aperol Kiwi Spritz — Aperol, Kiwi, Prosecco, Minze</div>
+          <div class="bar-spot__drink">Hugo Royale — Elderflower, Prosecco, frische Limette</div>
+          <div class="bar-spot__drink">+ viele weitere Kreationen in unserer Getränkekarte</div>
+        </div>
+        <a href="https://assets.zyrosite.com/A85VROz7qKI3QoBE/kiwis_getra-nkekarte_2026-NzzRwXGo4RBWB9yZ.pdf"
+           class="btn btn-outline" target="_blank" rel="noopener" style="align-self:flex-start;margin-top:.5rem;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Getränkekarte 2026
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- GALLERY -->
   <section class="gallery sec" id="gallery" aria-labelledby="galleryTitle">
     <div class="wrap">
@@ -1455,6 +1823,38 @@
         <div class="gallery__item">
           <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,fit=crop/A85VROz7qKI3QoBE/_dsc7511-daQNs5qEgfOmLwOW.jpg"
                alt="Kiwis Speisen" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IN ZAHLEN — Bold Stats -->
+  <section class="zahlen" aria-labelledby="zahlenTitle">
+    <div class="wrap zahlen__inner">
+      <div class="zahlen__header" data-a>
+        <div class="label" style="justify-content:center;">Kiwis in Zahlen</div>
+        <h2 class="h2" id="zahlenTitle">Was uns ausmacht</h2>
+      </div>
+      <div class="zahlen__grid">
+        <div class="zahlen__item" data-zahlen data-a>
+          <span class="zahlen__num" data-counter data-target="7" data-suffix=" Tage">7 Tage</span>
+          <div class="zahlen__label">pro Woche</div>
+          <div class="zahlen__desc">Täglich geöffnet — ohne Ausnahme.</div>
+        </div>
+        <div class="zahlen__item" data-zahlen data-a data-delay="60">
+          <span class="zahlen__num">02:00</span>
+          <div class="zahlen__label">Küche bis</div>
+          <div class="zahlen__desc">Freitag & Samstag sogar bis 03:30.</div>
+        </div>
+        <div class="zahlen__item" data-zahlen data-a data-delay="120">
+          <span class="zahlen__num" data-counter data-target="100" data-suffix="+">100+</span>
+          <div class="zahlen__label">Sitzplätze</div>
+          <div class="zahlen__desc">Drinnen, draußen und auf der Terrasse.</div>
+        </div>
+        <div class="zahlen__item" data-zahlen data-a data-delay="180">
+          <span class="zahlen__num">1</span>
+          <div class="zahlen__label">Stadt, die nie schläft</div>
+          <div class="zahlen__desc">Frankfurt am Main — Schillerstraße 10.</div>
         </div>
       </div>
     </div>
@@ -1746,6 +2146,16 @@
       }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
       document.querySelectorAll('[data-a]').forEach(el => ao.observe(el));
+
+      // Also mark zahlen items as .in so underline animates
+      const zo = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('in');
+          zo.unobserve(e.target);
+        });
+      }, { threshold: 0.2 });
+      document.querySelectorAll('[data-zahlen]').forEach(el => zo.observe(el));
 
       const so = new IntersectionObserver(entries => {
         entries.forEach(e => {
