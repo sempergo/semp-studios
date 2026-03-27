@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiwis Frankfurt — Restaurant · Bar · Events</title>
+  <meta name="description" content="Restaurant, Bar & Events im Herzen Frankfurts. Küche täglich bis 02:00 Uhr. Schillerstraße 10, 60313 Frankfurt am Main.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── TOKENS ──────────────────────────────────── */
+    :root {
+      --bg:        #08090b;
+      --bg-2:      #0f1113;
+      --bg-3:      #171a1d;
+      --border:    rgba(255,255,255,.07);
+      --lime:      #c8f135;
+      --lime-dim:  rgba(200,241,53,.12);
+      --lime-glow: rgba(200,241,53,.25);
+      --text:      #f0f2ec;
+      --muted:     #72786e;
+      --muted-2:   #4a4f47;
+      --ff-head:   'Syne', sans-serif;
+      --ff-body:   'Inter', sans-serif;
+      --r:         10px;
+      --max:       1200px;
+      --ease-out:  cubic-bezier(0.0, 0.0, 0.2, 1);
+      --spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ── RESET ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { background: var(--bg); color: var(--text); font-family: var(--ff-body); line-height: 1.6; overflow-x: hidden; }
+    img  { display: block; max-width: 100%; }
+    a    { color: inherit; text-decoration: none; }
+    ul   { list-style: none; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    /* ── UTILS ───────────────────────────────────── */
+    .wrap  { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+    .sec   { padding: 7rem 0; }
+    .label { font-family: var(--ff-head); font-size: .7rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--lime); margin-bottom: .6rem; }
+    .h1    { font-family: var(--ff-head); font-size: clamp(3rem, 8vw, 7.5rem); font-weight: 800; line-height: 1.0; letter-spacing: -.03em; }
+    .h2    { font-family: var(--ff-head); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; line-height: 1.1; letter-spacing: -.02em; }
+    .h3    { font-family: var(--ff-head); font-size: 1.1rem; font-weight: 700; }
+    .sub   { font-size: 1rem; color: var(--muted); line-height: 1.7; max-width: 520px; }
+    .btn   { display: inline-flex; align-items: center; gap: .5rem; padding: .9rem 2rem; border-radius: 60px; font-family: var(--ff-head); font-size: .85rem; font-weight: 700; letter-spacing: .04em; transition: all 200ms var(--ease-out); cursor: pointer; }
+    .btn-lime { background: var(--lime); color: #0a0b08; }
+    .btn-lime:hover { background: #d6ff3a; transform: translateY(-2px); box-shadow: 0 8px 28px var(--lime-glow); }
+    .btn-ghost { border: 1px solid var(--border); color: var(--text); }
+    .btn-ghost:hover { border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.04); }
+
+    /* ── ANIMATE ─────────────────────────────────── */
+    [data-a] { opacity: 0; transform: translateY(32px); transition: opacity .65s var(--ease-out), transform .65s var(--ease-out); }
+    [data-a="left"]  { transform: translateX(-32px); }
+    [data-a="right"] { transform: translateX(32px); }
+    [data-a="scale"] { transform: scale(.94); }
+    [data-a].in      { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { [data-a] { opacity: 1; transform: none; transition: none; } }
+
+    /* ── NAV ─────────────────────────────────────── */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.5rem 0; transition: all .35s ease; }
+    .nav.stuck { background: rgba(8,9,11,.92); backdrop-filter: blur(20px); padding: 1rem 0; border-bottom: 1px solid var(--border); }
+    .nav__inner { display: flex; align-items: center; justify-content: space-between; }
+    .nav__logo { font-family: var(--ff-head); font-size: 1.5rem; font-weight: 800; color: var(--lime); letter-spacing: -.02em; }
+    .nav__logo span { color: var(--text); }
+    .nav__links { display: flex; align-items: center; gap: 2rem; }
+    .nav__links a { font-family: var(--ff-head); font-size: .82rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); transition: color .2s; }
+    .nav__links a:hover { color: var(--text); }
+    .nav__cta { padding: .6rem 1.5rem; font-size: .78rem; }
+    .nav__burger { display: none; flex-direction: column; gap: 5px; padding: 4px; }
+    .nav__burger span { display: block; width: 22px; height: 1.5px; background: var(--text); border-radius: 2px; transition: all .25s ease; }
+    @media (max-width: 768px) {
+      .nav__burger { display: flex; }
+      .nav__links { display: none; position: fixed; inset: 0; background: var(--bg); flex-direction: column; justify-content: center; align-items: center; gap: 2.5rem; z-index: 99; }
+      .nav__links.open { display: flex; }
+      .nav__links a { font-size: 1.2rem; }
+    }
+
+    /* ── HERO ────────────────────────────────────── */
+    .hero { position: relative; min-height: 100dvh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 6rem; overflow: hidden; }
+    .hero__bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1800&q=85') center/cover no-repeat; }
+    .hero__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(8,9,11,1) 0%, rgba(8,9,11,.75) 40%, rgba(8,9,11,.3) 100%); }
+    /* Noise texture */
+    .hero__noise { position: absolute; inset: 0; opacity: .035; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); pointer-events: none; }
+    .hero__content { position: relative; z-index: 2; }
+    .hero__eyebrow { display: inline-flex; align-items: center; gap: .6rem; border: 1px solid var(--border); border-radius: 60px; padding: .4rem 1rem; margin-bottom: 1.75rem; }
+    .hero__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--lime); animation: blink 2s ease-in-out infinite; }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+    .hero__eyebrow-text { font-family: var(--ff-head); font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+    .hero__title { margin-bottom: 1.5rem; }
+    .hero__title em { color: var(--lime); font-style: normal; }
+    .hero__sub { font-size: 1.05rem; color: rgba(240,242,236,.65); margin-bottom: 2.5rem; max-width: 480px; }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+    .hero__scroll { position: absolute; bottom: 2rem; right: 2rem; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: .4rem; }
+    .hero__scroll-line { width: 1px; height: 48px; background: linear-gradient(to bottom, transparent, var(--lime)); animation: scrollLine 2s ease-in-out infinite; }
+    @keyframes scrollLine { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+    .hero__scroll-label { font-family: var(--ff-head); font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); writing-mode: vertical-rl; }
+    @media (max-width: 600px) { .hero__scroll { display: none; } }
+
+    /* ── TICKER ──────────────────────────────────── */
+    .ticker { background: var(--lime); padding: .85rem 0; overflow: hidden; }
+    .ticker__track { display: flex; width: max-content; animation: ticker 22s linear infinite; gap: 0; }
+    .ticker__track:hover { animation-play-state: paused; }
+    @keyframes ticker { to { transform: translateX(-50%); } }
+    .ticker__item { display: flex; align-items: center; gap: 1.5rem; padding: 0 2rem; white-space: nowrap; font-family: var(--ff-head); font-size: .8rem; font-weight: 700; color: #0a0b08; letter-spacing: .08em; text-transform: uppercase; }
+    .ticker__sep { width: 5px; height: 5px; border-radius: 50%; background: rgba(10,11,8,.35); flex-shrink: 0; }
+    @media (prefers-reduced-motion: reduce) { .ticker__track { animation: none; } }
+
+    /* ── MENU ────────────────────────────────────── */
+    .menu { background: var(--bg); }
+    .menu__header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 3rem; }
+    .menu__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border-radius: calc(var(--r) * 1.5); overflow: hidden; }
+    .dish { position: relative; background: var(--bg-2); overflow: hidden; transition: background .25s; cursor: default; }
+    .dish:hover { background: var(--bg-3); }
+    .dish__img { aspect-ratio: 4/3; overflow: hidden; }
+    .dish__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease-out); filter: saturate(.9) brightness(.9); }
+    .dish:hover .dish__img img { transform: scale(1.06); filter: saturate(1.1) brightness(.95); }
+    .dish__body { padding: 1.5rem; }
+    .dish__tag { font-family: var(--ff-head); font-size: .65rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--lime); margin-bottom: .5rem; }
+    .dish__name { font-family: var(--ff-head); font-size: 1.05rem; font-weight: 700; margin-bottom: .4rem; line-height: 1.25; }
+    .dish__desc { font-size: .8rem; color: var(--muted); line-height: 1.5; margin-bottom: .9rem; }
+    .dish__footer { display: flex; align-items: center; justify-content: space-between; }
+    .dish__price { font-family: var(--ff-head); font-size: 1rem; font-weight: 700; color: var(--text); }
+    .dish__badge { font-size: .68rem; font-weight: 600; padding: .25rem .65rem; border-radius: 60px; background: var(--lime-dim); color: var(--lime); }
+    @media (max-width: 900px) { .menu__grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .menu__grid { grid-template-columns: 1fr; } }
+
+    /* ── VIBE ────────────────────────────────────── */
+    .vibe { background: var(--bg-2); overflow: hidden; }
+    .vibe__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .vibe__img-stack { position: relative; height: 580px; }
+    .vibe__img { position: absolute; border-radius: calc(var(--r) * 1.5); overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,.5); }
+    .vibe__img img { width: 100%; height: 100%; object-fit: cover; }
+    .vibe__img--main { top: 0; left: 0; width: 72%; height: 75%; }
+    .vibe__img--accent { bottom: 0; right: 0; width: 56%; height: 55%; border: 2px solid var(--bg-2); }
+    .vibe__badge { position: absolute; top: 52%; left: 54%; transform: translate(-50%,-50%); background: var(--lime); color: #0a0b08; border-radius: var(--r); padding: 1rem 1.25rem; text-align: center; box-shadow: 0 12px 32px var(--lime-glow); z-index: 2; }
+    .vibe__badge-num { font-family: var(--ff-head); font-size: 1.75rem; font-weight: 800; line-height: 1; }
+    .vibe__badge-label { font-family: var(--ff-head); font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; opacity: .7; margin-top: .2rem; }
+    .vibe__stats { display: flex; gap: 2.5rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .vibe__stat-num { font-family: var(--ff-head); font-size: 2.25rem; font-weight: 800; color: var(--lime); line-height: 1; }
+    .vibe__stat-label { font-size: .78rem; color: var(--muted); margin-top: .25rem; text-transform: uppercase; letter-spacing: .06em; }
+    .vibe__text { font-size: 1rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.25rem; }
+    @media (max-width: 900px) { .vibe__grid { grid-template-columns: 1fr; } .vibe__img-stack { height: 340px; margin-bottom: 2rem; } }
+
+    /* ── EVENTS ──────────────────────────────────── */
+    .events { background: var(--bg); }
+    .events__inner { border: 1px solid var(--border); border-radius: calc(var(--r) * 2); overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; }
+    .events__img { background: url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=900&q=80') center/cover no-repeat; min-height: 400px; }
+    .events__body { padding: 3.5rem; display: flex; flex-direction: column; justify-content: center; gap: 1.25rem; background: var(--bg-2); }
+    .events__features { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .events__chip { font-family: var(--ff-head); font-size: .72rem; font-weight: 600; padding: .35rem .875rem; border-radius: 60px; background: var(--lime-dim); color: var(--lime); border: 1px solid rgba(200,241,53,.2); }
+    @media (max-width: 768px) { .events__inner { grid-template-columns: 1fr; } .events__img { min-height: 220px; } .events__body { padding: 2rem; } }
+
+    /* ── HOURS ───────────────────────────────────── */
+    .hours { background: var(--bg-2); }
+    .hours__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .hours__map { border-radius: calc(var(--r) * 1.5); overflow: hidden; border: 1px solid var(--border); aspect-ratio: 4/3; }
+    .hours__map iframe { width: 100%; height: 100%; border: none; filter: invert(92%) hue-rotate(180deg) saturate(.75) brightness(.85); }
+    .hours__table { width: 100%; margin-bottom: 2rem; }
+    .hr { display: flex; justify-content: space-between; align-items: center; padding: .75rem 0; border-bottom: 1px solid var(--border); }
+    .hr:last-child { border-bottom: none; }
+    .hr__day { font-size: .88rem; color: var(--muted); }
+    .hr__time { font-family: var(--ff-head); font-size: .88rem; font-weight: 600; color: var(--text); }
+    .hr.late .hr__day { color: var(--text); }
+    .hr.late .hr__time { color: var(--lime); }
+    .contact-row { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.25rem; }
+    .contact-row__icon { width: 36px; height: 36px; border-radius: 8px; background: var(--lime-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .contact-row__icon svg { width: 16px; height: 16px; stroke: var(--lime); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .contact-row__label { font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: .2rem; font-family: var(--ff-head); font-weight: 600; }
+    .contact-row__value { font-size: .92rem; color: var(--text); }
+    .contact-row__value a { color: var(--lime); transition: opacity .2s; }
+    .contact-row__value a:hover { opacity: .8; }
+    @media (max-width: 768px) { .hours__grid { grid-template-columns: 1fr; } }
+
+    /* ── CTA STRIP ───────────────────────────────── */
+    .cta-strip { background: var(--lime); padding: 5rem 0; position: relative; overflow: hidden; }
+    .cta-strip__bg { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E"); pointer-events: none; }
+    .cta-strip__inner { position: relative; text-align: center; }
+    .cta-strip .h2 { color: #0a0b08; margin-bottom: .75rem; }
+    .cta-strip p { color: rgba(10,11,8,.6); font-size: 1rem; margin-bottom: 2.25rem; }
+    .btn-dark { background: #0a0b08; color: var(--lime); }
+    .btn-dark:hover { background: #151618; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.3); }
+    .btn-dark-ghost { border: 1.5px solid rgba(10,11,8,.25); color: #0a0b08; }
+    .btn-dark-ghost:hover { background: rgba(10,11,8,.08); }
+    .cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    footer { background: #050607; border-top: 1px solid var(--border); padding: 3.5rem 0 2rem; }
+    .footer__grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+    .footer__logo { font-family: var(--ff-head); font-size: 1.5rem; font-weight: 800; color: var(--lime); margin-bottom: .75rem; letter-spacing: -.02em; }
+    .footer__desc { font-size: .85rem; color: var(--muted); line-height: 1.7; max-width: 240px; }
+    .footer__h { font-family: var(--ff-head); font-size: .65rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--muted-2); margin-bottom: 1rem; }
+    .footer__links li + li { margin-top: .5rem; }
+    .footer__links a { font-size: .85rem; color: var(--muted); transition: color .2s; }
+    .footer__links a:hover { color: var(--text); }
+    .footer__social { display: flex; gap: .75rem; margin-top: 1rem; }
+    .footer__social a { width: 36px; height: 36px; border-radius: 8px; background: var(--bg-3); display: flex; align-items: center; justify-content: center; color: var(--muted); transition: all .2s; }
+    .footer__social a:hover { background: var(--lime-dim); color: var(--lime); }
+    .footer__social svg { width: 16px; height: 16px; fill: currentColor; }
+    .footer__bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid var(--border); font-size: .78rem; color: var(--muted-2); flex-wrap: wrap; gap: .5rem; }
+    @media (max-width: 900px) { .footer__grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+    /* ── MOBILE CTA ──────────────────────────────── */
+    .mcta { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 50; padding: .875rem 1.25rem; background: rgba(8,9,11,.96); backdrop-filter: blur(16px); border-top: 1px solid var(--border); gap: .75rem; }
+    @media (max-width: 768px) { .mcta { display: flex; } body { padding-bottom: 76px; } }
+    .mcta a { flex: 1; text-align: center; padding: .8rem; border-radius: 60px; font-family: var(--ff-head); font-size: .82rem; font-weight: 700; }
+    .mcta__call { background: var(--lime-dim); color: var(--lime); border: 1px solid rgba(200,241,53,.2); }
+    .mcta__reserve { background: var(--lime); color: #0a0b08; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav" aria-label="Hauptnavigation">
+    <div class="wrap">
+      <div class="nav__inner">
+        <a href="#" class="nav__logo" aria-label="Kiwis Frankfurt – Startseite">Kiwis<span>.</span></a>
+        <ul class="nav__links" id="navLinks" role="list">
+          <li><a href="#menu">Speisekarte</a></li>
+          <li><a href="#vibe">Über uns</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#hours">Kontakt</a></li>
+          <li>
+            <a href="tel:06921009879" class="btn btn-lime nav__cta" aria-label="Tisch reservieren">
+              Reservieren
+            </a>
+          </li>
+        </ul>
+        <button class="nav__burger" id="burger" aria-label="Menü öffnen" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home" aria-labelledby="heroTitle">
+    <div class="hero__bg" role="img" aria-label="Kiwis Frankfurt Restaurant Atmosphäre"></div>
+    <div class="hero__overlay"></div>
+    <div class="hero__noise" aria-hidden="true"></div>
+    <div class="wrap hero__content">
+      <div class="hero__eyebrow" data-a>
+        <div class="hero__dot" aria-hidden="true"></div>
+        <span class="hero__eyebrow-text">Restaurant · Bar · Events · Frankfurt</span>
+      </div>
+      <h1 class="h1 hero__title" id="heroTitle" data-a>
+        Gutes Essen<br>
+        hat keine<br>
+        <em>Schlafenszeit.</em>
+      </h1>
+      <p class="hero__sub" data-a>
+        Mitten in Frankfurt. Küche täglich bis 02:00 Uhr geöffnet.
+        Cocktailbar, Terrasse und private Events für 30–100 Personen.
+      </p>
+      <div class="hero__actions" data-a>
+        <a href="tel:06921009879" class="btn btn-lime" aria-label="Jetzt anrufen und reservieren">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 11.9a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Tisch reservieren
+        </a>
+        <a href="#menu" class="btn btn-ghost">Speisekarte ansehen</a>
+      </div>
+    </div>
+    <div class="hero__scroll" aria-hidden="true">
+      <div class="hero__scroll-line"></div>
+      <span class="hero__scroll-label">Scroll</span>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker" aria-label="Highlights" role="marquee">
+    <div class="ticker__track" aria-hidden="true">
+      <!-- repeated twice for seamless loop -->
+      <span class="ticker__item">Küche täglich bis 02:00<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Cocktailbar<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Wetterfeste Terrasse<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Private Events 30–100 Personen<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Schillerstraße 10 Frankfurt<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Fr & Sa bis 03:30 Uhr geöffnet<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Vegane Optionen<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Küche täglich bis 02:00<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Cocktailbar<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Wetterfeste Terrasse<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Private Events 30–100 Personen<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Schillerstraße 10 Frankfurt<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Fr & Sa bis 03:30 Uhr geöffnet<span class="ticker__sep"></span></span>
+      <span class="ticker__item">Vegane Optionen<span class="ticker__sep"></span></span>
+    </div>
+  </div>
+
+  <!-- MENU HIGHLIGHTS -->
+  <section class="menu sec" id="menu" aria-labelledby="menuTitle">
+    <div class="wrap">
+      <div class="menu__header" data-a>
+        <div>
+          <div class="label">Unsere Küche</div>
+          <h2 class="h2">Kiwis-Style.<br>Kein Kompromiss.</h2>
+        </div>
+        <a href="https://kiwis-frankfurt.de/speisekarte/" class="btn btn-ghost" target="_blank" rel="noopener">
+          Vollständige Speisekarte
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <div class="menu__grid">
+
+        <article class="dish" data-a>
+          <div class="dish__img">
+            <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=700&q=80" alt="Tacos Kiwis-Style" loading="lazy">
+          </div>
+          <div class="dish__body">
+            <div class="dish__tag">Tapas</div>
+            <div class="dish__name">Tacos Kiwis-Style</div>
+            <p class="dish__desc">3 Soft-Tacos mit 12h-Beef, Avocado, Koriander, eingelegter Zwiebel, Limette & Spicy Mayo</p>
+            <div class="dish__footer">
+              <span class="dish__price">14,00 €</span>
+              <span class="dish__badge">Signature</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="dish" data-a data-delay="80">
+          <div class="dish__img">
+            <img src="https://images.unsplash.com/photo-1510130387422-82bed34b37e9?w=700&q=80" alt="Roasted King Prawns" loading="lazy">
+          </div>
+          <div class="dish__body">
+            <div class="dish__tag">Tapas</div>
+            <div class="dish__name">Roasted King Prawns</div>
+            <p class="dish__desc">Wildfang-Garnelen, hausgemachte Aioli, frische Zitrone — 8 oder 16 Stück</p>
+            <div class="dish__footer">
+              <span class="dish__price">ab 13,00 €</span>
+              <span class="dish__badge">Bestseller</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="dish" data-a data-delay="160">
+          <div class="dish__img">
+            <img src="https://images.unsplash.com/photo-1543826173-1beeb97525d8?w=700&q=80" alt="Trüffel Pommes" loading="lazy">
+          </div>
+          <div class="dish__body">
+            <div class="dish__tag">Tapas</div>
+            <div class="dish__name">Trüffel Pommes</div>
+            <p class="dish__desc">Parmesan, frischer Trüffel, Trüffel-Mayo — luxuriös und süchtig machend</p>
+            <div class="dish__footer">
+              <span class="dish__price">12,00 €</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="dish" data-a data-delay="80">
+          <div class="dish__img">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=700&q=80" alt="Healthy Chicken Bowl" loading="lazy">
+          </div>
+          <div class="dish__body">
+            <div class="dish__tag">Bowl</div>
+            <div class="dish__name">Healthy Chicken Bowl</div>
+            <p class="dish__desc">Couscous, Wildkräuter, Himbeer-Dressing, Avocado, Kiwi, Feta & Edamame</p>
+            <div class="dish__footer">
+              <span class="dish__price">17,00 €</span>
+              <span class="dish__badge">Beliebt</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="dish" data-a data-delay="160">
+          <div class="dish__img">
+            <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=700&q=80" alt="Green Gamba Bowl" loading="lazy">
+          </div>
+          <div class="dish__body">
+            <div class="dish__tag">Bowl</div>
+            <div class="dish__name">Green Gamba Bowl</div>
+            <p class="dish__desc">Couscous, Wildkräutersalat, Wildfang-Garnelen, Avocado, Tomaten & Edamame</p>
+            <div class="dish__footer">
+              <span class="dish__price">20,00 €</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="dish" data-a data-delay="240">
+          <div class="dish__img">
+            <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=700&q=80" alt="Cocktailbar" loading="lazy">
+          </div>
+          <div class="dish__body">
+            <div class="dish__tag">Bar</div>
+            <div class="dish__name">Unsere Cocktailbar</div>
+            <p class="dish__desc">Klassiker, Eigenkreationen und saisonale Specials — perfekt bis in die frühen Morgenstunden</p>
+            <div class="dish__footer">
+              <span class="dish__price">Abends geöffnet</span>
+              <span class="dish__badge">Bar</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- VIBE -->
+  <section class="vibe sec" id="vibe" aria-labelledby="vibeTitle">
+    <div class="wrap">
+      <div class="vibe__grid">
+        <div class="vibe__img-stack" data-a="left">
+          <div class="vibe__img vibe__img--main">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&q=80" alt="Kiwis Restaurant Innenraum" loading="lazy">
+          </div>
+          <div class="vibe__img vibe__img--accent">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=80" alt="Kiwis Bar Atmosphäre" loading="lazy">
+          </div>
+          <div class="vibe__badge" aria-label="12 Jahre in Frankfurt">
+            <div class="vibe__badge-num">★ 4.4</div>
+            <div class="vibe__badge-label">Google Rating</div>
+          </div>
+        </div>
+        <div data-a="right">
+          <div class="label">Unser Anspruch</div>
+          <h2 class="h2" id="vibeTitle" style="margin-bottom:1.25rem;">Frankfurts liebste<br>Adresse nach Einbruch der Dunkelheit.</h2>
+          <p class="vibe__text">Im Herzen der Stadt, unweit der alten Börse, haben wir ein Ort geschaffen, der nicht schläft wenn Frankfurt schläft. Unsere Küche ist täglich bis 02:00 Uhr geöffnet — weil gute Ideen, gute Gespräche und guter Hunger keine festen Öffnungszeiten kennen.</p>
+          <p class="vibe__text">Von frischen Wildkräuter-Bowls am Nachmittag über Kiwis-Style Tacos am Abend bis zum Late-Night-Drink nach Mitternacht — wir sind dabei.</p>
+          <div class="vibe__stats" aria-label="Kiwis in Zahlen">
+            <div>
+              <div class="vibe__stat-num" data-counter data-target="100" data-suffix="+">100+</div>
+              <div class="vibe__stat-label">Sitzplätze</div>
+            </div>
+            <div>
+              <div class="vibe__stat-num" data-counter data-target="7" data-suffix="×">7×</div>
+              <div class="vibe__stat-label">Täglich geöffnet</div>
+            </div>
+            <div>
+              <div class="vibe__stat-num">02:00</div>
+              <div class="vibe__stat-label">Küche bis</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section class="events sec" id="events" aria-labelledby="eventsTitle">
+    <div class="wrap">
+      <div class="label" data-a style="margin-bottom:1.25rem;">Private Events</div>
+      <div class="events__inner" data-a>
+        <div class="events__img" role="img" aria-label="Events und Feiern im Kiwis Frankfurt"></div>
+        <div class="events__body">
+          <div>
+            <h2 class="h2" id="eventsTitle" style="margin-bottom:.75rem;">Dein nächstes<br>Event. Perfekt gehostet.</h2>
+            <p class="sub" style="margin-bottom:1.5rem;">Ob Geburtstagsfeier, Firmen-Event oder Hochzeitsfeier — wir stellen euch den passenden Rahmen für 30 bis 100 Personen bereit. Mit eigenem Catering, Bar-Service und wetterfester Terrasse.</p>
+          </div>
+          <div class="events__features" aria-label="Event-Ausstattung">
+            <span class="events__chip">30–100 Personen</span>
+            <span class="events__chip">Catering inklusive</span>
+            <span class="events__chip">Wetterfeste Terrasse</span>
+            <span class="events__chip">Cocktailbar</span>
+            <span class="events__chip">Firmenevents</span>
+            <span class="events__chip">Hochzeiten</span>
+            <span class="events__chip">Geburtstagsfeiern</span>
+          </div>
+          <a href="tel:06921009879" class="btn btn-lime" style="margin-top:.5rem;align-self:flex-start;" aria-label="Event anfragen">
+            Event anfragen
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOURS & CONTACT -->
+  <section class="hours sec" id="hours" aria-labelledby="hoursTitle">
+    <div class="wrap">
+      <div class="label" data-a>Besucht uns</div>
+      <h2 class="h2" data-a id="hoursTitle" style="margin-bottom:3rem;">Öffnungszeiten<br>& Kontakt</h2>
+      <div class="hours__grid">
+        <div data-a="left">
+          <div class="contact-row">
+            <div class="contact-row__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="contact-row__label">Adresse</div>
+              <div class="contact-row__value">Schillerstraße 10<br>60313 Frankfurt am Main</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-row__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 11.9a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="contact-row__label">Telefon</div>
+              <div class="contact-row__value"><a href="tel:06921009879">069 – 21 00 98 79</a></div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-row__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="contact-row__label">E-Mail</div>
+              <div class="contact-row__value"><a href="mailto:info@kiwis-frankfurt.de">info@kiwis-frankfurt.de</a></div>
+            </div>
+          </div>
+
+          <div class="hours__table" role="table" aria-label="Öffnungszeiten" style="margin-top:2rem;">
+            <div class="hr" role="row"><span class="hr__day" role="cell">Montag – Donnerstag</span><span class="hr__time" role="cell">10:00 – 02:00</span></div>
+            <div class="hr late" role="row"><span class="hr__day" role="cell">Freitag – Samstag</span><span class="hr__time" role="cell">10:00 – 03:30 ★</span></div>
+            <div class="hr" role="row"><span class="hr__day" role="cell">Sonntag</span><span class="hr__time" role="cell">14:00 – 02:00</span></div>
+          </div>
+          <p style="font-size:.78rem;color:var(--muted);margin-top:.75rem;">★ Küche täglich bis 02:00 Uhr geöffnet</p>
+        </div>
+
+        <div class="hours__map" data-a="right">
+          <iframe
+            title="Kiwis Frankfurt auf der Karte"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2558.7327786823185!2d8.674763776951396!3d50.11288897152585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47bd096a2b6d4a2f%3A0xb4c94e9c97afb9b4!2sSchillerstra%C3%9Fe%2010%2C%2060313%20Frankfurt%20am%20Main!5e0!3m2!1sde!2sde!4v1700000000000!5m2!1sde!2sde"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            aria-label="Karte: Schillerstraße 10, Frankfurt">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section class="cta-strip" aria-labelledby="ctaTitle">
+    <div class="hero__noise" aria-hidden="true"></div>
+    <div class="wrap cta-strip__inner">
+      <div class="label" style="color:rgba(10,11,8,.5);" data-a>Jetzt reservieren</div>
+      <h2 class="h2" id="ctaTitle" data-a>Hunger um Mitternacht?<br>Wir sind noch da.</h2>
+      <p data-a>Kein Ende der Küche um 22 Uhr. Kein Kompromiss. Ruft einfach an.</p>
+      <div class="cta-actions" data-a>
+        <a href="tel:06921009879" class="btn btn-dark" aria-label="Anrufen und Tisch reservieren">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 11.9a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          069 – 21 00 98 79
+        </a>
+        <a href="mailto:info@kiwis-frankfurt.de" class="btn btn-dark-ghost" aria-label="E-Mail schreiben">
+          Event anfragen
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__logo">Kiwis.</div>
+          <p class="footer__desc">Restaurant · Bar · Events<br>Schillerstraße 10 · 60313 Frankfurt am Main<br>Küche täglich bis 02:00 Uhr.</p>
+          <div class="footer__social" aria-label="Social Media">
+            <a href="https://instagram.com/kiwis_frankfurt" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M17.5 6.5h.01"/></svg>
+            </a>
+            <a href="https://facebook.com/kiwisfrankfurt" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="https://tiktok.com/@kiwis_frankfurt" target="_blank" rel="noopener" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__h">Navigation</div>
+          <ul class="footer__links" role="list">
+            <li><a href="#menu">Speisekarte</a></li>
+            <li><a href="#vibe">Über uns</a></li>
+            <li><a href="#events">Events</a></li>
+            <li><a href="#hours">Kontakt</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer__h">Kontakt</div>
+          <ul class="footer__links" role="list">
+            <li><a href="tel:06921009879">069 – 21 00 98 79</a></li>
+            <li><a href="tel:+4917337032422">+49 173 370 32 42</a></li>
+            <li><a href="mailto:info@kiwis-frankfurt.de">info@kiwis-frankfurt.de</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer__h">Öffnungszeiten</div>
+          <ul class="footer__links" role="list" style="font-size:.82rem;">
+            <li style="color:var(--muted);">Mo–Do: 10:00 – 02:00</li>
+            <li style="color:var(--lime);font-weight:600;">Fr–Sa: 10:00 – 03:30</li>
+            <li style="color:var(--muted);">So: 14:00 – 02:00</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; <span id="yr"></span> Kiwis Frankfurt. Alle Rechte vorbehalten.</span>
+        <span>Schillerstraße 10 · 60313 Frankfurt am Main</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MOBILE CTA -->
+  <div class="mcta" role="complementary" aria-label="Schnellzugriff">
+    <a href="tel:06921009879" class="mcta__call" aria-label="Jetzt anrufen">Anrufen</a>
+    <a href="tel:06921009879" class="mcta__reserve" aria-label="Tisch reservieren">Tisch reservieren</a>
+  </div>
+
+  <script>
+    // Year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Sticky nav
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('stuck', window.scrollY > 80), { passive: true });
+
+    // Mobile menu
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+    burger.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open);
+    });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+    }));
+
+    // Scroll animations
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const ao = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const delay = parseInt(entry.target.dataset.delay || '0');
+          setTimeout(() => entry.target.classList.add('in'), delay);
+          ao.unobserve(entry.target);
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('[data-a]').forEach(el => ao.observe(el));
+
+      // Counter animation
+      const co = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          const el = e.target;
+          const target = parseFloat(el.dataset.target);
+          const suffix = el.dataset.suffix || '';
+          const start = performance.now();
+          const dur = 1400;
+          const easeOut = t => 1 - Math.pow(1 - t, 3);
+          (function tick(now) {
+            const p = Math.min((now - start) / dur, 1);
+            el.textContent = Math.round(easeOut(p) * target) + suffix;
+            if (p < 1) requestAnimationFrame(tick);
+          })(start);
+          co.unobserve(el);
+        });
+      }, { threshold: 0.5 });
+      document.querySelectorAll('[data-counter]').forEach(el => co.observe(el));
+    } else {
+      document.querySelectorAll('[data-a]').forEach(el => el.classList.add('in'));
+    }
+  </script>
+</body>
+</html>

@@ -8,7 +8,8 @@
       "Bash(python3 scripts/search.py \"local trades service plumber electrician bold reliable\" --design-system -p \"Local Service Template\" -f markdown)",
       "Bash(python3 scripts/search.py \"small business professional clean general SME\" --design-system -p \"General SME Template\" -f markdown)",
       "Bash(npm show:*)",
-      "Bash(export PATH=\"/usr/local/bin:$PATH\" echo \"=== Checking MCP packages ===\" npm show @playwright/mcp version)"
+      "Bash(export PATH=\"/usr/local/bin:$PATH\" echo \"=== Checking MCP packages ===\" npm show @playwright/mcp version)",
+      "WebFetch(domain:kiwis-frankfurt.de)"
     ]
   }
 }
