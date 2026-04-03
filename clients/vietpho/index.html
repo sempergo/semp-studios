@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viet PHO | Vietnamesisches Restaurant | Frankfurt Bornheim</title>
+  <meta name="description" content="Authentisches vietnamesisches Streetfood in Frankfurt Bornheim. Handgemachte Pho, frische Sommerrollen, gegrillter Fisch. Berger Straße 213.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/motion@latest/dist/motion.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0c0f0b;
+      --bg-2:      #131613;
+      --bg-3:      #1a1e19;
+      --gold:      #c9a84c;
+      --gold-dim:  rgba(201,168,76,0.12);
+      --red:       #c85c38;
+      --cream:     #f0ece3;
+      --muted:     #7a7670;
+      --border:    rgba(201,168,76,0.18);
+      --font:      'Be Vietnam Pro', sans-serif;
+      --r:         12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(12,15,11,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 14px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+    .nav-logo span { color: var(--cream); font-weight: 300; }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.7;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    .nav-cta {
+      background: var(--gold);
+      color: #0c0f0b !important;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.78rem !important;
+      letter-spacing: 0.08em;
+      opacity: 1 !important;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--gold-dim); transform: translateY(-1px); }
+
+    /* hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--cream);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(12,15,11,0.97);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cream);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      height: 100svh;
+      min-height: 600px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://s3-media0.fl.yelpcdn.com/bphoto/0KI7Glv9oh2q6EHmuHie3g/o.jpg');
+      background-size: cover;
+      background-position: center 40%;
+      transform: scale(1.05);
+      transition: transform 0.1s linear;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        170deg,
+        rgba(12,15,11,0.2) 0%,
+        rgba(12,15,11,0.4) 40%,
+        rgba(12,15,11,0.88) 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 60px 80px;
+      max-width: 780px;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px; height: 1px;
+      background: var(--gold);
+    }
+    .hero-title {
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .hero-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--gold);
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: rgba(240,236,227,0.75);
+      max-width: 480px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: #0c0f0b;
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.25s;
+    }
+    .btn-primary:hover { background: #e0bc60; transform: translateY(-2px); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--cream);
+      font-family: var(--font);
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 15px 36px;
+      border-radius: 50px;
+      border: 1px solid rgba(240,236,227,0.35);
+      cursor: pointer;
+      transition: border-color 0.25s, color 0.25s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      right: 60px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(240,236,227,0.45);
+      z-index: 2;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.5));
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 100px 60px; }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 24px; height: 1px;
+      background: var(--gold);
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    .section-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--gold);
+    }
+
+    /* ── STORY ── */
+    #story {
+      background: var(--bg-2);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .story-text p {
+      font-size: 1.02rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(240,236,227,0.75);
+      margin-bottom: 20px;
+    }
+    .story-text p:last-child { margin-bottom: 0; }
+    .story-highlight {
+      display: inline-block;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--cream);
+      border-left: 3px solid var(--gold);
+      padding-left: 20px;
+      margin: 8px 0 24px;
+      line-height: 1.4;
+    }
+    .story-img {
+      position: relative;
+      border-radius: var(--r);
+      overflow: hidden;
+      aspect-ratio: 4/5;
+    }
+    .story-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .story-img:hover img { transform: scale(1.04); }
+    .story-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      pointer-events: none;
+    }
+    .story-badge {
+      position: absolute;
+      bottom: 28px;
+      left: -20px;
+      background: var(--gold);
+      color: #0c0f0b;
+      padding: 16px 24px;
+      border-radius: var(--r);
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    }
+    .story-badge .big { display: block; font-size: 2rem; line-height: 1; margin-bottom: 2px; }
+
+    /* ── SPEISEKARTE ── */
+    #menu {
+      background: var(--bg);
+    }
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .menu-header p {
+      max-width: 400px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .dish-card {
+      background: var(--bg-3);
+      border-radius: var(--r);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+    .dish-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+    }
+    .dish-img {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+    }
+    .dish-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .dish-card:hover .dish-img img { transform: scale(1.07); }
+    .dish-tag {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: rgba(12,15,11,0.8);
+      backdrop-filter: blur(8px);
+      color: var(--gold);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+    }
+    .dish-body {
+      padding: 24px;
+    }
+    .dish-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .dish-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+    .dish-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dish-price {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .dish-origin {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ── GALERIE ── */
+    #gallery {
+      background: var(--bg-2);
+      padding-bottom: 80px;
+    }
+    .gallery-header { margin-bottom: 40px; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 12px;
+    }
+    .g-item {
+      overflow: hidden;
+      border-radius: var(--r);
+      cursor: pointer;
+    }
+    .g-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease, filter 0.3s ease;
+    }
+    .g-item:hover img { transform: scale(1.06); filter: brightness(1.08); }
+    .g1 { grid-column: span 5; grid-row: span 2; aspect-ratio: unset; height: 460px; }
+    .g2 { grid-column: span 4; height: 220px; }
+    .g3 { grid-column: span 3; height: 220px; }
+    .g4 { grid-column: span 4; height: 220px; }
+    .g5 { grid-column: span 3; height: 220px; }
+
+    /* ── STATEMENT BAND ── */
+    #statement {
+      padding: 80px 60px;
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .statement-inner {
+      max-width: 760px;
+    }
+    .statement-quote {
+      font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+      font-weight: 800;
+      color: #0c0f0b;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .statement-quote em {
+      font-style: italic;
+      font-weight: 300;
+    }
+    .statement-attr {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(12,15,11,0.55);
+    }
+
+    /* ── INFO / LOCATION ── */
+    #info {
+      background: var(--bg);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .info-block { }
+    .info-block + .info-block { border-left: 1px solid var(--border); padding-left: 80px; }
+    .hours-list {
+      list-style: none;
+      margin-top: 32px;
+    }
+    .hours-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.92rem;
+    }
+    .hours-list li:last-child { border-bottom: none; }
+    .hours-day {
+      font-weight: 600;
+      color: var(--cream);
+    }
+    .hours-time {
+      color: var(--muted);
+      font-weight: 300;
+    }
+    .hours-closed { color: var(--red); }
+    .contact-items {
+      list-style: none;
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .contact-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--gold-dim);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-icon svg {
+      width: 18px; height: 18px;
+      stroke: var(--gold);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .contact-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .contact-value {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--cream);
+      line-height: 1.4;
+    }
+    .contact-value a {
+      color: var(--gold);
+      transition: opacity 0.2s;
+    }
+    .contact-value a:hover { opacity: 0.75; }
+
+    /* map embed */
+    .map-wrap {
+      margin-top: 32px;
+      border-radius: var(--r);
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      border: 1px solid var(--border);
+    }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; filter: invert(90%) hue-rotate(180deg); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      padding: 50px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .footer-logo {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .footer-logo span { color: var(--muted); font-weight: 300; }
+    .footer-center {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .footer-center a { color: var(--muted); transition: color 0.2s; }
+    .footer-center a:hover { color: var(--gold); }
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+    .social-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+    .social-btn:hover { background: var(--gold-dim); border-color: var(--gold); }
+    .social-btn svg {
+      width: 16px; height: 16px;
+      stroke: var(--muted);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.2s;
+    }
+    .social-btn:hover svg { stroke: var(--gold); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      section { padding: 80px 40px; }
+      nav { padding: 18px 32px; }
+      nav.scrolled { padding: 12px 32px; }
+      #story { grid-template-columns: 1fr; gap: 48px; }
+      .story-img { aspect-ratio: 16/9; order: -1; }
+      .story-badge { left: 20px; }
+      #info { grid-template-columns: 1fr; gap: 48px; }
+      .info-block + .info-block { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 48px; }
+      .menu-grid { grid-template-columns: repeat(2, 1fr); }
+      .g1 { grid-column: span 12; height: 280px; }
+      .g2, .g3, .g4, .g5 { grid-column: span 6; height: 200px; }
+      footer { padding: 40px; }
+    }
+
+    @media (max-width: 768px) {
+      section { padding: 64px 24px; }
+      nav { padding: 16px 24px; }
+      nav.scrolled { padding: 12px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero-content { padding: 0 24px 60px; }
+      .hero-scroll { right: 24px; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .menu-header { flex-direction: column; align-items: flex-start; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .g1 { grid-column: span 2; height: 240px; }
+      .g2, .g3, .g4, .g5 { grid-column: span 1; height: 180px; }
+      footer { padding: 32px 24px; flex-direction: column; align-items: flex-start; gap: 20px; }
+      .footer-center { text-align: left; }
+      #statement { padding: 60px 24px; }
+    }
+
+    /* ── REVEAL ANIMATION BASE ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── DECORATIVE ── */
+    .deco-line {
+      display: block;
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">Viet <span>PHO</span></a>
+  <ul class="nav-links">
+    <li><a href="#story">Über uns</a></li>
+    <li><a href="#menu">Speisekarte</a></li>
+    <li><a href="#gallery">Galerie</a></li>
+    <li><a href="#info">Kontakt</a></li>
+    <li><a href="tel:06996866822" class="nav-cta">Reservieren</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#story" class="mm-link">Über uns</a>
+  <a href="#menu" class="mm-link">Speisekarte</a>
+  <a href="#gallery" class="mm-link">Galerie</a>
+  <a href="#info" class="mm-link">Kontakt</a>
+  <a href="tel:06996866822" style="color: var(--gold) !important;">Reservieren</a>
+</div>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Authentisches Vietnam · Frankfurt Bornheim</div>
+    <h1 class="hero-title">
+      Wo Pho<br>zur <em>Leidenschaft</em><br>wird.
+    </h1>
+    <p class="hero-sub">
+      Handgemachte Suppen, frische Aromen aus Vietnam — seit Jahren ein fester Teil von Bornheim.
+    </p>
+    <div class="hero-actions">
+      <a href="#menu" class="btn-primary">Speisekarte entdecken</a>
+      <a href="tel:06996866822" class="btn-ghost">Tisch reservieren</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ── STORY ── -->
+<section id="story">
+  <div class="story-text reveal">
+    <div class="section-label">Unsere Geschichte</div>
+    <h2 class="section-title">Streetfood aus Vietnam,<br>mitten in <em>Frankfurt.</em></h2>
+    <span class="story-highlight">„Echte Pho braucht Zeit. Viel Zeit."</span>
+    <p>
+      Stunden werden zu Aromen. Unser Pho-Fond köchelt täglich auf kleiner Flamme, damit jede Schüssel den unverwechselbaren, tiefen Geschmack trägt, für den Viet PHO bekannt ist.
+    </p>
+    <p>
+      Wir glauben an echtes Essen: frische Kräuter, handgezogene Reisnudeln, Gewürze, die direkt aus Vietnam kommen. Kein Kompromiss. Kein Kompromiss.
+    </p>
+    <p>
+      Ob schnelles Mittagessen oder entspannter Abend mit Freunden — bei uns bist du immer willkommen. Bornheim ist unser Zuhause, und du bist unser Gast.
+    </p>
+    <span class="deco-line"></span>
+  </div>
+
+  <div class="story-img reveal">
+    <img
+      src="https://s3-media0.fl.yelpcdn.com/bphoto/zPhbV_ordDbFlLcWAsfy4g/o.jpg"
+      alt="Innenraum Viet PHO Frankfurt"
+      loading="lazy"
+    >
+    <div class="story-badge">
+      <span class="big">★ 4.5</span>
+      Gäste-Liebling
+    </div>
+  </div>
+</section>
+
+<!-- ── SPEISEKARTE ── -->
+<section id="menu">
+  <div class="menu-header">
+    <div>
+      <div class="section-label">Unsere Küche</div>
+      <h2 class="section-title">Highlights aus<br>der <em>Speisekarte</em></h2>
+    </div>
+    <p>Frisch zubereitet, täglich wechselnde Zutaten — vietnamesische Küche in ihrer besten Form.</p>
+  </div>
+
+  <div class="menu-grid">
+
+    <div class="dish-card reveal">
+      <div class="dish-img">
+        <img
+          src="https://s3-media0.fl.yelpcdn.com/bphoto/u8-bkg912gYwTcuesACy6g/o.jpg"
+          alt="Pho Bo - Rindfleisch Nudelsuppe"
+          loading="lazy"
+        >
+        <span class="dish-tag">Signature</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-name">Pho Bo</div>
+        <div class="dish-desc">Klare Rinderbrühe, handgezogene Reisnudeln, zartes Rindfleisch, frische Kräuter & Limette. Das Herzstück unserer Küche.</div>
+        <div class="dish-footer">
+          <span class="dish-price">ab 11,90 €</span>
+          <span class="dish-origin">Suppen & Nudelgerichte</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card reveal">
+      <div class="dish-img">
+        <img
+          src="https://s3-media0.fl.yelpcdn.com/bphoto/N1t-vHAxQ-pzbm6O-JHmFA/o.jpg"
+          alt="Bun Bo Hue - Würzige Nudelsuppe"
+          loading="lazy"
+        >
+        <span class="dish-tag">Beliebt</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-name">Bun Bo Hue</div>
+        <div class="dish-desc">Die würzige Schwester der Pho. Kräftige Zitronengrasbrühe mit dicken Reisnudeln, Schweinehaxe und frischen Chilis.</div>
+        <div class="dish-footer">
+          <span class="dish-price">ab 12,90 €</span>
+          <span class="dish-origin">Suppen & Nudelgerichte</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card reveal">
+      <div class="dish-img">
+        <img
+          src="https://s3-media0.fl.yelpcdn.com/bphoto/HpoAS5LSNq6mfGpRmrvSuA/o.jpg"
+          alt="Gegrillter Lachs"
+          loading="lazy"
+        >
+        <span class="dish-tag">Chef's Pick</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-name">Ca Hoi Nuong</div>
+        <div class="dish-desc">Saftig gegrillter Lachs in vietnamesischer Marinade — Zitronengras, Ingwer, Fischsauce — mit Jasminreis und frischen Kräutern.</div>
+        <div class="dish-footer">
+          <span class="dish-price">18,90 €</span>
+          <span class="dish-origin">Hauptgerichte</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card reveal">
+      <div class="dish-img">
+        <img
+          src="https://s3-media0.fl.yelpcdn.com/bphoto/1lfOeadeRm8q7w3kZlcVXA/o.jpg"
+          alt="Vietnamesische Vorspeisen"
+          loading="lazy"
+        >
+        <span class="dish-tag">Vorspeise</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-name">Goi Cuon</div>
+        <div class="dish-desc">Frische Sommerrollen mit Garnelen, Reisnudeln, Minze und Koriander — handgerollt, knackig frisch, mit Erdnusssauce.</div>
+        <div class="dish-footer">
+          <span class="dish-price">6,90 €</span>
+          <span class="dish-origin">Vorspeisen</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card reveal">
+      <div class="dish-img">
+        <img
+          src="https://s3-media0.fl.yelpcdn.com/bphoto/1ueGW72R9tsFXDA_AQil4g/o.jpg"
+          alt="Cocktails und Getränke"
+          loading="lazy"
+        >
+        <span class="dish-tag">Drinks</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-name">Mai Thai & Co.</div>
+        <div class="dish-desc">Handgemixt und perfekt ausbalanciert. Unser Mai Thai (9,50 €), Blue Lagoon (4,90 €) oder ein frischer vietnamesischer Eiskaffee.</div>
+        <div class="dish-footer">
+          <span class="dish-price">ab 4,90 €</span>
+          <span class="dish-origin">Getränke</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card reveal">
+      <div class="dish-img">
+        <img
+          src="https://s3-media0.fl.yelpcdn.com/bphoto/CA46eolJs2ok934xd_q7Qg/o.jpg"
+          alt="Chuoi Chien - Gebackene Banane"
+          loading="lazy"
+        >
+        <span class="dish-tag">Dessert</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-name">Chuoi Chien</div>
+        <div class="dish-desc">Goldbraun frittierte Banane, beträufelt mit Honig, dazu eine Kugel cremiges Vanilleeis. Der perfekte Abschluss.</div>
+        <div class="dish-footer">
+          <span class="dish-price">5,50 €</span>
+          <span class="dish-origin">Desserts</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── GALERIE ── -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <div class="section-label">Atmosphäre</div>
+    <h2 class="section-title">Bilder, die <em>Hunger</em> machen.</h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="g-item g1 reveal">
+      <img src="https://s3-media0.fl.yelpcdn.com/bphoto/IC4fgecFvTma1E486a_H3A/o.jpg" alt="Innenraum Viet PHO" loading="lazy">
+    </div>
+    <div class="g-item g2 reveal">
+      <img src="https://s3-media0.fl.yelpcdn.com/bphoto/mw8PPXkik3JB8G4A9Lhn0A/o.jpg" alt="Bar Bereich" loading="lazy">
+    </div>
+    <div class="g-item g3 reveal">
+      <img src="https://s3-media0.fl.yelpcdn.com/bphoto/E0k_zTisNObOmkAjNQulcg/o.jpg" alt="Charmantes Personal" loading="lazy">
+    </div>
+    <div class="g-item g4 reveal">
+      <img src="https://s3-media0.fl.yelpcdn.com/bphoto/Ui8-k-qO7FIBtifGYR-U1w/o.jpg" alt="Pho Suppe" loading="lazy">
+    </div>
+    <div class="g-item g5 reveal">
+      <img src="https://s3-media0.fl.yelpcdn.com/bphoto/_BDFopa0spKuijbeIzGH-Q/o.jpg" alt="Viet PHO von außen" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ── STATEMENT ── -->
+<section id="statement">
+  <div class="statement-inner reveal">
+    <p class="statement-quote">
+      „Pho ist nicht nur eine Suppe.<br>Sie ist <em>Heimweh, Geborgenheit<br>und Neugier</em> in einer Schüssel."
+    </p>
+    <span class="statement-attr">— Das Team von Viet PHO, Bornheim Frankfurt</span>
+  </div>
+</section>
+
+<!-- ── INFO / LOCATION ── -->
+<section id="info">
+  <div class="info-block">
+    <div class="section-label">Öffnungszeiten</div>
+    <h2 class="section-title">Wann wir <em>für euch</em> da sind.</h2>
+    <ul class="hours-list reveal">
+      <li>
+        <span class="hours-day">Montag</span>
+        <span class="hours-time hours-closed">Ruhetag</span>
+      </li>
+      <li>
+        <span class="hours-day">Dienstag – Freitag</span>
+        <span class="hours-time">11:00 – 22:30 Uhr</span>
+      </li>
+      <li>
+        <span class="hours-day">Samstag</span>
+        <span class="hours-time">11:00 – 22:30 Uhr</span>
+      </li>
+      <li>
+        <span class="hours-day">Sonntag</span>
+        <span class="hours-time hours-closed">Ruhetag</span>
+      </li>
+    </ul>
+    <div class="map-wrap reveal">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2558.2!2d8.7136!3d50.1217!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47bd0ea3ee2a6b3b%3A0x0!2sBerger+Stra%C3%9Fe+213%2C+60385+Frankfurt!5e0!3m2!1sde!2sde!4v1700000000000"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Viet PHO Standort Frankfurt Bornheim"
+      ></iframe>
+    </div>
+  </div>
+
+  <div class="info-block">
+    <div class="section-label">Kontakt & Anfahrt</div>
+    <h2 class="section-title">Wir freuen uns<br>auf <em>deinen Besuch.</em></h2>
+
+    <ul class="contact-items reveal">
+      <li class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Adresse</div>
+          <div class="contact-value">
+            Berger Straße 213<br>
+            60385 Frankfurt am Main<br>
+            <span style="color: var(--muted); font-size: 0.85rem;">(Bornheim)</span>
+          </div>
+        </div>
+      </li>
+      <li class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012.18 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.56-.56a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Telefon</div>
+          <div class="contact-value">
+            <a href="tel:06996866822">069 96 86 68 22</a>
+          </div>
+        </div>
+      </li>
+      <li class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Instagram</div>
+          <div class="contact-value">
+            <a href="https://www.instagram.com/vietpho_frankfurt/" target="_blank" rel="noopener">@vietpho_frankfurt</a>
+          </div>
+        </div>
+      </li>
+      <li class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        </div>
+        <div>
+          <div class="contact-label">Website</div>
+          <div class="contact-value">
+            <a href="https://www.vietpho.eu" target="_blank" rel="noopener">www.vietpho.eu</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">Viet <span>PHO</span></div>
+  <div class="footer-center">
+    Berger Straße 213 · 60385 Frankfurt ·
+    <a href="tel:06996866822">069 96 86 68 22</a><br>
+    <span style="font-size: 0.72rem; margin-top: 4px; display: block;">© 2024 Vietpho Gastronomie GmbH. Alle Rechte vorbehalten.</span>
+  </div>
+  <div class="footer-social">
+    <a href="https://www.instagram.com/vietpho_frankfurt/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" style="fill: var(--muted)"/></svg>
+    </a>
+    <a href="https://www.google.com/maps/search/Viet+PHO+Frankfurt+Berger+Straße+213" target="_blank" rel="noopener" class="social-btn" aria-label="Google Maps">
+      <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+    </a>
+    <a href="https://www.yelp.com/biz/viet-pho-frankfurt-am-main" target="_blank" rel="noopener" class="social-btn" aria-label="Yelp">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 14.5l-4-2 .5-2L13 14l-.5 1.5.5 1zm1.5-6l-1.5.5L12 8l2 .5 1.5 1-.5 1z"/></svg>
+    </a>
+  </div>
+</footer>
+
+<script>
+  const { animate, scroll, inView } = Motion;
+
+  // ── NAV scroll behavior ──
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── Hero parallax ──
+  const heroBg = document.getElementById('heroBg');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    heroBg.style.transform = `scale(1.05) translateY(${y * 0.25}px)`;
+  }, { passive: true });
+
+  // ── Mobile menu ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  document.querySelectorAll('.mm-link, .mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  // ── Reveal on scroll ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // stagger siblings
+        const siblings = Array.from(entry.target.parentElement.querySelectorAll('.reveal'));
+        const idx = siblings.indexOf(entry.target);
+        setTimeout(() => {
+          animate(
+            entry.target,
+            { opacity: [0, 1], y: [30, 0] },
+            { duration: 0.65, easing: [0.22, 1, 0.36, 1] }
+          );
+          entry.target.classList.add('visible');
+        }, idx * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // ── Hero entrance ──
+  animate('.hero-eyebrow', { opacity: [0, 1], y: [20, 0] }, { duration: 0.8, delay: 0.3, easing: 'ease-out' });
+  animate('.hero-title',   { opacity: [0, 1], y: [30, 0] }, { duration: 0.9, delay: 0.5, easing: [0.22, 1, 0.36, 1] });
+  animate('.hero-sub',     { opacity: [0, 1], y: [20, 0] }, { duration: 0.8, delay: 0.75, easing: 'ease-out' });
+  animate('.hero-actions', { opacity: [0, 1], y: [20, 0] }, { duration: 0.8, delay: 0.95, easing: 'ease-out' });
+
+  // ── Gallery hover tilt ──
+  document.querySelectorAll('.g-item').forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      animate(el, { rotateX: -y * 4, rotateY: x * 4 }, { duration: 0.2, easing: 'ease-out' });
+    });
+    el.addEventListener('mouseleave', () => {
+      animate(el, { rotateX: 0, rotateY: 0 }, { duration: 0.4, easing: 'ease-out' });
+    });
+  });
+</script>
+
+</body>
+</html>
