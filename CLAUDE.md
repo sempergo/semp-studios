@@ -86,5 +86,5 @@ clients/<kundenname>/index.html
 
 Live-URL bei GitHub Pages:
 ```
-https://sempergo.github.io/cloude-test/clients/<kundenname>/
+https://sempergo.github.io/semp-studios/clients/<kundenname>/
 ```
