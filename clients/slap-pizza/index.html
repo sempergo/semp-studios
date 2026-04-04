@@ -403,16 +403,49 @@
 
         .sec-link:hover { opacity: 1; }
 
+        /* Mobile: horizontal swipe carousel */
         .pizza-grid {
-            display: grid; grid-template-columns: 1fr; gap: 16px;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            gap: 16px;
+            padding: 4px 24px 20px;
+            margin: 0 -24px;
+            scrollbar-width: none;
+        }
+        .pizza-grid::-webkit-scrollbar { display: none; }
+
+        /* Carousel dots */
+        .carousel-dots {
+            display: flex; justify-content: center; align-items: center;
+            gap: 7px; margin-top: 8px;
+        }
+        .carousel-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--cream-dark); transition: all 0.35s ease;
+            cursor: pointer; flex-shrink: 0;
+        }
+        .carousel-dot.active {
+            background: var(--terra); width: 22px; border-radius: 3px;
         }
 
-        @media (min-width: 600px) { .pizza-grid { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 600px) {
+            .pizza-grid {
+                display: grid; grid-template-columns: 1fr 1fr;
+                overflow-x: visible; scroll-snap-type: none;
+                padding: 0; margin: 0; gap: 16px;
+            }
+            .carousel-dots { display: none; }
+        }
         @media (min-width: 900px) { .pizza-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
 
         .pcard {
             background: var(--surface);
             border-radius: 20px; overflow: hidden;
+            min-width: min(78vw, 300px);
+            flex-shrink: 0;
+            scroll-snap-align: start;
             transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s;
         }
 
@@ -985,6 +1018,14 @@
             </div>
         </div>
     </div>
+    <div class="carousel-dots" id="pizza-dots">
+        <span class="carousel-dot active"></span>
+        <span class="carousel-dot"></span>
+        <span class="carousel-dot"></span>
+        <span class="carousel-dot"></span>
+        <span class="carousel-dot"></span>
+        <span class="carousel-dot"></span>
+    </div>
 </section>
 
 <!-- ── STATS ── -->
@@ -1229,6 +1270,23 @@
             });
         }, { margin: '-5% 0px' });
     });
+
+    // Carousel dots
+    const pizzaGrid = document.querySelector('.pizza-grid');
+    const dots = document.querySelectorAll('#pizza-dots .carousel-dot');
+    if (pizzaGrid && dots.length) {
+        pizzaGrid.addEventListener('scroll', () => {
+            const cardWidth = pizzaGrid.querySelector('.pcard').offsetWidth + 16;
+            const idx = Math.round(pizzaGrid.scrollLeft / cardWidth);
+            dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        }, { passive: true });
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', () => {
+                const cardWidth = pizzaGrid.querySelector('.pcard').offsetWidth + 16;
+                pizzaGrid.scrollTo({ left: i * cardWidth, behavior: 'smooth' });
+            });
+        });
+    }
 
     // Concept cols stagger
     document.querySelectorAll('.c-col').forEach((col, i) => {
