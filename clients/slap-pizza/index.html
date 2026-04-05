@@ -210,15 +210,29 @@
             margin-top: 28px;
         }
 
-        .hero-tagline {
-            font-size: clamp(7px, 1.9vw, 13px); font-weight: 500;
-            letter-spacing: 0.5px; text-transform: uppercase;
-            color: var(--muted);
-            white-space: nowrap;
+        .hero-tagline-wrap {
+            overflow: hidden;
+            width: calc(100% + 48px);
+            margin-left: -24px;
+            padding: 10px 0;
         }
 
-        @media (min-width: 600px) {
-            .hero-tagline { letter-spacing: 2.5px; }
+        .hero-tagline {
+            display: inline-flex; gap: 0;
+            font-size: 13px; font-weight: 500;
+            letter-spacing: 2.5px; text-transform: uppercase;
+            color: var(--muted);
+            white-space: nowrap;
+            animation: marquee 14s linear infinite;
+        }
+
+        .hero-tagline span {
+            padding: 0 32px;
+        }
+
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
         }
 
         .hero-btns {
@@ -863,7 +877,14 @@
     <span class="hero-pizza" id="h-pizza">Pizza</span>
 
     <div class="hero-foot" id="h-foot">
-        <p class="hero-tagline">Contemporary &nbsp;·&nbsp; Neapolitan &nbsp;·&nbsp; Obsessive</p>
+        <div class="hero-tagline-wrap">
+            <p class="hero-tagline">
+                <span>Contemporary &nbsp;·&nbsp; Neapolitan &nbsp;·&nbsp; Obsessive</span>
+                <span>Contemporary &nbsp;·&nbsp; Neapolitan &nbsp;·&nbsp; Obsessive</span>
+                <span>Contemporary &nbsp;·&nbsp; Neapolitan &nbsp;·&nbsp; Obsessive</span>
+                <span>Contemporary &nbsp;·&nbsp; Neapolitan &nbsp;·&nbsp; Obsessive</span>
+            </p>
+        </div>
         <div class="hero-btns">
             <a href="#order" class="btn-terra">Jetzt bestellen</a>
             <a href="#menu" class="btn-outline">
