@@ -471,10 +471,10 @@
     }
     .float-call:hover { transform: scale(1.12); box-shadow: 0 8px 32px rgba(184,113,78,.55); }
 
-    /* ── ANIM INIT STATES ────────────────────── */
-    .reveal        { opacity: 0; transform: translateY(28px); }
-    .reveal-left   { opacity: 0; transform: translateX(-28px); }
-    .reveal-right  { opacity: 0; transform: translateX(28px); }
+    /* ── ANIM INIT STATES — only active after JS loads ── */
+    .js-ready .reveal        { opacity: 0; transform: translateY(28px); }
+    .js-ready .reveal-left   { opacity: 0; transform: translateX(-28px); }
+    .js-ready .reveal-right  { opacity: 0; transform: translateX(28px); }
   </style>
 </head>
 <body>
@@ -815,6 +815,9 @@
   <a href="tel:06971168666" class="float-call" title="Jetzt anrufen">📞</a>
 
   <script>
+    // ── Enable animation initial states only once JS is ready
+    document.body.classList.add('js-ready');
+
     // ── Lenis Smooth Scroll
     const lenis = new Lenis({ lerp: 0.075 });
     function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
