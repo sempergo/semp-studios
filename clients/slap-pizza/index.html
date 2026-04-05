@@ -446,23 +446,12 @@
         }
 
         @media (min-width: 600px) {
-            .pizza-carousel-wrap {
-                overflow-x: visible; scroll-snap-type: none;
-                margin: 0; padding: 0;
-            }
-            .pizza-grid {
-                display: grid; grid-template-columns: 1fr 1fr;
-                width: auto; gap: 16px;
-            }
+            .pizza-carousel-wrap { overflow-x: visible; scroll-snap-type: none; margin: 0; padding: 0; }
+            .pizza-grid { display: grid; grid-template-columns: 1fr 1fr; width: auto; gap: 16px; }
             .pcard { width: auto; max-width: none; }
             .carousel-dots { display: none; }
         }
-        @media (min-width: 900px) {
-            .pizza-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .pcard-body { padding: 0 12px 12px; }
-            .pcard-name { margin-bottom: 4px; }
-            .pcard-desc { margin-bottom: 10px; }
-        }
+        @media (min-width: 900px) { .pizza-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
         @media (min-width: 1280px) { .pizza-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
 
         .pcard {
