@@ -75,10 +75,14 @@
         .nav-logo em { color: var(--terra); font-style: italic; }
 
         .logo-mark {
-            width: 88px; height: 88px;
+            width: 48px; height: 48px;
             border-radius: 50%;
             object-fit: cover;
             flex-shrink: 0;
+        }
+
+        @media (min-width: 900px) {
+            .logo-mark { width: 88px; height: 88px; }
         }
 
         .nav-links {
@@ -797,8 +801,12 @@
         }
 
         .foot-logo-img {
-            width: 96px; height: 96px; border-radius: 50%;
+            width: 64px; height: 64px; border-radius: 50%;
             object-fit: cover;
+        }
+
+        @media (min-width: 900px) {
+            .foot-logo-img { width: 96px; height: 96px; }
         }
 
         .foot-claim { font-size: 13px; color: rgba(240,232,213,0.28); }
