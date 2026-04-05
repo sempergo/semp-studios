@@ -827,24 +827,25 @@
     }, { passive: true });
 
     // ── Reveal animations (Motion.js)
+    // Use el from closure — Motion's inView callback signature varies by version
     const { animate, inView } = Motion;
 
     document.querySelectorAll('.reveal').forEach(el => {
-      inView(el, ({ target }) => {
-        const d = parseFloat(target.style.transitionDelay) || 0;
-        animate(target, { opacity: [0,1], y: [28,0] }, { duration: .75, delay: d, easing: [.22,1,.36,1] });
+      const d = parseFloat(el.style.transitionDelay) || 0;
+      inView(el, () => {
+        animate(el, { opacity: [0,1], y: [28,0] }, { duration: .75, delay: d, easing: [.22,1,.36,1] });
       }, { amount: 0.15 });
     });
 
     document.querySelectorAll('.reveal-left').forEach(el => {
-      inView(el, ({ target }) => {
-        animate(target, { opacity: [0,1], x: [-28,0] }, { duration: .8, easing: [.22,1,.36,1] });
+      inView(el, () => {
+        animate(el, { opacity: [0,1], x: [-28,0] }, { duration: .8, easing: [.22,1,.36,1] });
       }, { amount: 0.15 });
     });
 
     document.querySelectorAll('.reveal-right').forEach(el => {
-      inView(el, ({ target }) => {
-        animate(target, { opacity: [0,1], x: [28,0] }, { duration: .8, easing: [.22,1,.36,1] });
+      inView(el, () => {
+        animate(el, { opacity: [0,1], x: [28,0] }, { duration: .8, easing: [.22,1,.36,1] });
       }, { amount: 0.15 });
     });
 
