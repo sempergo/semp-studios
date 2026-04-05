@@ -154,19 +154,19 @@
         /* Pizza image between the words */
         .hero-img-wrap {
             width: 100%;
-            aspect-ratio: 1/1;
+            aspect-ratio: 5/4;
             border-radius: 24px;
             overflow: hidden;
             margin: 14px 0;
             position: relative;
             background: var(--cream-mid);
-            padding: 0;
         }
 
         .slide {
             position: absolute; inset: 0;
             opacity: 0; transition: opacity 1.6s ease;
             display: flex; align-items: center; justify-content: center;
+            padding: 20px;
         }
 
         .slide.active { opacity: 1; }
@@ -175,7 +175,7 @@
             width: 100%; height: 100%;
             object-fit: contain; display: block;
             filter: saturate(1.25) brightness(1.05) contrast(1.04);
-            transform: scale(0.96); transition: transform 8s ease;
+            transform: scale(0.97); transition: transform 10s ease;
         }
 
         .slide.active img { transform: scale(1); }
