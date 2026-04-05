@@ -27,13 +27,19 @@
       --sans: 'Inter', system-ui, sans-serif;
     }
 
+    .bg-glows {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(circle 100px at 18% 22%, rgba(190,100,20,.35) 0%, transparent 100%),
+        radial-gradient(circle 70px at 80% 58%, rgba(170,85,15,.28) 0%, transparent 100%),
+        radial-gradient(circle 55px at 45% 80%, rgba(160,80,10,.22) 0%, transparent 100%);
+    }
+
     html { scroll-behavior: smooth; }
 
     body {
       background-color: var(--bg);
-      background-image:
-        radial-gradient(ellipse 30% 25% at 20% 30%, rgba(160,85,20,.22) 0%, transparent 100%),
-        radial-gradient(ellipse 25% 20% at 78% 70%, rgba(140,70,15,.18) 0%, transparent 100%);
+      background-image: none;
       color: var(--text);
       font-family: var(--sans);
       font-weight: 300;
@@ -173,7 +179,7 @@
     }
 
     /* ─── SECTION BASE ─── */
-    section { padding: 8rem 3rem; }
+    section { padding: 8rem 3rem; position: relative; z-index: 1; }
     .section-label {
       font-size: .7rem; letter-spacing: .25em; text-transform: uppercase;
       color: var(--gold); margin-bottom: 1.2rem;
@@ -452,6 +458,9 @@
   </style>
 </head>
 <body>
+
+<!-- GLOWS -->
+<div class="bg-glows" aria-hidden="true"></div>
 
 <!-- NAV -->
 <nav id="nav">
