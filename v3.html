@@ -205,24 +205,35 @@
     .mq-t { font-size: 10px; letter-spacing: .35em; text-transform: uppercase; color: var(--dim); padding-right: 4rem; }
     @keyframes mq { from{transform:translateX(0)}to{transform:translateX(-50%)} }
 
-    /* ── MANIFESTO ───────────────────────────────────────── */
+    /* ── MANIFESTO (SIRNIK EXPAND) ───────────────────────── */
     #manifesto {
-      min-height: 100vh; display: flex; align-items: center;
-      padding: 10rem 2.5rem;
+      background: var(--bg);
     }
-    .mf-inner { max-width: 1200px; }
-    .mf-text {
-      font-size: clamp(36px, 5.5vw, 82px);
-      font-weight: 900; line-height: 1.08; letter-spacing: -.025em;
+    #mf-pin {
+      height: 100vh; overflow: hidden;
+      display: flex; align-items: center;
     }
-    .wo { display: inline-block; overflow: hidden; vertical-align: bottom; }
-    .wi { display: inline-block; transform: translateY(110%); }
+    #mf-inner {
+      width: 100vw; padding: 0 2.5rem;
+      overflow: hidden;
+    }
+    #mf-text {
+      font-size: clamp(28px, 5.2vw, 78px);
+      font-weight: 900; line-height: 1.08;
+      letter-spacing: -.02em; word-spacing: normal;
+      text-align: left;
+      white-space: normal;
+      overflow: hidden;
+    }
     .mf-sub {
       max-width: 480px; font-size: 1rem; color: var(--dim);
       line-height: 1.85; margin-top: 4rem;
       opacity: 0; transform: translateY(20px);
     }
-    @media (max-width: 768px) { #manifesto{padding:7rem 1.25rem;} }
+    @media (max-width: 768px) {
+      #mf-inner { padding: 0 1.25rem; }
+      #mf-text { font-size: clamp(22px, 7vw, 48px); }
+    }
 
     /* ── PROCESS ─────────────────────────────────────────── */
     #process { padding: 10rem 2.5rem; }
@@ -452,14 +463,10 @@
 
   <!-- MANIFESTO -->
   <section id="manifesto">
-    <div class="mf-inner">
-      <div class="mf-text" id="mf-text">
-        Wir bauen keine Websites. Wir bauen Argumente. Für Businesses die verstehen dass ihre Website ihr bester Mitarbeiter sein könnte — wenn jemand sie richtig baut.
+    <div id="mf-pin">
+      <div id="mf-inner">
+        <div id="mf-text">Wir bauen keine Websites. Wir bauen Argumente. Für Businesses die verstehen dass ihre Website ihr bester Mitarbeiter sein könnte — wenn jemand sie richtig baut.</div>
       </div>
-      <p class="mf-sub" id="mf-sub">
-        Jede Entscheidung ist intentional. Jede Interaktion verdient ihren Platz.
-        Das Web ist voll von Lärm — wir schneiden durch ihn hindurch.
-      </p>
     </div>
   </section>
 
@@ -988,30 +995,32 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 /* ═══════════════════════════════════════════════════════
-   12 — MANIFESTO WORD REVEAL  (GSAP)
+   12 — MANIFESTO SIRNIK EXPAND  (GSAP scrub)
 ═══════════════════════════════════════════════════════ */
 (function() {
   const el = document.getElementById('mf-text');
-  const text = el.textContent.trim();
-  el.innerHTML = text.split(/\s+/).map(w =>
-    `<span class="wo"><span class="wi">${w}</span></span>`
-  ).join(' ');
 
-  gsap.to('#mf-text .wi', {
-    y: 0, opacity: 1,
-    duration: 1.1, stagger: .028, ease: 'expo.out',
-    scrollTrigger: { trigger: '#manifesto', start: 'top 68%' },
-    onStart() {
-      document.querySelectorAll('#mf-text .wi').forEach(el => {
-        el.style.transform = 'translateY(110%)'; el.style.opacity = '0';
-      });
+  // Proxy object — GSAP animates numeric values, we apply them as CSS
+  const proxy = { ls: -0.02, ws: 0 };
+
+  gsap.to(proxy, {
+    ls: 2,      // letter-spacing → 2vw at full expansion
+    ws: 8,      // word-spacing   → 8vw at full expansion
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#manifesto',
+      start: 'top top',
+      end: '+=280%',
+      pin: '#mf-pin',
+      scrub: 1,
+      anticipatePin: 1,
+      onUpdate(self) {
+        const ls = proxy.ls;
+        const ws = proxy.ws;
+        el.style.letterSpacing = ls + 'vw';
+        el.style.wordSpacing   = ws + 'vw';
+      },
     }
-  });
-
-  // Sub
-  gsap.to('#mf-sub', {
-    opacity: 1, y: 0, duration: 1, ease: 'expo.out',
-    scrollTrigger: { trigger: '#manifesto', start: 'top 50%' }
   });
 })();
 
@@ -1239,8 +1248,7 @@ gsap.set('.h-tag',  { y: 14 });
 gsap.set('.h-role', { y: 20 });
 gsap.set('.h-ctas', { y: 20 });
 
-// Manifesto initial states
-gsap.set('#mf-sub', { opacity: 0, y: 20 });
+// (mf-sub removed — manifesto is now pinned expand section)
 </script>
 </body>
 </html>
