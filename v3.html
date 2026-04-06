@@ -758,116 +758,144 @@
       animIn(subrow,   0.35);
     }, 3750);
 
-    // ── HERO AURORA SHADER ─────────────────────────────────
-    // Starts after intro disposes its WebGL context (4.8s)
-    setTimeout(function() {
-      const hero = document.getElementById('hero');
+    // ── HERO AURORA SHADER (raw WebGL, no Three.js) ────────
+    (function() {
+      const hero   = document.getElementById('hero');
+      const canvas = document.createElement('canvas');
+      canvas.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:0;';
+      hero.insertAdjacentElement('afterbegin', canvas);
 
-      const scene    = new THREE.Scene();
-      const camera   = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-      renderer.setClearColor(0x000000, 0); // fully transparent clear
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-      const w = hero.offsetWidth, h = hero.offsetHeight;
-      renderer.setSize(w, h);
+      function setSize() {
+        const w = hero.offsetWidth, h = hero.offsetHeight;
+        canvas.width  = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        canvas.style.width  = w + 'px';
+        canvas.style.height = h + 'px';
+        return [w, h];
+      }
 
-      const el = renderer.domElement;
-      el.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:0;';
-      hero.insertAdjacentElement('afterbegin', el);
+      const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false });
+      if (!gl) return;
 
-      const uniforms = {
-        iTime:       { value: 0 },
-        iResolution: { value: new THREE.Vector2(w, h) },
-        iScrollY:    { value: 0 }
-      };
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.clearColor(0, 0, 0, 0);
 
-      const material = new THREE.ShaderMaterial({
-        uniforms,
-        transparent: true,
-        vertexShader: `void main() { gl_Position = vec4(position, 1.0); }`,
-        fragmentShader: `
-          uniform float iTime;
-          uniform vec2  iResolution;
-          uniform float iScrollY;
-          #define NUM_OCTAVES 3
+      const vs = `
+        attribute vec2 p;
+        void main() { gl_Position = vec4(p, 0.0, 1.0); }
+      `;
 
-          float rand(vec2 n) {
-            return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+      const fs = `
+        precision highp float;
+        uniform float iTime;
+        uniform vec2  iResolution;
+        uniform float iScrollY;
+        #define NO 3
+
+        float rand(vec2 n){ return fract(sin(dot(n,vec2(12.9898,4.1414)))*43758.5453); }
+
+        float noise(vec2 p){
+          vec2 ip=floor(p), u=fract(p);
+          u=u*u*(3.0-2.0*u);
+          return mix(mix(rand(ip),rand(ip+vec2(1,0)),u.x),
+                     mix(rand(ip+vec2(0,1)),rand(ip+vec2(1,1)),u.x),u.y);
+        }
+
+        float fbm(vec2 x){
+          float v=0.0,a=0.3;
+          vec2 sh=vec2(100.0);
+          mat2 r=mat2(cos(0.5),sin(0.5),-sin(0.5),cos(0.5));
+          for(int i=0;i<NO;++i){v+=a*noise(x);x=r*x*2.0+sh;a*=0.4;}
+          return v;
+        }
+
+        void main(){
+          vec2 fc = gl_FragCoord.xy;
+          fc.y   += iScrollY * 0.5;
+
+          vec2 shake = vec2(sin(iTime*1.2)*0.005, cos(iTime*2.1)*0.005);
+          vec2 p = ((fc + shake*iResolution) - iResolution*0.5) / iResolution.y;
+          p = mat2(6.0,-4.0,4.0,6.0) * p;
+
+          vec4 o = vec4(0.0);
+          float f = 2.0 + fbm(p + vec2(iTime*5.0,0.0))*0.5;
+
+          for(int j=0; j<35; j++){
+            float i = float(j);
+            vec2 v = p + cos(i*i+(iTime+p.x*0.08)*0.025+i*vec2(13.0,11.0))*3.5
+                       + vec2(sin(iTime*3.0+i)*0.003, cos(iTime*3.5-i)*0.003);
+            float tn = fbm(v+vec2(iTime*0.5,i))*0.3*(1.0-i/35.0);
+            vec4 col = vec4(
+              0.1+0.3*sin(i*0.2+iTime*0.4),
+              0.3+0.5*cos(i*0.3+iTime*0.5),
+              0.7+0.3*sin(i*0.4+iTime*0.3),
+              1.0
+            );
+            float thin = smoothstep(0.0,1.0,i/35.0)*0.6;
+            vec2  mv   = max(v, vec2(v.x*f*0.015, v.y*1.5));
+            float d    = length(mv);
+            if(d > 0.0001)
+              o += col * exp(sin(i*i+iTime*0.8)) / d * (1.0+tn*0.8) * thin;
           }
-          float noise(vec2 p) {
-            vec2 ip = floor(p); vec2 u = fract(p);
-            u = u*u*(3.0-2.0*u);
-            return mix(mix(rand(ip),rand(ip+vec2(1,0)),u.x),
-                       mix(rand(ip+vec2(0,1)),rand(ip+vec2(1,1)),u.x),u.y);
-          }
-          float fbm(vec2 x) {
-            float v=0.0,a=0.3; vec2 shift=vec2(100);
-            mat2 rot=mat2(cos(0.5),sin(0.5),-sin(0.5),cos(0.5));
-            for(int i=0;i<NUM_OCTAVES;++i){v+=a*noise(x);x=rot*x*2.0+shift;a*=0.4;}
-            return v;
-          }
 
-          void main() {
-            // Parallax: shift vertically with scroll
-            vec2 fc = gl_FragCoord.xy;
-            fc.y += iScrollY * 0.5;
+          o = tanh(pow(o/100.0, vec4(1.6)));
+          vec4 col = o * 1.5;
+          float brightness = dot(col.rgb, vec3(0.25,0.45,0.8));
+          float alpha = clamp(brightness * 2.4, 0.0, 0.93);
+          gl_FragColor = vec4(col.rgb * 0.72, alpha);
+        }
+      `;
 
-            vec2 shake = vec2(sin(iTime*1.2)*0.005, cos(iTime*2.1)*0.005);
-            vec2 p = ((fc + shake*iResolution.xy) - iResolution.xy*0.5)
-                     / iResolution.y * mat2(6.0,-4.0,4.0,6.0);
-            vec2 v; vec4 o = vec4(0.0);
+      function mkShader(type, src) {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, src); gl.compileShader(s); return s;
+      }
+      const prog = gl.createProgram();
+      gl.attachShader(prog, mkShader(gl.VERTEX_SHADER, vs));
+      gl.attachShader(prog, mkShader(gl.FRAGMENT_SHADER, fs));
+      gl.linkProgram(prog); gl.useProgram(prog);
 
-            float f = 2.0 + fbm(p + vec2(iTime*5.0, 0.0)) * 0.5;
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+      const ploc = gl.getAttribLocation(prog, 'p');
+      gl.enableVertexAttribArray(ploc);
+      gl.vertexAttribPointer(ploc, 2, gl.FLOAT, false, 0, 0);
 
-            for(float i=0.0; i<35.0; i++){
-              v = p + cos(i*i + (iTime+p.x*0.08)*0.025 + i*vec2(13.0,11.0))*3.5
-                    + vec2(sin(iTime*3.0+i)*0.003, cos(iTime*3.5-i)*0.003);
-              float tailNoise = fbm(v + vec2(iTime*0.5, i))*0.3*(1.0-i/35.0);
-              vec4 col = vec4(
-                0.1 + 0.3*sin(i*0.2 + iTime*0.4),
-                0.3 + 0.5*cos(i*0.3 + iTime*0.5),
-                0.7 + 0.3*sin(i*0.4 + iTime*0.3),
-                1.0
-              );
-              float thin = smoothstep(0.0, 1.0, i/35.0) * 0.6;
-              o += col * exp(sin(i*i + iTime*0.8))
-                   / length(max(v, vec2(v.x*f*0.015, v.y*1.5)))
-                   * (1.0 + tailNoise*0.8) * thin;
-            }
+      const uTime   = gl.getUniformLocation(prog, 'iTime');
+      const uRes    = gl.getUniformLocation(prog, 'iResolution');
+      const uScroll = gl.getUniformLocation(prog, 'iScrollY');
 
-            o = tanh(pow(o/100.0, vec4(1.6)));
-            vec4 color = o * 1.5;
-
-            // Alpha: transparent where no aurora, opaque where bright
-            float brightness = dot(color.rgb, vec3(0.25, 0.45, 0.8));
-            float alpha = clamp(brightness * 2.2, 0.0, 0.94);
-
-            // Slightly deepen colors so visible on white bg
-            gl_FragColor = vec4(color.rgb * 0.75, alpha);
-          }
-        `
-      });
-
-      scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
+      let [w, h] = setSize();
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform2f(uRes, w, h);
+      gl.uniform1f(uScroll, 0);
 
       window.addEventListener('resize', function() {
-        const nw = hero.offsetWidth, nh = hero.offsetHeight;
-        renderer.setSize(nw, nh);
-        uniforms.iResolution.value.set(nw, nh);
+        [w, h] = setSize();
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.uniform2f(uRes, w, h);
       });
 
+      let scrollY = 0;
       window.addEventListener('scroll', function() {
-        uniforms.iScrollY.value = window.scrollY;
-        el.style.transform = 'translateY(-' + (window.scrollY * 0.4) + 'px)';
+        scrollY = window.scrollY;
+        canvas.style.transform = 'translateY(-' + (scrollY * 0.4) + 'px)';
       }, { passive: true });
 
+      let t = 0;
       (function loop() {
         requestAnimationFrame(loop);
-        uniforms.iTime.value += 0.016;
-        renderer.render(scene, camera);
+        t += 0.016;
+        gl.uniform1f(uTime, t);
+        gl.uniform1f(uScroll, scrollY);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       })();
-    }, 5000);
+    })();
 
     // ── CURSOR PIXEL SPARKLES ──────────────────────────────
     (function() {
