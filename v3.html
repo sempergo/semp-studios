@@ -488,7 +488,6 @@
 
     <!-- Hero -->
     <section id="hero" style="position:relative;overflow:hidden;">
-      <canvas id="hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
       <p class="hero-eyebrow" style="position:relative;z-index:1;">Frankfurt · Custom · Bezahlbar</p>
       <h2 class="hero-headline" style="position:relative;z-index:1;">
         Advanced<br>
@@ -761,20 +760,24 @@
 
     // ── HERO SHOOTING STARS ────────────────────────────────
     (function() {
-      const canvas = document.getElementById('hero-canvas');
+      const hero   = document.getElementById('hero');
       const scene  = new THREE.Scene();
       const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      renderer.setClearColor(0xffffff, 0); // transparent — hero bg stays white via CSS
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0);
+
+      // Inject canvas into hero
+      const heroCanvas = renderer.domElement;
+      heroCanvas.style.cssText = 'position:absolute;inset:0;width:100%!important;height:100%!important;pointer-events:none;z-index:0;';
+      hero.insertAdjacentElement('afterbegin', heroCanvas);
 
       function heroSize() {
-        const rect = canvas.parentElement.getBoundingClientRect();
-        return { w: rect.width, h: rect.height };
+        return { w: hero.offsetWidth, h: hero.offsetHeight };
       }
 
       let { w, h } = heroSize();
       renderer.setSize(w, h);
-      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
       const uniforms = {
         iTime:        { value: 0 },
@@ -847,20 +850,18 @@
             o = tanh(pow(o / 100.0, vec4(1.6)));
             vec4 streak = clamp(o * 1.5, 0.0, 1.0);
 
-            // Map bright streak → dark indigo/purple on white
-            // White background = alpha 0 where no streak
-            float intensity = (streak.r * 0.2 + streak.g * 0.4 + streak.b * 0.8);
-            intensity = clamp(intensity * 1.6, 0.0, 1.0);
+            // Intensity — boost so trails are clearly visible on white
+            float intensity = dot(streak.rgb, vec3(0.2, 0.4, 0.8));
+            intensity = clamp(intensity * 3.5, 0.0, 1.0);
 
-            // Trail color: deep navy → indigo → soft violet
+            // Trail color: deep navy core → indigo mid → violet edge
             vec3 trailColor = vec3(
-              0.05 + streak.r * 0.25,
-              0.04 + streak.g * 0.15,
-              0.25 + streak.b * 0.45
-            ) * 0.85;
+              0.04 + streak.r * 0.3,
+              0.03 + streak.g * 0.1,
+              0.22 + streak.b * 0.55
+            );
 
-            // Transparent where no trail, colored where trail
-            gl_FragColor = vec4(trailColor, intensity * 0.82);
+            gl_FragColor = vec4(trailColor, intensity * 0.95);
           }
         `
       });
