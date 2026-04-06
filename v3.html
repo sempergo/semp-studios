@@ -633,11 +633,13 @@
   </div><!-- /main -->
 
   <script>
-    // ── LENIS SMOOTH SCROLL ────────────────────────────────
-    const lenis = new Lenis();
-    lenis.on('scroll', Motion.scroll);
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
+    // ── SMOOTH SCROLL (native) ─────────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
 
     // ── SHADER INTRO ───────────────────────────────────────
     (function() {
@@ -774,7 +776,7 @@
       window.addEventListener('resize', resize);
 
       // Colour palette — shifts between warm gold and cool blue-white sparkles
-      const COLORS = ['#1e3a5f','#1e40af','#1d4ed8','#2563eb','#3b82f6','#0f2044','#172554','#1e3a8a'];
+      const COLORS = ['#1e3a8a','#1d4ed8','#2563eb','#3b82f6','#1e1b4b','#312e81','#4c1d95','#5b21b6'];
 
       class Spark {
         constructor(x, y) {
