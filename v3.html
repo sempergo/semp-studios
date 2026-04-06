@@ -149,8 +149,25 @@
       flex-direction: column;
       justify-content: flex-end;
       padding: 7rem 2.5rem 5rem;
+      background: #000000;
+      /* isolation: isolate → eigener Stacking Context
+         → canvas (z:0) und blend-layer (z:2) blenden sauber gegeneinander,
+            unabhängig von opacity-Transitions auf parent-Elementen */
+      isolation: isolate;
     }
-    #hero { background: #000000; }
+
+    /* ── EINZIGER BLEND-LAYER — alle Hero-Texte als Einheit ── */
+    /* mix-blend-mode auf dem WRAPPER, nicht auf Kindern.
+       Kinder haben opacity/transform für Animationen ohne den
+       Stacking-Context-Konflikt zu verursachen. */
+    .hero-blend-layer {
+      position: relative;
+      z-index: 2;
+      mix-blend-mode: difference;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+    }
 
     .hero-eyebrow {
       font-size: 10px;
@@ -161,7 +178,6 @@
       opacity: 0;
       transform: translateY(16px);
       background: transparent;
-      mix-blend-mode: difference;
     }
     .hero-headline {
       font-size: clamp(58px, 11.5vw, 172px);
@@ -172,11 +188,8 @@
       opacity: 0;
       transform: translateY(24px);
       background: transparent;
-      mix-blend-mode: difference;
     }
     .hero-headline .outline {
-      /* transparent fill: underlying canvas shows through unchanged */
-      /* white stroke: inverts via difference — black on white bg, white on dark */
       -webkit-text-stroke: 2px #ffffff;
       color: transparent;
     }
@@ -187,6 +200,7 @@
       gap: 2rem;
       opacity: 0;
       transform: translateY(20px);
+      background: transparent;
     }
     @media (min-width: 768px) {
       .hero-sub-row { flex-direction: row; align-items: flex-end; gap: 4rem; }
@@ -197,7 +211,6 @@
       max-width: 320px;
       line-height: 1.65;
       background: transparent;
-      mix-blend-mode: difference;
     }
     .btn-row { display: flex; flex-direction: column; gap: 0.75rem; }
     @media (min-width: 480px) { .btn-row { flex-direction: row; } }
@@ -210,10 +223,9 @@
       font-weight: 600;
       letter-spacing: 0.08em;
       text-decoration: none;
-      transition: background 0.2s, color 0.2s;
-      mix-blend-mode: difference;
+      transition: opacity 0.2s;
     }
-    /* hover intentionally left without blend override — difference handles contrast */
+    .btn-primary:hover { opacity: 0.85; }
     .btn-secondary {
       display: inline-block;
       padding: 1rem 1.75rem;
@@ -223,9 +235,11 @@
       letter-spacing: 0.08em;
       text-decoration: none;
       background: transparent;
-      mix-blend-mode: difference;
+      transition: opacity 0.2s;
     }
+    .btn-secondary:hover { opacity: 0.7; }
 
+    /* scroll-hint: eigener blend-layer (außerhalb des Flex-Flows) */
     .scroll-hint {
       position: absolute;
       bottom: 2rem;
@@ -237,6 +251,7 @@
       gap: 0.5rem;
       color: #ffffff;
       background: transparent;
+      z-index: 2;
       mix-blend-mode: difference;
     }
     .scroll-hint span { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; }
@@ -500,21 +515,25 @@
     </nav>
 
     <!-- Hero -->
-    <section id="hero" style="position:relative;overflow:hidden;">
-      <p class="hero-eyebrow" style="position:relative;z-index:2;">Frankfurt · Custom · Bezahlbar</p>
-      <h2 class="hero-headline" style="position:relative;z-index:2;">
-        Advanced<br>
-        <span class="outline">Websites.</span><br>
-        Affordable.
-      </h2>
-      <div class="hero-sub-row" style="position:relative;z-index:2;background:transparent;">
-        <p class="hero-sub">No templates. No bloat.<br>Websites built from scratch that<br>actually earn their place online.</p>
-        <div class="btn-row">
-          <a href="#kontakt" class="btn-primary">Projekt starten →</a>
-          <a href="#leistungen" class="btn-secondary">Mehr erfahren</a>
+    <section id="hero">
+      <!-- .hero-blend-layer: einziger Blend-Stacking-Context für alle Texte -->
+      <div class="hero-blend-layer">
+        <p class="hero-eyebrow">Frankfurt · Custom · Bezahlbar</p>
+        <h2 class="hero-headline">
+          Advanced<br>
+          <span class="outline">Websites.</span><br>
+          Affordable.
+        </h2>
+        <div class="hero-sub-row">
+          <p class="hero-sub">No templates. No bloat.<br>Websites built from scratch that<br>actually earn their place online.</p>
+          <div class="btn-row">
+            <a href="#kontakt" class="btn-primary">Projekt starten →</a>
+            <a href="#leistungen" class="btn-secondary">Mehr erfahren</a>
+          </div>
         </div>
       </div>
-      <div class="scroll-hint" style="z-index:2;">
+      <!-- scroll-hint: position:absolute → eigener blend-layer außerhalb des Flex-Flows -->
+      <div class="scroll-hint">
         <span>Scroll</span>
         <div class="scroll-line"></div>
       </div>
