@@ -756,6 +756,96 @@
       animIn(subrow,   0.35);
     }, 3750);
 
+    // ── CURSOR PIXEL SPARKLES ──────────────────────────────
+    (function() {
+      const canvas = document.createElement('canvas');
+      canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
+      document.body.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+
+      function resize() {
+        canvas.width  = window.innerWidth  * devicePixelRatio;
+        canvas.height = window.innerHeight * devicePixelRatio;
+        canvas.style.width  = window.innerWidth  + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.scale(devicePixelRatio, devicePixelRatio);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // Colour palette — shifts between warm gold and cool blue-white sparkles
+      const COLORS = ['#ffffff','#f0f9ff','#e0f2fe','#bae6fd','#fef9c3','#fde68a','#f5f5f5','#e2e8f0'];
+
+      class Spark {
+        constructor(x, y) {
+          this.x = x + (Math.random() - 0.5) * 22;
+          this.y = y + (Math.random() - 0.5) * 22;
+          this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+          this.maxSize = Math.random() * 3.5 + 1;
+          this.size = 0;
+          this.speed = Math.random() * 0.12 + 0.06;
+          this.sizeStep = Math.random() * 0.35 + 0.1;
+          this.shimmer = false;
+          this.reverse = false;
+          this.alpha = 1;
+          this.done = false;
+        }
+
+        update() {
+          if (!this.shimmer) {
+            this.size += this.sizeStep;
+            if (this.size >= this.maxSize) this.shimmer = true;
+          } else {
+            // shimmer: oscillate then fade
+            if (this.reverse) {
+              this.size -= this.speed;
+              if (this.size <= this.maxSize * 0.5) this.reverse = false;
+            } else {
+              this.size += this.speed;
+              if (this.size >= this.maxSize) this.reverse = true;
+            }
+            this.alpha -= 0.018;
+            if (this.alpha <= 0) { this.done = true; return; }
+          }
+
+          ctx.save();
+          ctx.globalAlpha = this.alpha;
+          ctx.fillStyle = this.color;
+          // draw as a small square rotated 45° for a diamond sparkle
+          ctx.translate(this.x, this.y);
+          ctx.rotate(Math.PI / 4);
+          const half = this.size / 2;
+          ctx.fillRect(-half, -half, this.size, this.size);
+          ctx.restore();
+        }
+      }
+
+      const sparks = [];
+      let mx = -999, my = -999, lastSpawn = 0;
+
+      window.addEventListener('mousemove', e => {
+        mx = e.clientX;
+        my = e.clientY;
+      });
+
+      function loop(now) {
+        requestAnimationFrame(loop);
+        ctx.clearRect(0, 0, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio);
+
+        // Spawn ~3 sparks every 30ms on mouse move
+        if (now - lastSpawn > 30 && mx > 0) {
+          for (let i = 0; i < 3; i++) sparks.push(new Spark(mx, my));
+          lastSpawn = now;
+        }
+
+        for (let i = sparks.length - 1; i >= 0; i--) {
+          sparks[i].update();
+          if (sparks[i].done) sparks.splice(i, 1);
+        }
+      }
+      requestAnimationFrame(loop);
+    })();
+
     // ── SCROLL REVEALS ─────────────────────────────────────
     const revealEls = document.querySelectorAll(
       '.stat, .statement-line, .service-item, .pricing-card, .section-title, .section-eyebrow'
