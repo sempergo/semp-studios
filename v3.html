@@ -193,9 +193,11 @@
     }
     .hero-sub {
       font-size: 1rem;
-      color: rgba(255,255,255,0.55);
+      color: #ffffff;
       max-width: 320px;
       line-height: 1.65;
+      background: transparent;
+      mix-blend-mode: difference;
     }
     .btn-row { display: flex; flex-direction: column; gap: 0.75rem; }
     @media (min-width: 480px) { .btn-row { flex-direction: row; } }
@@ -208,20 +210,21 @@
       font-weight: 600;
       letter-spacing: 0.08em;
       text-decoration: none;
-      transition: background 0.2s;
+      transition: background 0.2s, color 0.2s;
+      mix-blend-mode: difference;
     }
-    .btn-primary:hover { background: #e5e5e5; }
+    /* hover intentionally left without blend override — difference handles contrast */
     .btn-secondary {
       display: inline-block;
       padding: 1rem 1.75rem;
-      border: 1px solid rgba(255,255,255,0.25);
+      border: 1px solid #ffffff;
       color: #ffffff;
       font-size: 11px;
       letter-spacing: 0.08em;
       text-decoration: none;
-      transition: border-color 0.2s;
+      background: transparent;
+      mix-blend-mode: difference;
     }
-    .btn-secondary:hover { border-color: rgba(255,255,255,0.6); }
 
     .scroll-hint {
       position: absolute;
@@ -232,13 +235,15 @@
       flex-direction: column;
       align-items: center;
       gap: 0.5rem;
-      color: #ccc;
+      color: #ffffff;
+      background: transparent;
+      mix-blend-mode: difference;
     }
     .scroll-hint span { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; }
     .scroll-line {
       width: 1px;
       height: 40px;
-      background: linear-gradient(to bottom, #ccc, transparent);
+      background: linear-gradient(to bottom, #ffffff, transparent);
     }
     @media (max-width: 768px) { .scroll-hint { display: none; } #hero { padding: 7rem 1.25rem 4rem; } }
 
@@ -502,14 +507,14 @@
         <span class="outline">Websites.</span><br>
         Affordable.
       </h2>
-      <div class="hero-sub-row" style="position:relative;z-index:1;">
+      <div class="hero-sub-row" style="position:relative;z-index:2;background:transparent;">
         <p class="hero-sub">No templates. No bloat.<br>Websites built from scratch that<br>actually earn their place online.</p>
         <div class="btn-row">
           <a href="#kontakt" class="btn-primary">Projekt starten →</a>
           <a href="#leistungen" class="btn-secondary">Mehr erfahren</a>
         </div>
       </div>
-      <div class="scroll-hint" style="position:relative;z-index:1;">
+      <div class="scroll-hint" style="z-index:2;">
         <span>Scroll</span>
         <div class="scroll-line"></div>
       </div>
