@@ -758,135 +758,117 @@
       animIn(subrow,   0.35);
     }, 3750);
 
-    // ── HERO SHOOTING STARS ────────────────────────────────
+    // ── HERO SHOOTING STARS (2D Canvas) ────────────────────
     (function() {
       const hero   = document.getElementById('hero');
-      const scene  = new THREE.Scene();
-      const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-      renderer.setClearColor(0x000000, 0);
+      const canvas = document.createElement('canvas');
+      canvas.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:0;';
+      hero.insertAdjacentElement('afterbegin', canvas);
+      const ctx = canvas.getContext('2d');
 
-      // Inject canvas into hero
-      const heroCanvas = renderer.domElement;
-      heroCanvas.style.cssText = 'position:absolute;inset:0;width:100%!important;height:100%!important;pointer-events:none;z-index:0;';
-      hero.insertAdjacentElement('afterbegin', heroCanvas);
+      function resize() {
+        canvas.width  = hero.offsetWidth;
+        canvas.height = hero.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
 
-      function heroSize() {
-        return { w: hero.offsetWidth, h: hero.offsetHeight };
+      // Deep blue → indigo → violet palette
+      const PALETTE = [
+        [30,  64, 175],  // deep blue
+        [55,  48, 163],  // indigo
+        [109, 40, 217],  // violet
+        [79,  70, 229],  // indigo-blue
+        [124, 58, 237],  // purple
+      ];
+
+      class ShootingStar {
+        constructor(stagger) {
+          this.reset();
+          if (stagger) {
+            // distribute stars across time so they don't all start together
+            this.life = Math.floor(Math.random() * this.maxLife);
+            this.x   += this.vx * this.life;
+            this.y   += this.vy * this.life;
+          }
+        }
+        reset() {
+          const w = canvas.width, h = canvas.height;
+          // Spawn along top + right edge
+          this.x    = Math.random() * w * 1.4 + w * 0.1;
+          this.y    = Math.random() * h * 0.5 - 60;
+          this.len  = Math.random() * 180 + 100;
+          const spd = Math.random() * 4 + 2;
+          // Diagonal: top-right → bottom-left  (~210°)
+          const ang = Math.PI + 0.18 + (Math.random() - 0.5) * 0.35;
+          this.vx   = Math.cos(ang) * spd;
+          this.vy   = Math.sin(ang) * spd;
+          this.ang  = ang;
+          this.life    = 0;
+          this.maxLife = Math.random() * 90 + 70;
+          this.lw   = Math.random() * 2 + 0.8;
+          const c   = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+          this.r = c[0]; this.g = c[1]; this.b = c[2];
+        }
+        alpha() {
+          const t = this.life / this.maxLife;
+          if (t < 0.15) return t / 0.15;
+          if (t < 0.55) return 1.0;
+          return 1.0 - (t - 0.55) / 0.45;
+        }
+        step() {
+          this.x += this.vx;
+          this.y += this.vy;
+          this.life++;
+          return this.life < this.maxLife;
+        }
+        draw() {
+          const a   = this.alpha();
+          const tx  = this.x - Math.cos(this.ang) * this.len;
+          const ty  = this.y - Math.sin(this.ang) * this.len;
+          const g   = ctx.createLinearGradient(tx, ty, this.x, this.y);
+          g.addColorStop(0,   `rgba(${this.r},${this.g},${this.b},0)`);
+          g.addColorStop(0.5, `rgba(${this.r},${this.g},${this.b},${(a * 0.35).toFixed(3)})`);
+          g.addColorStop(1,   `rgba(${this.r},${this.g},${this.b},${a.toFixed(3)})`);
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(tx, ty);
+          ctx.lineTo(this.x, this.y);
+          ctx.strokeStyle = g;
+          ctx.lineWidth   = this.lw;
+          ctx.lineCap     = 'round';
+          ctx.stroke();
+
+          // Glowing head
+          const hg = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 5);
+          hg.addColorStop(0, `rgba(210,220,255,${a.toFixed(3)})`);
+          hg.addColorStop(1, `rgba(${this.r},${this.g},${this.b},0)`);
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, 5, 0, Math.PI * 2);
+          ctx.fillStyle = hg;
+          ctx.fill();
+          ctx.restore();
+        }
       }
 
-      let { w, h } = heroSize();
-      renderer.setSize(w, h);
+      // Spawn 10 stars, staggered
+      const stars = Array.from({ length: 10 }, (_, i) => new ShootingStar(true));
 
-      const uniforms = {
-        iTime:        { value: 0 },
-        iResolution:  { value: new THREE.Vector2(w, h) },
-        iScrollY:     { value: 0 }   // parallax offset
-      };
-
-      const material = new THREE.ShaderMaterial({
-        uniforms,
-        transparent: true,
-        vertexShader: `void main() { gl_Position = vec4(position, 1.0); }`,
-        fragmentShader: `
-          uniform float iTime;
-          uniform vec2  iResolution;
-          uniform float iScrollY;
-
-          #define NUM_OCTAVES 3
-
-          float rand(vec2 n) {
-            return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
-          }
-          float noise(vec2 p) {
-            vec2 ip = floor(p);
-            vec2 u  = fract(p);
-            u = u * u * (3.0 - 2.0 * u);
-            return mix(
-              mix(rand(ip), rand(ip + vec2(1,0)), u.x),
-              mix(rand(ip + vec2(0,1)), rand(ip + vec2(1,1)), u.x), u.y
-            );
-          }
-          float fbm(vec2 x) {
-            float v = 0.0; float a = 0.3;
-            vec2 shift = vec2(100.0);
-            mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
-            for (int i = 0; i < NUM_OCTAVES; ++i) {
-              v += a * noise(x); x = rot * x * 2.0 + shift; a *= 0.4;
-            }
-            return v;
-          }
-
-          void main() {
-            // Parallax: shift UV upward as page scrolls down
-            vec2 fragCoord = gl_FragCoord.xy;
-            fragCoord.y += iScrollY * 0.55;
-
-            vec2 shake = vec2(sin(iTime * 1.2) * 0.005, cos(iTime * 2.1) * 0.005);
-            vec2 p = ((fragCoord + shake * iResolution.xy) - iResolution.xy * 0.5)
-                     / iResolution.y * mat2(6.0, -4.0, 4.0, 6.0);
-            vec2 v;
-            vec4 o = vec4(0.0);
-
-            float f = 2.0 + fbm(p + vec2(iTime * 5.0, 0.0)) * 0.5;
-
-            for (float i = 0.0; i < 35.0; i++) {
-              v = p + cos(i * i + (iTime + p.x * 0.08) * 0.025 + i * vec2(13.0, 11.0)) * 3.5
-                    + vec2(sin(iTime * 3.0 + i) * 0.003, cos(iTime * 3.5 - i) * 0.003);
-              float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - i / 35.0);
-              vec4 col = vec4(
-                0.1 + 0.3 * sin(i * 0.2 + iTime * 0.4),
-                0.3 + 0.5 * cos(i * 0.3 + iTime * 0.5),
-                0.7 + 0.3 * sin(i * 0.4 + iTime * 0.3),
-                1.0
-              );
-              float thin = smoothstep(0.0, 1.0, i / 35.0) * 0.6;
-              o += col * exp(sin(i * i + iTime * 0.8))
-                   / length(max(v, vec2(v.x * f * 0.015, v.y * 1.5)))
-                   * (1.0 + tailNoise * 0.8) * thin;
-            }
-
-            o = tanh(pow(o / 100.0, vec4(1.6)));
-            vec4 streak = clamp(o * 1.5, 0.0, 1.0);
-
-            // Intensity — boost so trails are clearly visible on white
-            float intensity = dot(streak.rgb, vec3(0.2, 0.4, 0.8));
-            intensity = clamp(intensity * 3.5, 0.0, 1.0);
-
-            // Trail color: deep navy core → indigo mid → violet edge
-            vec3 trailColor = vec3(
-              0.04 + streak.r * 0.3,
-              0.03 + streak.g * 0.1,
-              0.22 + streak.b * 0.55
-            );
-
-            gl_FragColor = vec4(trailColor, intensity * 0.95);
-          }
-        `
-      });
-
-      const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
-      scene.add(mesh);
-
-      window.addEventListener('resize', () => {
-        const s = heroSize();
-        renderer.setSize(s.w, s.h);
-        uniforms.iResolution.value.set(s.w, s.h);
-      });
-
-      // Parallax on scroll
-      window.addEventListener('scroll', () => {
-        uniforms.iScrollY.value = window.scrollY;
-      }, { passive: true });
-
-      let frameId;
       function loop() {
-        frameId = requestAnimationFrame(loop);
-        uniforms.iTime.value += 0.016;
-        renderer.render(scene, camera);
+        requestAnimationFrame(loop);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < stars.length; i++) {
+          stars[i].draw();
+          if (!stars[i].step()) stars[i].reset();
+        }
       }
       loop();
+
+      // Parallax: canvas slides upward as user scrolls
+      window.addEventListener('scroll', () => {
+        canvas.style.transform = `translateY(-${window.scrollY * 0.45}px)`;
+      }, { passive: true });
     })();
 
     // ── CURSOR PIXEL SPARKLES ──────────────────────────────
