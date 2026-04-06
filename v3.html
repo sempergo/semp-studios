@@ -758,118 +758,116 @@
       animIn(subrow,   0.35);
     }, 3750);
 
-    // ── HERO SHOOTING STARS (2D Canvas) ────────────────────
-    (function() {
-      const hero   = document.getElementById('hero');
-      const canvas = document.createElement('canvas');
-      canvas.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:0;';
-      hero.insertAdjacentElement('afterbegin', canvas);
-      const ctx = canvas.getContext('2d');
+    // ── HERO AURORA SHADER ─────────────────────────────────
+    // Starts after intro disposes its WebGL context (4.8s)
+    setTimeout(function() {
+      const hero = document.getElementById('hero');
 
-      function resize() {
-        canvas.width  = hero.offsetWidth;
-        canvas.height = hero.offsetHeight;
-      }
-      resize();
-      window.addEventListener('resize', resize);
+      const scene    = new THREE.Scene();
+      const camera   = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0); // fully transparent clear
 
-      // Deep blue → indigo → violet palette
-      const PALETTE = [
-        [30,  64, 175],  // deep blue
-        [55,  48, 163],  // indigo
-        [109, 40, 217],  // violet
-        [79,  70, 229],  // indigo-blue
-        [124, 58, 237],  // purple
-      ];
+      const w = hero.offsetWidth, h = hero.offsetHeight;
+      renderer.setSize(w, h);
 
-      class ShootingStar {
-        constructor(stagger) {
-          this.reset();
-          if (stagger) {
-            // distribute stars across time so they don't all start together
-            this.life = Math.floor(Math.random() * this.maxLife);
-            this.x   += this.vx * this.life;
-            this.y   += this.vy * this.life;
+      const el = renderer.domElement;
+      el.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:0;';
+      hero.insertAdjacentElement('afterbegin', el);
+
+      const uniforms = {
+        iTime:       { value: 0 },
+        iResolution: { value: new THREE.Vector2(w, h) },
+        iScrollY:    { value: 0 }
+      };
+
+      const material = new THREE.ShaderMaterial({
+        uniforms,
+        transparent: true,
+        vertexShader: `void main() { gl_Position = vec4(position, 1.0); }`,
+        fragmentShader: `
+          uniform float iTime;
+          uniform vec2  iResolution;
+          uniform float iScrollY;
+          #define NUM_OCTAVES 3
+
+          float rand(vec2 n) {
+            return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
           }
-        }
-        reset() {
-          const w = canvas.width, h = canvas.height;
-          // Spawn along top + right edge
-          this.x    = Math.random() * w * 1.4 + w * 0.1;
-          this.y    = Math.random() * h * 0.5 - 60;
-          this.len  = Math.random() * 180 + 100;
-          const spd = Math.random() * 4 + 2;
-          // Diagonal: top-right → bottom-left  (~210°)
-          const ang = Math.PI + 0.18 + (Math.random() - 0.5) * 0.35;
-          this.vx   = Math.cos(ang) * spd;
-          this.vy   = Math.sin(ang) * spd;
-          this.ang  = ang;
-          this.life    = 0;
-          this.maxLife = Math.random() * 90 + 70;
-          this.lw   = Math.random() * 2 + 0.8;
-          const c   = PALETTE[Math.floor(Math.random() * PALETTE.length)];
-          this.r = c[0]; this.g = c[1]; this.b = c[2];
-        }
-        alpha() {
-          const t = this.life / this.maxLife;
-          if (t < 0.15) return t / 0.15;
-          if (t < 0.55) return 1.0;
-          return 1.0 - (t - 0.55) / 0.45;
-        }
-        step() {
-          this.x += this.vx;
-          this.y += this.vy;
-          this.life++;
-          return this.life < this.maxLife;
-        }
-        draw() {
-          const a   = this.alpha();
-          const tx  = this.x - Math.cos(this.ang) * this.len;
-          const ty  = this.y - Math.sin(this.ang) * this.len;
-          const g   = ctx.createLinearGradient(tx, ty, this.x, this.y);
-          g.addColorStop(0,   `rgba(${this.r},${this.g},${this.b},0)`);
-          g.addColorStop(0.5, `rgba(${this.r},${this.g},${this.b},${(a * 0.35).toFixed(3)})`);
-          g.addColorStop(1,   `rgba(${this.r},${this.g},${this.b},${a.toFixed(3)})`);
+          float noise(vec2 p) {
+            vec2 ip = floor(p); vec2 u = fract(p);
+            u = u*u*(3.0-2.0*u);
+            return mix(mix(rand(ip),rand(ip+vec2(1,0)),u.x),
+                       mix(rand(ip+vec2(0,1)),rand(ip+vec2(1,1)),u.x),u.y);
+          }
+          float fbm(vec2 x) {
+            float v=0.0,a=0.3; vec2 shift=vec2(100);
+            mat2 rot=mat2(cos(0.5),sin(0.5),-sin(0.5),cos(0.5));
+            for(int i=0;i<NUM_OCTAVES;++i){v+=a*noise(x);x=rot*x*2.0+shift;a*=0.4;}
+            return v;
+          }
 
-          ctx.save();
-          ctx.beginPath();
-          ctx.moveTo(tx, ty);
-          ctx.lineTo(this.x, this.y);
-          ctx.strokeStyle = g;
-          ctx.lineWidth   = this.lw;
-          ctx.lineCap     = 'round';
-          ctx.stroke();
+          void main() {
+            // Parallax: shift vertically with scroll
+            vec2 fc = gl_FragCoord.xy;
+            fc.y += iScrollY * 0.5;
 
-          // Glowing head
-          const hg = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 5);
-          hg.addColorStop(0, `rgba(210,220,255,${a.toFixed(3)})`);
-          hg.addColorStop(1, `rgba(${this.r},${this.g},${this.b},0)`);
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, 5, 0, Math.PI * 2);
-          ctx.fillStyle = hg;
-          ctx.fill();
-          ctx.restore();
-        }
-      }
+            vec2 shake = vec2(sin(iTime*1.2)*0.005, cos(iTime*2.1)*0.005);
+            vec2 p = ((fc + shake*iResolution.xy) - iResolution.xy*0.5)
+                     / iResolution.y * mat2(6.0,-4.0,4.0,6.0);
+            vec2 v; vec4 o = vec4(0.0);
 
-      // Spawn 10 stars, staggered
-      const stars = Array.from({ length: 10 }, (_, i) => new ShootingStar(true));
+            float f = 2.0 + fbm(p + vec2(iTime*5.0, 0.0)) * 0.5;
 
-      function loop() {
-        requestAnimationFrame(loop);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < stars.length; i++) {
-          stars[i].draw();
-          if (!stars[i].step()) stars[i].reset();
-        }
-      }
-      loop();
+            for(float i=0.0; i<35.0; i++){
+              v = p + cos(i*i + (iTime+p.x*0.08)*0.025 + i*vec2(13.0,11.0))*3.5
+                    + vec2(sin(iTime*3.0+i)*0.003, cos(iTime*3.5-i)*0.003);
+              float tailNoise = fbm(v + vec2(iTime*0.5, i))*0.3*(1.0-i/35.0);
+              vec4 col = vec4(
+                0.1 + 0.3*sin(i*0.2 + iTime*0.4),
+                0.3 + 0.5*cos(i*0.3 + iTime*0.5),
+                0.7 + 0.3*sin(i*0.4 + iTime*0.3),
+                1.0
+              );
+              float thin = smoothstep(0.0, 1.0, i/35.0) * 0.6;
+              o += col * exp(sin(i*i + iTime*0.8))
+                   / length(max(v, vec2(v.x*f*0.015, v.y*1.5)))
+                   * (1.0 + tailNoise*0.8) * thin;
+            }
 
-      // Parallax: canvas slides upward as user scrolls
-      window.addEventListener('scroll', () => {
-        canvas.style.transform = `translateY(-${window.scrollY * 0.45}px)`;
+            o = tanh(pow(o/100.0, vec4(1.6)));
+            vec4 color = o * 1.5;
+
+            // Alpha: transparent where no aurora, opaque where bright
+            float brightness = dot(color.rgb, vec3(0.25, 0.45, 0.8));
+            float alpha = clamp(brightness * 2.2, 0.0, 0.94);
+
+            // Slightly deepen colors so visible on white bg
+            gl_FragColor = vec4(color.rgb * 0.75, alpha);
+          }
+        `
+      });
+
+      scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
+
+      window.addEventListener('resize', function() {
+        const nw = hero.offsetWidth, nh = hero.offsetHeight;
+        renderer.setSize(nw, nh);
+        uniforms.iResolution.value.set(nw, nh);
+      });
+
+      window.addEventListener('scroll', function() {
+        uniforms.iScrollY.value = window.scrollY;
+        el.style.transform = 'translateY(-' + (window.scrollY * 0.4) + 'px)';
       }, { passive: true });
-    })();
+
+      (function loop() {
+        requestAnimationFrame(loop);
+        uniforms.iTime.value += 0.016;
+        renderer.render(scene, camera);
+      })();
+    }, 5000);
 
     // ── CURSOR PIXEL SPARKLES ──────────────────────────────
     (function() {
