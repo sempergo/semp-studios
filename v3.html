@@ -306,18 +306,26 @@
       display: flex; flex-direction: column;
       overflow: hidden;
 
-      /* Polished metal — smooth multi-band reflection */
+      /* Polished metal — many soft stops for smooth transitions */
       background: linear-gradient(
         158deg,
-        #313134 0%,
+        #2d2d30 0%,
+        #363639 6%,
         #424245 12%,
-        #5e5e61 22%,
-        #3a3a3d 32%,
-        #272729 44%,
-        #404043 56%,
-        #565659 66%,
-        #323235 78%,
-        #444447 88%,
+        #525255 18%,
+        #5a5a5d 23%,
+        #4e4e51 28%,
+        #3e3e41 34%,
+        #303033 40%,
+        #272729 46%,
+        #313134 52%,
+        #3c3c3f 58%,
+        #484b4d 64%,
+        #545457 70%,
+        #464649 76%,
+        #383a3c 82%,
+        #2e3032 88%,
+        #343437 94%,
         #2c2c2f 100%
       );
 
@@ -344,21 +352,36 @@
         0 4px 16px rgba(0,0,0,.5);
     }
 
-    /* Strong specular highlight — like light hitting polished steel */
+    /* Moving light sweep — simulates a light source travelling across the plate */
     .award-card::after {
       content: '';
-      position: absolute; inset: 0;
+      position: absolute;
+      top: 0; left: -100%;
+      width: 65%; height: 100%;
       background: linear-gradient(
-        152deg,
-        rgba(255,255,255,.22) 0%,
-        rgba(255,255,255,.10) 18%,
-        rgba(255,255,255,.03) 35%,
-        transparent           50%,
-        rgba(255,255,255,.04) 68%,
-        rgba(255,255,255,.12) 82%,
-        rgba(255,255,255,.05) 100%
+        105deg,
+        transparent                  0%,
+        rgba(255,255,255,.03)        25%,
+        rgba(255,255,255,.13)        42%,
+        rgba(255,255,255,.22)        50%,
+        rgba(255,255,255,.13)        58%,
+        rgba(255,255,255,.03)        75%,
+        transparent                 100%
       );
-      pointer-events: none; z-index: 0;
+      transform: skewX(-6deg);
+      animation: metalLight 5.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+      pointer-events: none; z-index: 1;
+    }
+    .award-card:nth-child(1)::after { animation-delay:  0s;    }
+    .award-card:nth-child(2)::after { animation-delay: -1.375s; }
+    .award-card:nth-child(3)::after { animation-delay: -2.75s;  }
+    .award-card:nth-child(4)::after { animation-delay: -4.125s; }
+
+    @keyframes metalLight {
+      0%   { left: -65%;  opacity: 0; }
+      8%   { opacity: 1; }
+      92%  { opacity: 1; }
+      100% { left: 160%;  opacity: 0; }
     }
 
     /* Inner inset frame — machined recess */
