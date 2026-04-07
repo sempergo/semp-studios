@@ -583,10 +583,13 @@ async function submitForm() {
 }
 
 /* ═══════════════════════════════════════════════
-   LIQUID METAL FILL — same shader as hero
+   LIQUID METAL FILL
 ═══════════════════════════════════════════════ */
 (function() {
   const cv = document.getElementById('liquid-fill');
+  // Reliably hidden until triggered
+  cv.style.clipPath = 'inset(0 0 100% 0)';
+
   const gl = cv.getContext('webgl2');
   if (!gl) return;
 
@@ -766,70 +769,77 @@ async function submitForm() {
   gl.uniform1f(U.shape,     3);  /* diamond — same as hero */
   gl.uniform1i(U.image,     0);
 
-  let time = 0, last = performance.now();
+  let glTime = 0, last = performance.now();
   let fillLevel = 0, wavePhase = 0;
   let fillStart = null, fillDone = false;
-  const FILL_DUR = 2800; // ms to go from empty to full
+  const FILL_DUR = 3000;
 
-  function setWaveMask() {
-    const W = window.innerWidth, H = window.innerHeight;
-    // Amplitude shrinks as liquid fills — starts sloshy, calms at the top
-    const amp1 = 38 * Math.pow(1 - fillLevel, 0.6);
-    const amp2 = 18 * Math.pow(1 - fillLevel, 0.8);
-    const amp3 = 10 * Math.pow(1 - fillLevel, 0.5);
-    const waveY = H * (1 - fillLevel);
-    const STEPS = 120;
+  /* Build a wave polygon that closes at the bottom of the screen.
+     All values are plain pixels — no vh/vw — guaranteed to work. */
+  function wavePolygon(fl, phase) {
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const waveY = H * (1 - fl);
 
-    const pts = [`0 ${H}`];
+    // Amplitude decays as the vessel fills — starts turbulent, calms at full
+    const decay = Math.max(0, 1 - fl);
+    const a1 = 42 * Math.pow(decay, 0.55);
+    const a2 = 22 * Math.pow(decay, 0.75);
+    const a3 = 11 * Math.pow(decay, 0.45);
+
+    const STEPS = 90;
+    // Start: bottom-left corner
+    let d = `0,${H} `;
     for (let i = 0; i <= STEPS; i++) {
       const nx = i / STEPS;
       const x  = nx * W;
       const y  = waveY
-        + Math.sin(nx * 5.1 * Math.PI + wavePhase)         * amp1
-        + Math.sin(nx * 9.3 * Math.PI - wavePhase * 1.5)   * amp2
-        + Math.sin(nx * 2.7 * Math.PI + wavePhase * 0.6)   * amp3;
-      pts.push(`${x.toFixed(1)} ${y.toFixed(1)}`);
+        + Math.sin(nx * 5.2 * Math.PI + phase)          * a1
+        + Math.sin(nx * 9.7 * Math.PI - phase * 1.65)   * a2
+        + Math.sin(nx * 2.4 * Math.PI + phase * 0.55)   * a3;
+      // clamp so wave never dips below screen bottom
+      d += `${x.toFixed(1)},${Math.min(y, H + 5).toFixed(1)} `;
     }
-    pts.push(`${W} ${H}`);
-    cv.style.clipPath = `polygon(${pts.join(',')})`;
+    // Close: bottom-right → bottom-left
+    d += `${W},${H}`;
+    return `polygon(${d})`;
   }
 
-  function liquidLoop(now) {
-    requestAnimationFrame(liquidLoop);
+  // Main rAF loop — always rendering shader; wave only active after trigger
+  function loop(now) {
+    requestAnimationFrame(loop);
 
-    // Render shader
-    time += Math.min((now - last) / 1000, 0.05) * 0.8;
+    glTime += Math.min((now - last) / 1000, 0.05) * 0.8;
     last = now;
-    gl.uniform1f(U.time, time);
+    gl.uniform1f(U.time, glTime);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-    if (fillStart === null) return; // not started yet
+    if (fillStart === null || fillDone) return;
 
-    if (!fillDone) {
-      const t = Math.min((now - fillStart) / FILL_DUR, 1);
-      // ease: slow start, accelerates, eases to full
-      fillLevel = t < 0.5
-        ? 2 * t * t
-        : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    const t = Math.min((now - fillStart) / FILL_DUR, 1);
+    // ease-in-out quad
+    fillLevel = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2;
+    wavePhase += 0.04;
 
-      wavePhase += 0.038;
-      setWaveMask();
+    cv.style.clipPath = wavePolygon(fillLevel, wavePhase);
 
-      if (t >= 1) {
-        fillDone = true;
-        cv.style.clipPath = 'none'; // full screen — clean edges
-        // Hold 3.5s to admire, then go home
-        setTimeout(() => { window.location.href = 'v3.html'; }, 3500);
-      }
+    if (t >= 1) {
+      fillDone = true;
+      cv.style.clipPath = 'none';
+      setTimeout(() => { window.location.href = 'v3.html'; }, 4000);
     }
   }
-  requestAnimationFrame(liquidLoop);
-
-  // Init clip to empty (bottom edge only)
-  cv.style.clipPath = `polygon(0 100vh, 0 100vh, 100vw 100vh, 100vw 100vh)`;
+  requestAnimationFrame(loop);
 
   window.triggerLiquidFill = function() {
-    setTimeout(() => { fillStart = performance.now(); }, 1600);
+    setTimeout(() => {
+      // Switch inset → pixel polygon at level 0 (wave sitting at bottom)
+      cv.style.clipPath = wavePolygon(0, 0);
+      // Small extra frame to let browser acknowledge the polygon before animating
+      requestAnimationFrame(() => {
+        fillStart = performance.now();
+      });
+    }, 1600);
   };
 })();
 
