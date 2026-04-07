@@ -292,95 +292,82 @@
       #mf-text { font-size: clamp(22px, 7vw, 48px); }
     }
 
-    /* ── USP GLOWING CARDS ──────────────────────────────────── */
+    /* ── USP AWARD CARDS ────────────────────────────────────── */
     #usps { padding: 10rem 2.5rem; background: var(--bg); }
     .usps-inner { max-width: 1200px; margin: 0 auto; }
     .usps-eyebrow { font-size: 9px; letter-spacing: .4em; text-transform: uppercase; color: var(--dim); margin-bottom: 1.5rem; }
     .usps-title { font-size: clamp(38px, 7vw, 88px); font-weight: 900; line-height: .9; letter-spacing: -.03em; margin-bottom: 4rem; }
-    .usps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: rgba(240,237,230,.06); }
-    .g-card {
+    .usps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+
+    .award-card {
       position: relative;
-      background: #0a0a0a;
-      padding: 2.5rem;
-      overflow: hidden;
-      min-height: 280px;
+      background: #080809;
+      padding: 2.75rem;
+      min-height: 270px;
       display: flex; flex-direction: column;
-      border: 1px solid transparent;
-      transition: border-color .4s ease;
+      border: 1px solid rgba(255,255,255,0.10);
+      transition: border-color 0.5s ease, background 0.5s ease;
     }
-    .g-card:hover { border-color: rgba(240,237,230,.12); }
-    .g-dot {
-      width: 18px; height: 18px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,.85) 0%, rgba(255,255,255,.25) 45%, transparent 70%);
+    .award-card:hover {
+      border-color: rgba(255,255,255,0.22);
+      background: #0c0c0e;
+    }
+
+    /* Inner inset frame line */
+    .award-card::before {
+      content: '';
       position: absolute;
-      top: 10%; right: 10%;
-      z-index: 2; pointer-events: none;
-      animation: gDot 6s linear infinite;
+      inset: 9px;
+      border: 1px solid rgba(255,255,255,0.05);
+      pointer-events: none;
+      transition: border-color 0.5s ease;
     }
-    .g-card:nth-child(2) .g-dot { animation-delay: -1.5s; }
-    .g-card:nth-child(3) .g-dot { animation-delay: -3s; }
-    .g-card:nth-child(4) .g-dot { animation-delay: -4.5s; }
-    @keyframes gDot {
-      0%,100% { top:10%;                right:10%; }
-      25%      { top:10%;               right:calc(100% - 28px); }
-      50%      { top:calc(100% - 28px); right:calc(100% - 28px); }
-      75%      { top:calc(100% - 28px); right:10%; }
+    .award-card:hover::before {
+      border-color: rgba(255,255,255,0.09);
     }
-    .g-ray {
-      position: absolute; top: -60px; right: -60px;
-      width: 200px; height: 200px;
-      background: radial-gradient(circle, rgba(255,255,255,.055) 0%, transparent 65%);
-      pointer-events: none; z-index: 0;
+
+    /* Corner L-bracket accents */
+    .ac {
+      position: absolute;
+      width: 14px; height: 14px;
+      border-style: solid;
+      border-color: rgba(255,255,255,0.55);
+      z-index: 2;
+      transition: border-color 0.5s ease;
     }
-    .g-stat {
-      font-size: clamp(42px, 5vw, 68px);
+    .award-card:hover .ac { border-color: rgba(255,255,255,0.85); }
+    .ac.tl { top:  3px; left:  3px; border-width: 1.5px 0 0 1.5px; }
+    .ac.tr { top:  3px; right: 3px; border-width: 1.5px 1.5px 0 0; }
+    .ac.bl { bottom: 3px; left:  3px; border-width: 0 0 1.5px 1.5px; }
+    .ac.br { bottom: 3px; right: 3px; border-width: 0 1.5px 1.5px 0; }
+
+    .award-stat {
+      font-size: clamp(46px, 5.5vw, 72px);
       font-weight: 900; letter-spacing: -.04em;
-      color: var(--fg); line-height: 1;
+      color: #fff; line-height: 1;
       position: relative; z-index: 1;
-      margin-bottom: .25rem;
+      margin-bottom: 0.3rem;
     }
-    .g-label {
-      font-size: 9px; letter-spacing: .38em; text-transform: uppercase;
-      color: var(--dim); position: relative; z-index: 1;
+    .award-label {
+      font-size: 8px; letter-spacing: .42em; text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      position: relative; z-index: 1;
     }
-    .g-desc {
-      font-size: 13px; color: rgba(240,237,230,.42);
-      line-height: 1.7; position: relative; z-index: 1;
-      margin-top: auto; padding-top: 2rem;
+    .award-divider {
+      width: 24px; height: 1px;
+      background: rgba(255,255,255,0.12);
+      margin: 1.75rem 0 1.25rem;
+      position: relative; z-index: 1;
     }
-    /* border lines */
-    .g-line { position: absolute; background: rgba(240,237,230,.5); pointer-events: none; z-index: 3; }
-    .g-topl   { top:0;    left:0;   height:1px; width:0%;  animation: gLineH 6s linear infinite; }
-    .g-bottoml{ bottom:0; right:0;  height:1px; width:0%;  animation: gLineH 6s linear infinite; animation-delay:-3s; }
-    .g-leftl  { top:0;    left:0;   width:1px;  height:0%; animation: gLineV 6s linear infinite; animation-delay:-1.5s; }
-    .g-rightl { bottom:0; right:0;  width:1px;  height:0%; animation: gLineV 6s linear infinite; animation-delay:-4.5s; }
-    .g-card:nth-child(2) .g-topl    { animation-delay: -1.5s; }
-    .g-card:nth-child(2) .g-bottoml { animation-delay: -4.5s; }
-    .g-card:nth-child(2) .g-leftl   { animation-delay: -3s; }
-    .g-card:nth-child(2) .g-rightl  { animation-delay: -6s; }
-    .g-card:nth-child(3) .g-topl    { animation-delay: -3s; }
-    .g-card:nth-child(3) .g-bottoml { animation-delay: -6s; }
-    .g-card:nth-child(3) .g-leftl   { animation-delay: -4.5s; }
-    .g-card:nth-child(3) .g-rightl  { animation-delay: -7.5s; }
-    .g-card:nth-child(4) .g-topl    { animation-delay: -4.5s; }
-    .g-card:nth-child(4) .g-bottoml { animation-delay: -7.5s; }
-    .g-card:nth-child(4) .g-leftl   { animation-delay: -6s; }
-    .g-card:nth-child(4) .g-rightl  { animation-delay: -9s; }
-    @keyframes gLineH {
-      0%   { width:0%;   opacity:1; }
-      45%  { width:100%; opacity:1; }
-      55%  { width:100%; opacity:0; }
-      100% { width:0%;   opacity:0; }
+    .award-desc {
+      font-size: 13px; color: rgba(255,255,255,0.38);
+      line-height: 1.7;
+      position: relative; z-index: 1;
     }
-    @keyframes gLineV {
-      0%   { height:0%;   opacity:1; }
-      45%  { height:100%; opacity:1; }
-      55%  { height:100%; opacity:0; }
-      100% { height:0%;   opacity:0; }
-    }
+
     @media (max-width: 768px) {
       #usps { padding: 6rem 1.25rem; }
-      .usps-grid { grid-template-columns: 1fr; }
+      .usps-grid { grid-template-columns: 1fr; gap: 1.25rem; }
     }
 
     /* ── PROCESS ─────────────────────────────────────────── */
@@ -637,52 +624,40 @@
       <h2 class="usps-title">Unser<br>Versprechen</h2>
       <div class="usps-grid">
 
-        <div class="g-card">
-          <div class="g-dot"></div>
-          <div class="g-ray"></div>
-          <div class="g-stat">100%</div>
-          <div class="g-label">Custom-built</div>
-          <p class="g-desc">Kein Template. Kein Baukastensystem. Jede Website wird von Grund auf für dein Business entworfen — und sieht auch so aus.</p>
-          <div class="g-line g-topl"></div>
-          <div class="g-line g-leftl"></div>
-          <div class="g-line g-bottoml"></div>
-          <div class="g-line g-rightl"></div>
+        <div class="award-card">
+          <span class="ac tl"></span><span class="ac tr"></span>
+          <span class="ac bl"></span><span class="ac br"></span>
+          <div class="award-stat">100%</div>
+          <div class="award-label">Custom-built</div>
+          <div class="award-divider"></div>
+          <p class="award-desc">Kein Template. Kein Baukastensystem. Jede Website wird von Grund auf für dein Business entworfen — und sieht auch so aus.</p>
         </div>
 
-        <div class="g-card">
-          <div class="g-dot"></div>
-          <div class="g-ray"></div>
-          <div class="g-stat">990€</div>
-          <div class="g-label">Ab Preis</div>
-          <p class="g-desc">Weltklasse-Design muss nicht teuer sein. Professionelle Qualität zu einem Preis, der für echte Businesses Sinn macht.</p>
-          <div class="g-line g-topl"></div>
-          <div class="g-line g-leftl"></div>
-          <div class="g-line g-bottoml"></div>
-          <div class="g-line g-rightl"></div>
+        <div class="award-card">
+          <span class="ac tl"></span><span class="ac tr"></span>
+          <span class="ac bl"></span><span class="ac br"></span>
+          <div class="award-stat">990€</div>
+          <div class="award-label">Ab Preis</div>
+          <div class="award-divider"></div>
+          <p class="award-desc">Weltklasse-Design muss nicht teuer sein. Professionelle Qualität zu einem Preis, der für echte Businesses Sinn macht.</p>
         </div>
 
-        <div class="g-card">
-          <div class="g-dot"></div>
-          <div class="g-ray"></div>
-          <div class="g-stat">2–3W</div>
-          <div class="g-label">Lieferzeit</div>
-          <p class="g-desc">Von Briefing bis Go-Live in 2 bis 3 Wochen. Kein monatelanger Prozess — deine Website geht live, während die Konkurrenz noch wartet.</p>
-          <div class="g-line g-topl"></div>
-          <div class="g-line g-leftl"></div>
-          <div class="g-line g-bottoml"></div>
-          <div class="g-line g-rightl"></div>
+        <div class="award-card">
+          <span class="ac tl"></span><span class="ac tr"></span>
+          <span class="ac bl"></span><span class="ac br"></span>
+          <div class="award-stat">2–3W</div>
+          <div class="award-label">Lieferzeit</div>
+          <div class="award-divider"></div>
+          <p class="award-desc">Von Briefing bis Go-Live in 2 bis 3 Wochen. Kein monatelanger Prozess — deine Website geht live, während die Konkurrenz noch wartet.</p>
         </div>
 
-        <div class="g-card">
-          <div class="g-dot"></div>
-          <div class="g-ray"></div>
-          <div class="g-stat">∞</div>
-          <div class="g-label">Skalierbar</div>
-          <p class="g-desc">Deine Website wächst mit dir. Neue Seiten, neue Funktionen, neue Märkte — jederzeit erweiterbar ohne von vorne anzufangen.</p>
-          <div class="g-line g-topl"></div>
-          <div class="g-line g-leftl"></div>
-          <div class="g-line g-bottoml"></div>
-          <div class="g-line g-rightl"></div>
+        <div class="award-card">
+          <span class="ac tl"></span><span class="ac tr"></span>
+          <span class="ac bl"></span><span class="ac br"></span>
+          <div class="award-stat">∞</div>
+          <div class="award-label">Skalierbar</div>
+          <div class="award-divider"></div>
+          <p class="award-desc">Deine Website wächst mit dir. Neue Seiten, neue Funktionen, neue Märkte — jederzeit erweiterbar ohne von vorne anzufangen.</p>
         </div>
 
       </div>
