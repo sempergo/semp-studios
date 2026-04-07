@@ -292,7 +292,7 @@
       #mf-text { font-size: clamp(22px, 7vw, 48px); }
     }
 
-    /* ── USP AWARD CARDS ────────────────────────────────────── */
+    /* ── USP AWARD CARDS — Brushed Metal ────────────────────── */
     #usps { padding: 10rem 2.5rem; background: var(--bg); }
     .usps-inner { max-width: 1200px; margin: 0 auto; }
     .usps-eyebrow { font-size: 9px; letter-spacing: .4em; text-transform: uppercase; color: var(--dim); margin-bottom: 1.5rem; }
@@ -301,68 +301,113 @@
 
     .award-card {
       position: relative;
-      background: #080809;
       padding: 2.75rem;
       min-height: 270px;
       display: flex; flex-direction: column;
-      border: 1px solid rgba(255,255,255,0.10);
-      transition: border-color 0.5s ease, background 0.5s ease;
+      overflow: hidden;
+
+      /* Fine horizontal brush strokes + base metal */
+      background:
+        repeating-linear-gradient(
+          180deg,
+          rgba(255,255,255,0)    0px,
+          rgba(255,255,255,0)    1px,
+          rgba(255,255,255,.024) 1px,
+          rgba(255,255,255,.024) 2px
+        ),
+        repeating-linear-gradient(
+          180deg,
+          rgba(0,0,0,0)    0px,
+          rgba(0,0,0,0)    9px,
+          rgba(0,0,0,.07)  9px,
+          rgba(0,0,0,.07) 10px
+        ),
+        linear-gradient(145deg, #2e2e31 0%, #1f1f22 30%, #29292c 55%, #1c1c1f 80%, #272729 100%);
+
+      /* Physical plate bevel — bright top/left, dark bottom/right */
+      border-top:    1px solid rgba(255,255,255,.28);
+      border-left:   1px solid rgba(255,255,255,.18);
+      border-right:  1px solid rgba(255,255,255,.07);
+      border-bottom: 1px solid rgba(255,255,255,.05);
+
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.1),
+        inset 0 -1px 0 rgba(0,0,0,.4),
+        0 8px 36px rgba(0,0,0,.65),
+        0 2px 8px rgba(0,0,0,.45);
+
+      transition: box-shadow .45s ease, transform .45s ease;
     }
     .award-card:hover {
-      border-color: rgba(255,255,255,0.22);
-      background: #0c0c0e;
+      transform: translateY(-3px);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.14),
+        inset 0 -1px 0 rgba(0,0,0,.4),
+        0 18px 52px rgba(0,0,0,.72),
+        0 4px 16px rgba(0,0,0,.5);
     }
 
-    /* Inner inset frame line */
+    /* Directional specular sheen */
+    .award-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        152deg,
+        rgba(255,255,255,.07) 0%,
+        rgba(255,255,255,.02) 25%,
+        transparent 50%,
+        rgba(255,255,255,.015) 75%,
+        transparent 100%
+      );
+      pointer-events: none; z-index: 0;
+    }
+
+    /* Inner inset frame — machined recess */
     .award-card::before {
       content: '';
       position: absolute;
       inset: 9px;
-      border: 1px solid rgba(255,255,255,0.05);
-      pointer-events: none;
-      transition: border-color 0.5s ease;
-    }
-    .award-card:hover::before {
-      border-color: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,.08);
+      pointer-events: none; z-index: 1;
     }
 
-    /* Corner L-bracket accents */
+    /* Corner L-brackets — bright machined edges */
     .ac {
       position: absolute;
-      width: 14px; height: 14px;
+      width: 13px; height: 13px;
       border-style: solid;
-      border-color: rgba(255,255,255,0.55);
-      z-index: 2;
-      transition: border-color 0.5s ease;
+      border-color: rgba(255,255,255,.7);
+      z-index: 3;
     }
-    .award-card:hover .ac { border-color: rgba(255,255,255,0.85); }
     .ac.tl { top:  3px; left:  3px; border-width: 1.5px 0 0 1.5px; }
     .ac.tr { top:  3px; right: 3px; border-width: 1.5px 1.5px 0 0; }
     .ac.bl { bottom: 3px; left:  3px; border-width: 0 0 1.5px 1.5px; }
     .ac.br { bottom: 3px; right: 3px; border-width: 0 1.5px 1.5px 0; }
 
+    /* Polished text on brushed plate */
     .award-stat {
       font-size: clamp(46px, 5.5vw, 72px);
       font-weight: 900; letter-spacing: -.04em;
-      color: #fff; line-height: 1;
-      position: relative; z-index: 1;
-      margin-bottom: 0.3rem;
+      color: rgba(255,255,255,.95); line-height: 1;
+      position: relative; z-index: 2;
+      margin-bottom: .3rem;
+      text-shadow: 0 1px 3px rgba(0,0,0,.55), 0 -1px 0 rgba(255,255,255,.07);
     }
     .award-label {
       font-size: 8px; letter-spacing: .42em; text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
-      position: relative; z-index: 1;
+      color: rgba(255,255,255,.38);
+      position: relative; z-index: 2;
     }
     .award-divider {
       width: 24px; height: 1px;
-      background: rgba(255,255,255,0.12);
+      background: rgba(255,255,255,.18);
       margin: 1.75rem 0 1.25rem;
-      position: relative; z-index: 1;
+      position: relative; z-index: 2;
     }
     .award-desc {
-      font-size: 13px; color: rgba(255,255,255,0.38);
+      font-size: 13px; color: rgba(255,255,255,.42);
       line-height: 1.7;
-      position: relative; z-index: 1;
+      position: relative; z-index: 2;
     }
 
     @media (max-width: 768px) {
