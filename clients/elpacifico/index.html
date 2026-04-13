@@ -62,11 +62,16 @@
     nav.scrolled { padding: 12px 32px; }
 
     .nav-logo {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2rem;
-      color: var(--terra-deep);
       text-decoration: none;
-      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo img {
+      height: 46px;
+      width: auto;
+      display: block;
+      border-radius: 6px;
     }
 
     .nav-links {
@@ -286,33 +291,14 @@
     }
 
     .stamp-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 2px solid var(--terra);
-      flex-direction: column;
-      text-align: center;
+      display: inline-block;
     }
 
-    .stamp-badge span {
-      font-size: 0.52rem;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--terra);
-      line-height: 1.4;
-    }
-
-    .stamp-badge .stamp-year {
-      font-family: 'Newsreader', serif;
-      font-size: 1.4rem;
-      font-weight: 300;
-      color: var(--terra-deep);
-      line-height: 1;
-      margin: 4px 0;
+    .stamp-badge img {
+      width: 180px;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 24px rgba(144,73,0,0.18);
     }
 
     .about-photo-col {
@@ -614,9 +600,11 @@
     }
 
     .mascot-svg {
-      width: 220px;
-      height: 220px;
+      width: 240px;
+      height: auto;
       margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 6px 32px rgba(144,73,0,0.2);
     }
 
     .hours-address-block {
@@ -767,11 +755,14 @@
     }
 
     .footer-logo {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3rem;
-      color: var(--terra-deep);
       display: block;
-      margin-bottom: 24px;
+      margin: 0 auto 24px;
+    }
+
+    .footer-logo img {
+      height: 80px;
+      width: auto;
+      border-radius: 8px;
     }
 
     .footer-tagline {
@@ -879,7 +870,7 @@
       #hours { grid-template-columns: 1fr; }
       .hours-left { padding: 60px 24px; }
       .hours-right { padding: 60px 24px; }
-      .mascot-svg { width: 160px; height: 160px; }
+      .mascot-svg { width: 180px; height: auto; }
 
       #newsletter { padding: 60px 24px; }
       .newsletter-form { flex-direction: column; gap: 12px; }
@@ -895,7 +886,9 @@
 
 <!-- NAV -->
 <nav id="main-nav">
-  <a href="#" class="nav-logo">El Pacífico</a>
+  <a href="#" class="nav-logo">
+    <img src="images/logo.png" alt="El Pacífico Frankfurt">
+  </a>
   <ul class="nav-links">
     <li><a href="#about">Über uns</a></li>
     <li><a href="#menu">Speisekarte</a></li>
@@ -952,9 +945,7 @@
         Das ist unser Versprechen.
       </p>
       <div class="stamp-badge" data-reveal-scale>
-        <span>Frankfurt</span>
-        <span class="stamp-year">1983</span>
-        <span>Original</span>
+        <img src="images/logo.png" alt="El Pacífico Frankfurt — Directly Mexico">
       </div>
     </div>
     <div class="about-photo-col" data-reveal-right>
@@ -1108,46 +1099,7 @@
 <section id="hours">
   <div class="hours-left">
     <div class="hours-mascot">
-      <!-- Retro illustrated badge SVG -->
-      <svg class="mascot-svg" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="110" cy="110" r="105" stroke="#904900" stroke-width="2"/>
-        <circle cx="110" cy="110" r="95" stroke="#904900" stroke-width="1" stroke-dasharray="4 4"/>
-        <!-- Sun rays -->
-        <g stroke="#904900" stroke-width="1.5">
-          <line x1="110" y1="8" x2="110" y2="24"/>
-          <line x1="110" y1="196" x2="110" y2="212"/>
-          <line x1="8" y1="110" x2="24" y2="110"/>
-          <line x1="196" y1="110" x2="212" y2="110"/>
-          <line x1="37" y1="37" x2="48" y2="48"/>
-          <line x1="172" y1="172" x2="183" y2="183"/>
-          <line x1="183" y1="37" x2="172" y2="48"/>
-          <line x1="48" y1="172" x2="37" y2="183"/>
-        </g>
-        <!-- Palm tree left -->
-        <path d="M70 160 Q68 130 72 105" stroke="#904900" stroke-width="3" stroke-linecap="round"/>
-        <path d="M72 105 Q55 90 48 78" stroke="#904900" stroke-width="2" stroke-linecap="round"/>
-        <path d="M72 105 Q60 95 58 82" stroke="#904900" stroke-width="2" stroke-linecap="round"/>
-        <path d="M72 105 Q75 88 80 78" stroke="#904900" stroke-width="2" stroke-linecap="round"/>
-        <!-- Palm tree right -->
-        <path d="M150 160 Q152 130 148 105" stroke="#904900" stroke-width="3" stroke-linecap="round"/>
-        <path d="M148 105 Q165 90 172 78" stroke="#904900" stroke-width="2" stroke-linecap="round"/>
-        <path d="M148 105 Q160 95 162 82" stroke="#904900" stroke-width="2" stroke-linecap="round"/>
-        <path d="M148 105 Q145 88 140 78" stroke="#904900" stroke-width="2" stroke-linecap="round"/>
-        <!-- Ground -->
-        <path d="M60 162 Q110 150 160 162" stroke="#904900" stroke-width="2" stroke-linecap="round"/>
-        <!-- Sun -->
-        <circle cx="110" cy="85" r="14" stroke="#904900" stroke-width="1.5"/>
-        <circle cx="110" cy="85" r="8" fill="#FFDCC5"/>
-        <!-- Text ring -->
-        <path id="topArc" d="M 40,110 A 70,70 0 0,1 180,110" fill="none"/>
-        <text font-family="Work Sans, sans-serif" font-size="10" font-weight="500" letter-spacing="4" fill="#904900" text-anchor="middle">
-          <textPath href="#topArc" startOffset="50%">EL PACÍFICO · FRANKFURT</textPath>
-        </text>
-        <path id="botArc" d="M 45,120 A 65,65 0 0,0 175,120" fill="none"/>
-        <text font-family="Work Sans, sans-serif" font-size="8" font-weight="400" letter-spacing="3" fill="#904900" text-anchor="middle">
-          <textPath href="#botArc" startOffset="50%">SEIT 1983 · ORIGINAL</textPath>
-        </text>
-      </svg>
+      <img class="mascot-svg" src="images/logo.png" alt="El Pacífico Frankfurt — Directly Mexico">
       <div class="hours-address-block">
         <p>Sandweg 79<br>60316 Frankfurt am Main<br>Nordend-Ost</p>
       </div>
@@ -1186,7 +1138,9 @@
 
 <!-- FOOTER -->
 <footer>
-  <span class="footer-logo">El Pacífico</span>
+  <div class="footer-logo">
+    <img src="images/logo.png" alt="El Pacífico Frankfurt">
+  </div>
   <p class="footer-tagline">Mexikanische Küche · Restaurant · Bar · Frankfurt</p>
   <nav class="footer-links">
     <a href="https://www.instagram.com/elpacifico.ffm/" target="_blank" rel="noopener">Instagram</a>
