@@ -43,69 +43,64 @@
     ::-webkit-scrollbar-thumb { background: var(--terra); }
 
     /* ── NAV ── */
-    nav {
-      position: fixed;
+    #site-header {
+      position: sticky;
       top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
+      z-index: 200;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 32px;
-      background: rgba(255, 248, 240, 0.88);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: padding 0.3s ease, background 0.3s ease;
-      min-height: 70px;
+      height: 64px;
+      padding: 0 40px;
+      background: rgba(255, 248, 240, 0.95);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(144, 73, 0, 0.08);
     }
 
-    nav.scrolled { padding: 8px 32px; }
-
     .nav-logo {
-      text-decoration: none;
       display: flex;
       align-items: center;
-      flex-shrink: 0;
+      text-decoration: none;
+      flex: 0 0 auto;
     }
 
     .nav-logo img {
-      height: 44px;
+      height: 42px;
       width: auto;
       display: block;
     }
 
     .nav-links {
       display: flex;
-      gap: 24px;
+      align-items: center;
+      gap: 36px;
       list-style: none;
-      flex-shrink: 1;
-      min-width: 0;
     }
 
     .nav-links a {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: 500;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--espresso);
       text-decoration: none;
-      transition: color 0.3s ease;
+      transition: color 0.2s;
     }
 
     .nav-links a:hover { color: var(--terra); }
 
     .nav-cta {
+      flex: 0 0 auto;
       font-size: 0.6rem;
       font-weight: 500;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--ivory);
       background: var(--terra);
-      padding: 10px 20px;
+      padding: 10px 22px;
       text-decoration: none;
-      transition: background 0.3s ease;
-      flex-shrink: 0;
+      transition: background 0.2s;
       white-space: nowrap;
     }
 
@@ -123,12 +118,11 @@
 
     /* ── HERO ── */
     #hero {
-      min-height: 100vh;
+      min-height: calc(100vh - 64px);
       display: grid;
       grid-template-columns: 1fr 1fr;
       position: relative;
       overflow: hidden;
-      padding-top: 70px;
     }
 
     .hero-image-col {
@@ -835,10 +829,10 @@
 
     /* ── TABLET / MOBILE ── */
     @media (max-width: 1024px) {
-      nav { padding: 10px 24px; min-height: 60px; }
-      .nav-logo img { height: 38px; }
+      #site-header { padding: 0 20px; height: 56px; }
+      .nav-logo img { height: 36px; }
       .nav-links { display: none; }
-      #hero { padding-top: 60px; }
+      #hero { min-height: calc(100vh - 56px); }
 
       #hero {
         grid-template-columns: 1fr;
@@ -892,7 +886,7 @@
 <body>
 
 <!-- NAV -->
-<nav id="main-nav">
+<header id="site-header">
   <a href="#" class="nav-logo">
     <img src="images/logo.png" alt="El Pacífico Frankfurt">
   </a>
@@ -903,7 +897,7 @@
     <li><a href="#hours">Öffnungszeiten</a></li>
   </ul>
   <a href="https://wa.me/491704819991" class="nav-cta">Reservieren</a>
-</nav>
+</header>
 
 <!-- HERO -->
 <section id="hero">
@@ -1172,10 +1166,12 @@
 </a>
 
 <script>
-// ── NAV ──
-const nav = document.getElementById('main-nav');
+// ── NAV shadow on scroll ──
+const siteHeader = document.getElementById('site-header');
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 60);
+  siteHeader.style.boxShadow = window.scrollY > 10
+    ? '0 2px 20px rgba(0,0,0,0.08)'
+    : 'none';
 }, { passive: true });
 
 // ── LENIS (if available) — wrapper:false so fixed elements stay fixed ──
