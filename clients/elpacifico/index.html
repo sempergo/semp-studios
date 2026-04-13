@@ -903,6 +903,100 @@
       footer { padding: 48px 24px 32px; }
     }
 
+    /* ── HAMBURGER ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      flex: 0 0 auto;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      height: 1.5px;
+      background: var(--espresso);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+      transform-origin: center;
+    }
+
+    .nav-hamburger span:nth-child(3) { width: 60%; }
+
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { width: 100%; transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ── MOBILE DRAWER ── */
+    #mobile-menu {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      z-index: 190;
+      background: rgba(255, 248, 240, 0.98);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 32px 28px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transform: translateY(-8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+      border-bottom: 1px solid rgba(144,73,0,0.1);
+    }
+
+    #mobile-menu.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mobile-menu-link {
+      font-size: 1.5rem;
+      font-family: 'Newsreader', serif;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--espresso);
+      text-decoration: none;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(144,73,0,0.1);
+      transition: color 0.2s, padding-left 0.2s;
+    }
+
+    .mobile-menu-link:last-of-type { border-bottom: none; }
+    .mobile-menu-link:hover { color: var(--terra); padding-left: 6px; }
+
+    .mobile-menu-cta {
+      margin-top: 28px;
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      background: var(--terra);
+      padding: 14px 28px;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.2s;
+    }
+
+    .mobile-menu-cta:hover { background: var(--terra-deep); }
+
+    @media (max-width: 1024px) {
+      .nav-hamburger { display: flex; }
+      .nav-cta { display: none; }
+    }
+
     /* ── ANIMATIONS — initial states set by JS only, so page is always readable without JS ── */
   </style>
 </head>
@@ -920,7 +1014,19 @@
     <li><a href="#hours">Öffnungszeiten</a></li>
   </ul>
   <a href="https://wa.me/491704819991" class="nav-cta">Reservieren</a>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<!-- MOBILE MENU -->
+<nav id="mobile-menu">
+  <a href="#about" class="mobile-menu-link">Über uns</a>
+  <a href="#menu" class="mobile-menu-link">Speisekarte</a>
+  <a href="#reviews" class="mobile-menu-link">Bewertungen</a>
+  <a href="#hours" class="mobile-menu-link">Öffnungszeiten</a>
+  <a href="https://wa.me/491704819991" class="mobile-menu-cta" target="_blank" rel="noopener">Tisch reservieren →</a>
+</nav>
 
 <!-- HERO -->
 <section id="hero">
@@ -1190,6 +1296,32 @@
 </a>
 
 <script>
+// ── HAMBURGER MENU ──
+const hamburger = document.getElementById('nav-hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+
+hamburger.addEventListener('click', () => {
+  const isOpen = mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open', isOpen);
+  hamburger.setAttribute('aria-label', isOpen ? 'Menü schließen' : 'Menü öffnen');
+});
+
+// Close on link click
+mobileMenu.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  });
+});
+
+// Close on outside click
+document.addEventListener('click', (e) => {
+  if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target)) {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  }
+});
+
 // ── NAV shadow on scroll ──
 const siteHeader = document.getElementById('site-header');
 window.addEventListener('scroll', () => {
