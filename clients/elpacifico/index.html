@@ -903,35 +903,30 @@
       footer { padding: 48px 24px 32px; }
 
       #margarita {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        min-height: 85vh;
+        display: block;
         position: relative;
+        min-height: auto;
+        overflow: hidden;
       }
       .marg-image-wrap {
-        position: absolute;
-        inset: 0;
-        height: 100%;
+        position: relative;
+        height: 65vw;
+        min-height: 260px;
+        max-height: 380px;
       }
       .marg-image-wrap img {
-        object-position: center center;
+        object-position: center 30%;
       }
       .marg-overlay {
-        background: linear-gradient(
-          to top,
-          rgba(30,27,20,0.92) 0%,
-          rgba(30,27,20,0.55) 50%,
-          rgba(30,27,20,0.15) 100%
-        );
+        background: linear-gradient(to bottom, transparent 30%, var(--espresso) 100%);
       }
       .marg-content {
         position: relative;
         z-index: 2;
-        padding: 0 28px 56px;
-        justify-content: flex-end;
-        min-height: 85vh;
+        padding: 32px 28px 56px;
+        justify-content: flex-start;
       }
-      .marg-title { font-size: 3.8rem; }
+      .marg-title { font-size: 3.4rem; line-height: 1; }
       .marg-desc { max-width: 100%; font-size: 0.95rem; }
       .marg-since { font-size: 0.9rem; }
     }
@@ -1146,6 +1141,44 @@
     }
 
     /* ── ANIMATIONS — initial states set by JS only, so page is always readable without JS ── */
+
+    /* ── MARGARITA MOBILE FIX (after base styles to win cascade) ── */
+    @media (max-width: 1024px) {
+      #margarita {
+        display: grid;
+        grid-template-columns: 1fr;
+        min-height: auto;
+        overflow: hidden;
+      }
+      #margarita .marg-image-wrap {
+        min-width: 0;
+        height: 72vw;
+        min-height: 280px;
+        max-height: 420px;
+        position: relative;
+        overflow: hidden;
+      }
+      #margarita .marg-image-wrap img {
+        object-position: center 30%;
+        width: 100%;
+        height: 100%;
+      }
+      #margarita .marg-overlay {
+        background: linear-gradient(to bottom, transparent 40%, var(--espresso) 100%);
+      }
+      #margarita .marg-content {
+        min-width: 0;
+        padding: 32px 28px 56px;
+        justify-content: flex-start;
+      }
+      #margarita .marg-title {
+        font-size: 3.4rem;
+        line-height: 1;
+        word-break: break-word;
+      }
+      #margarita .marg-desc { font-size: 0.95rem; }
+      #margarita .marg-since { font-size: 0.9rem; }
+    }
   </style>
 </head>
 <body>
