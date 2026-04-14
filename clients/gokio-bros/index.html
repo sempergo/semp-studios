@@ -227,52 +227,13 @@
     }
 
     @media (max-width: 640px) {
-      /* Dekorations-Elemente die auf Mobile stören */
-      .hero-shape-blob,
-      .hero-shape-pill,
-      .hero-shape-sm,
-      .hero-korean,
-      .stamp { display: none; }
-
-      /* Gelber Kreis kleiner, tief in die Ecke */
-      .hero-shape-circle {
-        width: 200px;
-        height: 200px;
-        top: 3%;
-        right: -18%;
-      }
-
-      /* Bild kleiner, kein Überlapp mit Text */
       .hero-img {
-        width: 60vw;
-        height: 56vw;
-        top: 7%;
-        right: -6%;
+        width: 72vw;
+        height: 58vw;
+        top: 10%;
+        right: -10%;
         border-radius: 0 0 0 40%;
       }
-
-      /* Content: Gradient-Base für Lesbarkeit über dem Bild */
-      .hero-content {
-        padding-top: 2.5rem;
-        background: linear-gradient(
-          to top,
-          var(--cream) 70%,
-          rgba(245, 237, 214, 0) 100%
-        );
-      }
-
-      /* Titel etwas kleiner damit nichts überlauft */
-      .hero-title { font-size: clamp(72px, 19vw, 100px); }
-
-      /* Subtitle kleiner */
-      .hero-sub { font-size: clamp(14px, 3.8vw, 20px); }
-
-      /* 4. Tag (Korean) auf Mobile ausblenden — zu voll */
-      .hero-meta .tag-red { display: none; }
-
-      /* CTAs volle Breite auf Mobile */
-      .hero-ctas { flex-direction: column; }
-      .hero-ctas .btn { width: 100%; justify-content: center; }
     }
 
     /* Stamp badge */
