@@ -70,7 +70,7 @@
     /* ─── NAV ─── */
     nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 2.1rem; left: 0; right: 0;
       z-index: 200;
       padding: 1.1rem 1.75rem;
       display: flex;
@@ -127,7 +127,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      padding-top: 3.6rem;
+      padding-top: 5.7rem; /* banner (2.1rem) + nav (3.6rem) */
     }
 
     /* Dot grid */
@@ -143,8 +143,13 @@
 
     /* top strip */
     .hero-strip {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 300;
       background: var(--red);
-      padding: 0.6rem 1.75rem;
+      padding: 0.55rem 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1128,6 +1133,16 @@
 </head>
 <body>
 
+<!-- TOP BANNER -->
+<div class="hero-strip">
+  <div class="hero-strip-text">
+    GOKIO BROS · 치킨 &amp; 맥주 · FRANKFURT NORDEND · OEDER WEG 26 ·&nbsp;
+    GOKIO BROS · 치킨 &amp; 맥주 · FRANKFURT NORDEND · OEDER WEG 26 ·&nbsp;
+    GOKIO BROS · 치킨 &amp; 맥주 · FRANKFURT NORDEND · OEDER WEG 26 ·&nbsp;
+    GOKIO BROS · 치킨 &amp; 맥주 · FRANKFURT NORDEND · OEDER WEG 26 ·&nbsp;
+  </div>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="nav-logo">GOKIO BROS</div>
@@ -1140,16 +1155,6 @@
 
 <!-- HERO -->
 <section id="hero">
-
-  <!-- top strip -->
-  <div class="hero-strip">
-    <div class="hero-strip-text">
-      GOKIO BROS · 치킨 &amp; 맥주 · FRANKFURT NORDEND · OEDER WEG 26 ·&nbsp;
-      GOKIO BROS · 치킨 &amp; 맥주 · FRANKFURT NORDEND · OEDER WEG 26 ·&nbsp;
-      GOKIO BROS · 치킨 &amp; 맥주 · FRANKFURT NORDEND · OEDER WEG 26 ·&nbsp;
-      GOKIO BROS · 치킨 &amp; 맥주 · FRANKFURT NORDEND · OEDER WEG 26 ·&nbsp;
-    </div>
-  </div>
 
   <!-- shapes -->
   <div class="hero-shape-circle" id="s1"></div>
