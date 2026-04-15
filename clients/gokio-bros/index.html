@@ -233,13 +233,57 @@
     }
 
     @media (max-width: 640px) {
+      /* Bild bündig mit Banner */
       .hero-img {
         top: 2.1rem;
-        right: -10%;
-        width: 72vw;
-        height: 58vw;
+        right: -8%;
+        width: 65vw;
+        height: 56vw;
         border-radius: 0 0 0 40%;
       }
+
+      /* Nav: CTA-Button ausblenden — verdeckt das Bild */
+      .nav-cta { display: none; }
+
+      /* Shapes: alles außer gelbem Kreis ausblenden */
+      .hero-shape-blob,
+      .hero-shape-pill,
+      .hero-shape-sm,
+      .hero-korean,
+      .stamp { display: none; }
+
+      /* Gelber Kreis: kleiner, tief in die Ecke */
+      .hero-shape-circle {
+        width: 210px;
+        height: 210px;
+        top: 2.1rem;
+        right: -20%;
+      }
+
+      /* Content: Gradient-Base für Lesbarkeit über Bild */
+      .hero-content {
+        padding-top: 2.5rem;
+        background: linear-gradient(to top, var(--cream) 68%, transparent);
+      }
+
+      /* Eyebrow: größer und lesbarer */
+      .hero-eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.15em;
+      }
+
+      /* Titel */
+      .hero-title { font-size: clamp(72px, 19vw, 100px); }
+
+      /* Subtitle */
+      .hero-sub { font-size: clamp(14px, 3.8vw, 20px); }
+
+      /* Tags: nur die ersten 2 zeigen */
+      .hero-meta .tag:nth-child(n+3) { display: none; }
+
+      /* CTAs: volle Breite, gestapelt */
+      .hero-ctas { flex-direction: column; }
+      .hero-ctas .btn { width: 100%; justify-content: center; }
     }
 
     /* Stamp badge */
