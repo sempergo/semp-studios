@@ -253,13 +253,13 @@
         height: 80px;
       }
 
-      /* Gelber Kreis: über dem Bild (höherer z-index), oben rechts sichtbar */
+      /* Gelber Kreis: hinter dem Bild, peekt unten raus */
       .hero-shape-circle {
         width: 190px;
         height: 190px;
-        top: 2.1rem;
-        right: -22%;
-        z-index: 3;
+        top: calc(2.1rem + 68vw - 95px);
+        right: -18%;
+        z-index: 1;
       }
 
       /* Blauer Blob: unterhalb des Bildes, mittig rechts */
