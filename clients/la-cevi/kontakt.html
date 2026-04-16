@@ -31,6 +31,12 @@
     html { scroll-behavior: auto; }
     body { font-family: var(--ff-b); background: var(--cream); color: var(--text); overflow-x: hidden; line-height: 1.6; }
 
+    /* WAVES */
+    .hero-wave { position:absolute; bottom:0; left:0; right:0; z-index:3; line-height:0; }
+    .wv { display:block; margin:0; line-height:0; }
+    .hero-wave svg, .wv svg { width:100%; height:70px; display:block; }
+    @media (max-width:600px) { .hero-wave svg, .wv svg { height:48px; } }
+
     /* GRAIN */
     body::before {
       content:''; position:fixed; inset:0; pointer-events:none; z-index:9000; opacity:.045;
@@ -63,7 +69,6 @@
     .hero-content { position:relative; z-index:2; padding:0 7vw 5rem; }
     .hero-eyebrow { font-family:var(--ff-s); color:var(--lime); font-size:1.4rem; display:block; margin-bottom:.5rem; opacity:0; }
     .hero-title { font-family:var(--ff-d); font-weight:900; color:white; font-size:clamp(3rem,7vw,6rem); line-height:.9; letter-spacing:-.025em; opacity:0; }
-    .hero::after { content:''; position:absolute; bottom:-1px; left:0; right:0; height:80px; background:var(--lime); clip-path:polygon(0 100%,100% 30%,100% 100%); z-index:2; }
 
     /* MARQUEE */
     .marquee-wrap { background:var(--lime); padding:.65rem 0; overflow:hidden; }
@@ -78,7 +83,7 @@
 
     /* MAP */
     .map-sticky { position:sticky; top:100px; }
-    .map-frame { width:100%; aspect-ratio:4/3; border:none; display:block; border-radius:16px; }
+    .map-frame { width:100%; aspect-ratio:4/3; border:none; display:block; border-radius:22px; }
     .map-link { display:inline-flex; align-items:center; gap:.5rem; margin-top:1rem; font-size:.8rem; color:var(--tc); text-decoration:none; font-weight:500; letter-spacing:.06em; transition:color .3s; }
     .map-link:hover { color:var(--tc-d); }
     .map-link svg { width:16px; height:16px; fill:currentColor; }
@@ -108,7 +113,7 @@
       display:flex; flex-direction:column; gap:.45rem;
       transition:transform .3s, background .3s;
       position:relative; overflow:hidden;
-      border-radius:18px;
+      border-radius:24px;
     }
     .ac.tc-bg { background:var(--tc); color:white; }
     .ac.pac-bg { background:var(--pac); color:white; }
@@ -124,9 +129,8 @@
 
     /* STRIP */
     .strip {
-      background:var(--tc); margin-top:6rem; padding:5rem 7vw;
+      background:var(--tc); margin-top:0; padding:5rem 7vw;
       display:grid; grid-template-columns:repeat(3,1fr); gap:3rem; text-align:center;
-      clip-path:polygon(0 8%,100% 0,100% 100%,0 100%);
     }
     .strip-item { color:white; }
     .strip-icon { font-size:2.2rem; display:block; margin-bottom:.9rem; }
@@ -140,7 +144,7 @@
     .btn-fill:hover { background:var(--tc-d); transform:translateY(-2px); }
 
     /* FOOTER */
-    footer { background:var(--dark); color:white; clip-path:polygon(0 5%,100% 0,100% 100%,0 100%); padding:9rem 7vw 3rem; }
+    footer { background:var(--dark); color:white; padding:9rem 7vw 3rem; }
     .footer-top { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; margin-bottom:4rem; }
     .footer-brand p { color:rgba(255,255,255,.38); font-size:.85rem; line-height:1.95; margin-top:1.2rem; }
     .footer-col h4 { font-size:.68rem; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:var(--lime); margin-bottom:1.5rem; }
@@ -159,9 +163,8 @@
       .contact-grid { grid-template-columns:1fr; }
       .map-sticky { position:static; }
       .map-frame { aspect-ratio:16/9; }
-      .strip { grid-template-columns:1fr; clip-path:none; }
+      .strip { grid-template-columns:1fr; }
       .footer-top { grid-template-columns:1fr 1fr; }
-      footer { clip-path:none; }
     }
     @media (max-width:600px) {
       .hero-content { padding:0 1.5rem 4rem; }
@@ -202,6 +205,7 @@
       <span class="hero-eyebrow">Frankfurt Nordend</span>
       <h1 class="hero-title">Kontakt<br>&amp; Anfahrt</h1>
     </div>
+    <div class="hero-wave" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#7AB648"/></svg></div>
   </section>
 
   <div class="marquee-wrap" aria-hidden="true">
@@ -214,6 +218,7 @@
       <span>Sa &amp; So ab 12:00</span><span>Online reservieren</span>
     </div>
   </div>
+  <div class="wv" aria-hidden="true" style="background:#7AB648;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#FAF7F0"/></svg></div>
 
   <div class="contact-wrap">
     <div class="contact-grid">
@@ -295,6 +300,8 @@
     </div>
   </div>
 
+  <div class="wv" aria-hidden="true" style="background:#FAF7F0;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#C4622D"/></svg></div>
+
   <div class="strip" data-r>
     <div class="strip-item">
       <span class="strip-icon">🚇</span>
@@ -312,6 +319,8 @@
       <p>Reservierungen sind 15 Minuten gültig.<br><a href="https://www.gastronaut.com/la-cevi" target="_blank">Jetzt online buchen.</a></p>
     </div>
   </div>
+
+  <div class="wv" aria-hidden="true" style="background:#C4622D;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#1A0F08"/></svg></div>
 
   <footer>
     <div class="footer-top">

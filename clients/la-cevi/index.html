@@ -49,6 +49,12 @@
       line-height: 1.6;
     }
 
+    /* ─── WAVES ─── */
+    .hero-wave { position:absolute; bottom:0; left:0; right:0; z-index:3; line-height:0; }
+    .wv { display:block; margin:0; line-height:0; }
+    .hero-wave svg, .wv svg { width:100%; height:70px; display:block; }
+    @media (max-width:600px) { .hero-wave svg, .wv svg { height:48px; } }
+
     /* ─── GRAIN ─── */
     body::before {
       content: '';
@@ -136,13 +142,6 @@
     }
     .hero-actions { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; }
 
-    /* diagonal bottom */
-    .hero::after {
-      content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
-      height: 100px; background: var(--lime);
-      clip-path: polygon(0 100%, 100% 30%, 100% 100%);
-      z-index: 2;
-    }
 
     /* ─── MARQUEE ─── */
     .marquee-wrap {
@@ -193,13 +192,13 @@
     }
     .intro-main {
       display: block; width: 100%; aspect-ratio: 4/5; object-fit: cover;
-      position: relative; z-index: 1; border-radius: 16px;
+      position: relative; z-index: 1; border-radius: 22px;
     }
     .intro-overlay-img {
       position: absolute; bottom: -2rem; right: -2rem;
       width: 42%; aspect-ratio: 1; object-fit: cover;
       border: 4px solid var(--cream); z-index: 2;
-      border-radius: 12px;
+      border-radius: 18px;
       box-shadow: 0 16px 40px rgba(0,0,0,.18);
     }
     .intro-badge-spin {
@@ -235,8 +234,7 @@
     /* ─── STATEMENT BAND ─── */
     .statement {
       background: var(--tc); padding: 6rem 7vw;
-      clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%);
-      margin: 4rem 0; text-align: center; position: relative; overflow: hidden;
+      text-align: center; position: relative; overflow: hidden;
     }
     .statement::before {
       content: 'LIMA';
@@ -262,7 +260,7 @@
     .award-card {
       background: white; padding: 2rem 1.8rem; flex: 1; min-width: 150px; max-width: 200px;
       display: flex; flex-direction: column; align-items: center; gap: 1rem;
-      border-radius: 18px;
+      border-radius: 24px;
       box-shadow: 0 4px 20px rgba(0,0,0,.06); transition: transform .3s, box-shadow .3s;
     }
     .award-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,.1); }
@@ -290,7 +288,7 @@
       grid-template-rows: 280px 240px;
       gap: 1rem;
     }
-    .ci { overflow: hidden; position: relative; border-radius: 14px; }
+    .ci { overflow: hidden; position: relative; border-radius: 20px; }
     .ci img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s cubic-bezier(.25,.46,.45,.94); }
     .ci:hover img { transform: scale(1.06); }
     .ci.span2 { grid-row: span 2; }
@@ -341,7 +339,7 @@
     .cta-card {
       padding: 3.5rem; display: flex; flex-direction: column; gap: .8rem;
       position: relative; overflow: hidden; min-height: 320px;
-      border-radius: 22px;
+      border-radius: 28px;
     }
     .cta-card.tc { background: var(--tc); color: white; }
     .cta-card.dk { background: var(--dark); color: white; }
@@ -361,7 +359,6 @@
     /* ─── FOOTER ─── */
     footer {
       background: var(--dark); color: white;
-      clip-path: polygon(0 4%, 100% 0, 100% 100%, 0 100%);
       padding: 9rem 7vw 3rem;
     }
     .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; }
@@ -391,8 +388,6 @@
       .hours-block { grid-template-columns: 1fr; }
       .ctas-inner { grid-template-columns: 1fr; }
       .footer-top { grid-template-columns: 1fr 1fr; }
-      .statement { clip-path: none; }
-      footer { clip-path: none; }
     }
     @media (max-width: 600px) {
       .hero-content { padding: 0 1.5rem 4.5rem; }
@@ -462,6 +457,7 @@
         <a href="ueber-uns.html" class="btn btn-ghost-w">Unsere Geschichte</a>
       </div>
     </div>
+    <div class="hero-wave" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#7AB648"/></svg></div>
   </section>
 
   <!-- MARQUEE -->
@@ -475,6 +471,7 @@
       <span>Seco de Cordero</span><span>Mixto de Causas</span><span>Suspiro Limeño</span>
     </div>
   </div>
+  <div class="wv" aria-hidden="true" style="background:#7AB648;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#FAF7F0"/></svg></div>
 
   <!-- INTRO -->
   <section class="intro" id="intro">
@@ -493,12 +490,15 @@
     </div>
   </section>
 
+  <div class="wv" aria-hidden="true" style="background:#FAF7F0;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#C4622D"/></svg></div>
+
   <!-- STATEMENT BAND -->
   <section class="statement" data-r>
     <span class="script-label">Das Lebensgefühl</span>
     <blockquote>„Peru ist nicht nur<br>ein Land — es ist<br>ein Lebensgefühl."</blockquote>
     <div class="statement-line"></div>
   </section>
+  <div class="wv" aria-hidden="true" style="background:#C4622D;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#F2E8D0"/></svg></div>
 
   <!-- AWARDS -->
   <section class="awards">
@@ -605,6 +605,8 @@
       </div>
     </div>
   </section>
+
+  <div class="wv" aria-hidden="true" style="background:#FAF7F0;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#1A0F08"/></svg></div>
 
   <!-- FOOTER -->
   <footer>

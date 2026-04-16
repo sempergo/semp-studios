@@ -31,6 +31,12 @@
     html { scroll-behavior: auto; }
     body { font-family: var(--ff-b); background: var(--cream); color: var(--text); overflow-x: hidden; line-height: 1.6; }
 
+    /* WAVES */
+    .hero-wave { position:absolute; bottom:0; left:0; right:0; z-index:3; line-height:0; }
+    .wv { display:block; margin:0; line-height:0; }
+    .hero-wave svg, .wv svg { width:100%; height:70px; display:block; }
+    @media (max-width:600px) { .hero-wave svg, .wv svg { height:48px; } }
+
     /* GRAIN */
     body::before {
       content:''; position:fixed; inset:0; pointer-events:none; z-index:9000; opacity:.045;
@@ -64,7 +70,6 @@
     .hero-eyebrow { font-family:var(--ff-s); color:var(--lime); font-size:1.5rem; display:block; margin-bottom:1rem; opacity:0; }
     .hero-title { font-family:var(--ff-d); font-size:clamp(3.5rem,9vw,8rem); font-weight:900; font-style:italic; color:white; line-height:.92; opacity:0; }
     .hero-sub { margin-top:1.5rem; font-size:.7rem; letter-spacing:.32em; text-transform:uppercase; color:rgba(255,255,255,.45); opacity:0; }
-    .hero::after { content:''; position:absolute; bottom:-1px; left:0; right:0; height:90px; background:var(--lime); clip-path:polygon(0 100%, 100% 20%, 100% 100%); z-index:2; }
 
     /* MARQUEE */
     .marquee-wrap { background:var(--lime); padding:.65rem 0; overflow:hidden; }
@@ -85,8 +90,8 @@
     .story-grid.flip .s-text { order:1; }
 
     .s-img { position:relative; }
-    .s-img img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; border-radius:14px; }
-    .year-badge { position:absolute; bottom:-1.5rem; left:-1.5rem; background:var(--tc); color:white; padding:.9rem 1.4rem; font-family:var(--ff-d); font-size:1.4rem; font-weight:900; box-shadow:0 8px 24px rgba(196,98,45,.35); border-radius:10px; }
+    .s-img img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; border-radius:20px; }
+    .year-badge { position:absolute; bottom:-1.5rem; left:-1.5rem; background:var(--tc); color:white; padding:.9rem 1.4rem; font-family:var(--ff-d); font-size:1.4rem; font-weight:900; box-shadow:0 8px 24px rgba(196,98,45,.35); border-radius:16px; }
 
     .s-text { padding-top:.5rem; }
     .s-text .sl { font-family:var(--ff-s); color:var(--tc); font-size:1.3rem; display:block; margin-bottom:1rem; }
@@ -107,8 +112,7 @@
     /* PULLQUOTE */
     .pullquote {
       background:var(--tc); padding:6rem 10vw; text-align:center;
-      clip-path:polygon(0 7%, 100% 0, 100% 93%, 0 100%);
-      margin:2rem 0; position:relative; overflow:hidden;
+      position:relative; overflow:hidden;
     }
     .pullquote::before {
       content:'LIMA'; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
@@ -123,7 +127,7 @@
     .pullquote cite { display:block; margin-top:2rem; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.4); font-style:normal; }
 
     /* ─── CHAPTER 2 (dark) ─── */
-    .ch2 { background:var(--dark); clip-path:polygon(0 4%,100% 0,100% 96%,0 100%); padding:9rem 0; margin:3rem 0; }
+    .ch2 { background:var(--dark); padding:9rem 0; }
     .ch2-inner { max-width:1280px; margin:0 auto; padding:0 7vw; }
     .ch2 .chapter-label h2 { color:white; }
     .ch2 .chapter-label .kicker { color:var(--lime); }
@@ -142,7 +146,7 @@
     .diego-text h3 { font-family:var(--ff-d); font-size:clamp(2.5rem,4vw,4rem); font-weight:900; font-style:italic; color:white; margin-bottom:1.5rem; line-height:.95; }
     .diego-text p { color:rgba(255,255,255,.58); line-height:1.9; }
     .diego-text p+p { margin-top:1rem; }
-    .diego-img img { width:100%; aspect-ratio:3/4; object-fit:cover; display:block; border-radius:14px; }
+    .diego-img img { width:100%; aspect-ratio:3/4; object-fit:cover; display:block; border-radius:20px; }
 
     /* CTA */
     .cta-wrap { padding:6rem 7vw; text-align:center; background:var(--sand); }
@@ -156,7 +160,7 @@
     .btn-ghost:hover { background:var(--tc); color:white; }
 
     /* FOOTER */
-    footer { background:var(--dark); color:white; clip-path:polygon(0 4%,100% 0,100% 100%,0 100%); padding:9rem 7vw 3rem; }
+    footer { background:var(--dark); color:white; padding:9rem 7vw 3rem; }
     .footer-top { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; margin-bottom:4rem; }
     .footer-brand p { color:rgba(255,255,255,.38); font-size:.85rem; line-height:1.95; margin-top:1.2rem; }
     .footer-col h4 { font-size:.68rem; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:var(--lime); margin-bottom:1.5rem; }
@@ -177,10 +181,9 @@
       .year-badge { bottom:1rem; left:1rem; }
       .tl-wrap::before { left:calc(1.5rem + 19px); }
       .tl-wrap { padding:5rem 1.5rem; }
-      .pullquote { clip-path:none; padding:5rem 1.5rem; }
-      .ch2 { clip-path:none; padding:6rem 0; }
+      .pullquote { padding:5rem 1.5rem; }
+      .ch2 { padding:6rem 0; }
       .footer-top { grid-template-columns:1fr 1fr; }
-      footer { clip-path:none; }
     }
     @media (max-width:600px) {
       .story-wrap { padding:5rem 1.5rem 0; }
@@ -222,6 +225,7 @@
       <h1 class="hero-title">Eine Geschichte<br><em>aus Lima</em></h1>
       <p class="hero-sub">Liebe &nbsp;·&nbsp; Ceviche &nbsp;·&nbsp; Frankfurt</p>
     </div>
+    <div class="hero-wave" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#7AB648"/></svg></div>
   </section>
 
   <div class="marquee-wrap" aria-hidden="true">
@@ -232,6 +236,7 @@
       <span>Diego</span><span>Frankfurt</span><span>2016</span><span>Nordend</span><span>La Cevi</span>
     </div>
   </div>
+  <div class="wv" aria-hidden="true" style="background:#7AB648;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#FAF7F0"/></svg></div>
 
   <!-- KAPITEL I -->
   <div class="story-wrap">
@@ -264,11 +269,14 @@
     <div class="tl-item" data-r><div class="tl-dot"><span>6</span></div><div class="tl-content"><h4>April 2016 — La Cevi öffnet</h4><p>Frankfurt Nordend. Der Traum wird Wirklichkeit. Peru kommt nach Frankfurt.</p></div></div>
   </div>
 
+  <div class="wv" aria-hidden="true" style="background:#FAF7F0;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#C4622D"/></svg></div>
+
   <!-- PULLQUOTE -->
   <div class="pullquote" data-r>
     <blockquote>Ich verliebte mich in diese wunderschöne Frau namens Heidi — und in das peruanische Essen.</blockquote>
     <cite>Über den Abend, der alles veränderte</cite>
   </div>
+  <div class="wv" aria-hidden="true" style="background:#C4622D;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#1A0F08"/></svg></div>
 
   <!-- KAPITEL II (dark) -->
   <section class="ch2">
@@ -318,6 +326,7 @@
       </div>
     </div>
   </section>
+  <div class="wv" aria-hidden="true" style="background:#1A0F08;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#F2E8D0"/></svg></div>
 
   <section class="cta-wrap">
     <span class="sl">Teil der Geschichte werden</span>
@@ -326,6 +335,7 @@
     <a href="https://www.gastronaut.com/la-cevi" target="_blank" rel="noopener" class="btn btn-fill">Tisch reservieren</a>
     <a href="kontakt.html" class="btn btn-ghost">Anfahrt</a>
   </section>
+  <div class="wv" aria-hidden="true" style="background:#F2E8D0;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#1A0F08"/></svg></div>
 
   <footer>
     <div class="footer-top">
