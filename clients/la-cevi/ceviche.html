@@ -4,15 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ceviche — La Cevi Frankfurt | Das Herzstück der peruanischen Küche</title>
-  <meta name="description" content="Ceviche — frisch, präzise, lebendig. Erfahre alles über die Nationalspeise Perus und wie wir sie bei La Cevi in Frankfurt zubereiten.">
+  <meta name="description" content="Ceviche — frisch, präzise, lebendig. Eben noch im Pazifik, jetzt auf Ihrem Teller. La Cevi Frankfurt Nordend.">
   <meta property="og:title" content="Ceviche — La Cevi Frankfurt">
-  <meta property="og:description" content="Eben noch im Pazifik geschwommen, jetzt auf Ihrem Teller. Ceviche: das Herzstück der peruanischen Küche.">
   <meta property="og:image" content="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-13-1024x678.jpg">
   <link rel="icon" href="https://la-cevi.de/wp-content/uploads/cropped-la-Cevi-favicon-32x32.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
@@ -21,396 +20,307 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --tc:   #C4622D;
-      --tc-d: #9E4A1E;
-      --tc-l: #E07845;
-      --lime: #6EA03A;
-      --sand: #F2E8D0;
-      --pac:  #1B4F7A;
-      --cream:#FAF7F0;
-      --dark: #1A0F08;
-      --text: #2D1A0A;
-      --muted:#7A5C40;
-      --ff-d: 'Playfair Display', Georgia, serif;
-      --ff-b: 'DM Sans', system-ui, sans-serif;
-      --ff-s: 'Dancing Script', cursive;
+      --tc:#C4622D; --tc-d:#9E4A1E; --tc-l:#E07845;
+      --lime:#7AB648; --lime-d:#558230;
+      --pac:#1B4F7A; --pac-l:#2B6FA0;
+      --sand:#F2E8D0; --cream:#FAF7F0;
+      --dark:#1A0F08; --text:#2D1A0A; --muted:#7A5C40;
+      --ff-d:'Playfair Display',Georgia,serif;
+      --ff-b:'DM Sans',system-ui,sans-serif;
+      --ff-s:'Dancing Script',cursive;
     }
     html { scroll-behavior: auto; }
     body { font-family: var(--ff-b); background: var(--cream); color: var(--text); overflow-x: hidden; line-height: 1.6; }
 
-    /* ─── NAV ─── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      padding: 1.2rem 5vw; display: flex; align-items: center; justify-content: space-between;
-      transition: background .45s, box-shadow .45s;
+    /* GRAIN */
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9000; opacity: .045;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
     }
-    nav.scrolled { background: rgba(26,15,8,.96); backdrop-filter: blur(16px); box-shadow: 0 1px 0 rgba(255,255,255,.05); }
-    .nav-logo { height: 38px; filter: brightness(0) invert(1); opacity: .92; display: block; }
-    .nav-center { display: flex; align-items: center; gap: 2.2rem; list-style: none; }
-    .nav-center a { color: rgba(255,255,255,.88); text-decoration: none; font-size: .72rem; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; transition: color .3s; }
-    .nav-center a:hover, .nav-center a.active { color: var(--tc-l); }
-    .nav-right { display: flex; align-items: center; gap: 1rem; }
-    .nav-right a { color: rgba(255,255,255,.75); transition: color .3s; }
-    .nav-right a:hover { color: var(--tc-l); }
-    .nav-right svg { width: 18px; height: 18px; fill: currentColor; display: block; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; border: none; background: none; padding: 4px; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; padding: 1.2rem 5vw; display: flex; align-items: center; justify-content: space-between; transition: background .45s, box-shadow .45s; }
+    nav.scrolled { background: rgba(26,15,8,.97); backdrop-filter: blur(18px); box-shadow: 0 1px 0 rgba(255,255,255,.04); }
+    .nav-logo { height: 36px; filter: brightness(0) invert(1); opacity: .92; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,.85); text-decoration: none; font-size: .72rem; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; transition: color .3s; }
+    .nav-links a:hover, .nav-links a.on { color: var(--lime); }
+    .nav-right { display: flex; gap: .9rem; align-items: center; }
+    .nav-right a { color: rgba(255,255,255,.7); transition: color .3s; }
+    .nav-right a:hover { color: var(--lime); }
+    .nav-right svg { width: 17px; height: 17px; fill: currentColor; display: block; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; border: none; background: none; }
     .hamburger span { display: block; width: 24px; height: 2px; background: white; }
     .mob-nav { display: none; position: fixed; inset: 0; background: var(--dark); z-index: 300; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; }
     .mob-nav.open { display: flex; }
-    .mob-nav a { color: white; text-decoration: none; font-family: var(--ff-d); font-size: clamp(2rem,6vw,3rem); font-style: italic; opacity: 0; }
+    .mob-nav a { color: white; text-decoration: none; font-family: var(--ff-d); font-size: clamp(2rem,7vw,3.5rem); font-style: italic; opacity: 0; }
     .mob-close { position: absolute; top: 1.5rem; right: 2rem; color: white; font-size: 1.8rem; cursor: pointer; background: none; border: none; }
 
-    /* ─── PAGE HERO ─── */
-    .page-hero {
-      position: relative; height: 75vh; min-height: 500px;
-      display: flex; align-items: flex-end; overflow: hidden;
-    }
-    .page-hero-bg {
-      position: absolute; inset: 0;
-      background: url('https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-13-1024x678.jpg') center 40% / cover no-repeat;
-      transform: scale(1.06); will-change: transform;
-    }
-    .page-hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(20,10,4,.88) 0%, rgba(20,10,4,.25) 60%, rgba(20,10,4,.05) 100%);
-    }
-    .page-hero-content { position: relative; z-index: 2; padding: 0 7vw 6rem; }
-    .page-eyebrow { font-family: var(--ff-s); color: var(--tc-l); font-size: 1.3rem; display: block; margin-bottom: .5rem; opacity: 0; }
-    .page-title { font-family: var(--ff-d); font-weight: 900; color: white; font-size: clamp(3.5rem, 9vw, 8rem); line-height: .9; letter-spacing: -.02em; opacity: 0; }
-    .page-tagline { font-size: .72rem; letter-spacing: .32em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-top: 1.5rem; opacity: 0; }
-    .page-hero::after {
-      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 80px;
-      background: var(--cream); clip-path: polygon(0 100%, 100% 0, 100% 100%);
-    }
+    /* PAGE HERO */
+    .hero { position: relative; height: 80vh; min-height: 560px; display: flex; align-items: flex-end; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: url('https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-13-1024x678.jpg') center 40% / cover no-repeat; transform: scale(1.06); will-change: transform; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(20,10,4,.9) 0%, rgba(20,10,4,.3) 55%, rgba(20,10,4,.05) 100%); }
+    .hero-content { position: relative; z-index: 2; padding: 0 7vw 6rem; }
+    .hero-eyebrow { font-family: var(--ff-s); color: var(--lime); font-size: 1.4rem; display: block; margin-bottom: .6rem; opacity: 0; }
+    .hero-title { font-family: var(--ff-d); font-weight: 900; color: white; font-size: clamp(4.5rem,11vw,9.5rem); line-height: .88; letter-spacing: -.025em; opacity: 0; }
+    .hero-sub { font-size: .7rem; letter-spacing: .35em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-top: 1.8rem; opacity: 0; }
+    .hero::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 90px; background: var(--lime); clip-path: polygon(0 100%, 100% 30%, 100% 100%); z-index: 2; }
 
-    /* ─── INTRO ─── */
-    .ceviche-intro { padding: 7rem 7vw 4rem; max-width: 820px; margin: 0 auto; text-align: center; }
-    .ceviche-intro .script-label { font-family: var(--ff-s); color: var(--tc); font-size: 1.2rem; display: block; margin-bottom: 1rem; }
-    .ceviche-intro h2 { font-family: var(--ff-d); font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 700; line-height: 1.2; margin-bottom: 1.5rem; }
-    .ceviche-intro p { color: var(--muted); font-size: 1.05rem; line-height: 1.9; }
-    .ceviche-intro .origin-note {
-      display: inline-block; margin-top: 2.5rem; padding: .6rem 2rem;
-      border: 1px solid var(--tc); color: var(--tc); font-size: .7rem;
-      letter-spacing: .2em; text-transform: uppercase;
-    }
+    /* MARQUEE */
+    .marquee-wrap { background: var(--lime); padding: .65rem 0; overflow: hidden; }
+    .marquee-inner { display: flex; white-space: nowrap; animation: scrollMarquee 35s linear infinite; }
+    .marquee-inner span { display: inline-block; font-size: .72rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: white; padding: 0 2rem; }
+    .marquee-inner span::after { content: '·'; margin-left: 2rem; opacity: .5; }
+    @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-    /* ─── CHAPTER SECTIONS ─── */
-    .chapter {
-      display: grid; grid-template-columns: 1fr 1fr; min-height: 580px; align-items: stretch;
-    }
-    .chapter:nth-child(even) .chapter-img { order: -1; }
-    .chapter-img { overflow: hidden; position: relative; min-height: 400px; }
-    .chapter-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 8s ease; }
-    .chapter:hover .chapter-img img { transform: scale(1.04); }
-    .chapter-body {
-      padding: 6rem 7vw; display: flex; flex-direction: column; justify-content: center;
-      background: var(--cream);
-    }
-    .chapter:nth-child(odd) .chapter-body { background: var(--cream); }
-    .chapter:nth-child(even) .chapter-body { background: var(--sand); }
-    .chapter-number {
-      font-family: var(--ff-d); font-size: 5rem; font-weight: 900; line-height: 1;
-      color: var(--tc); opacity: .15; display: block; margin-bottom: -.5rem;
-      font-style: italic;
-    }
-    .chapter-body h3 { font-family: var(--ff-d); font-size: clamp(1.8rem, 2.8vw, 2.4rem); font-weight: 700; margin-bottom: 1.5rem; line-height: 1.1; }
-    .chapter-body p { color: var(--muted); line-height: 1.85; font-size: .97rem; }
-    .chapter-body p + p { margin-top: 1rem; }
+    /* INTRO */
+    .intro-band { padding: 7rem 7vw 4rem; max-width: 860px; margin: 0 auto; text-align: center; }
+    .intro-band .sl { font-family: var(--ff-s); color: var(--tc); font-size: 1.2rem; display: block; margin-bottom: 1rem; }
+    .intro-band h2 { font-family: var(--ff-d); font-size: clamp(1.8rem,3.5vw,2.8rem); font-weight: 700; line-height: 1.15; margin-bottom: 1.5rem; }
+    .intro-band p { color: var(--muted); font-size: 1.05rem; line-height: 1.9; }
+    .pill { display: inline-flex; align-items: center; gap: .6rem; background: var(--lime); color: white; font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; padding: .5rem 1.4rem; border-radius: 100px; margin-top: 2rem; }
 
-    /* chapter 3 — dark accent */
-    .chapter.dark-chapter .chapter-body {
-      background: var(--dark); color: white;
-    }
-    .chapter.dark-chapter .chapter-body h3 { color: white; }
-    .chapter.dark-chapter .chapter-body p { color: rgba(255,255,255,.6); }
+    /* CHAPTERS */
+    .chapter { display: grid; grid-template-columns: 1fr 1fr; min-height: 560px; align-items: stretch; }
+    .chapter-flip .ch-img { order: -1; }
+    .ch-img { overflow: hidden; min-height: 380px; position: relative; }
+    .ch-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 8s ease; }
+    .chapter:hover .ch-img img { transform: scale(1.04); }
+    .ch-body { padding: 5rem 7vw; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+    .ch-body.cream { background: var(--cream); }
+    .ch-body.sand  { background: var(--sand); }
+    .ch-body.dark  { background: var(--dark); }
+    .ch-body.pac   { background: var(--pac); }
 
-    /* ─── QUOTE ─── */
-    .quote-band {
-      background: var(--tc); padding: 5rem 7vw; text-align: center;
-      clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%);
-      margin: 1rem 0;
+    .ch-num {
+      font-family: var(--ff-d); font-size: 7rem; font-weight: 900; font-style: italic;
+      line-height: 1; display: block; margin-bottom: -.5rem;
+      color: var(--lime); opacity: .18;
+      position: absolute; top: 2.5rem; right: 3vw;
     }
-    .quote-band blockquote {
-      font-family: var(--ff-d); font-style: italic; font-size: clamp(1.4rem, 3vw, 2.2rem);
-      color: white; max-width: 800px; margin: 0 auto; line-height: 1.4;
-    }
-    .quote-band blockquote::before { content: '\201C'; font-size: 4rem; line-height: 0; vertical-align: -.5em; margin-right: .2em; opacity: .4; }
-    .quote-band cite { display: block; margin-top: 1.5rem; font-size: .75rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.6); font-style: normal; }
+    .ch-body h3 { font-family: var(--ff-d); font-size: clamp(1.7rem,2.5vw,2.3rem); font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; }
+    .ch-body.dark h3, .ch-body.pac h3 { color: white; }
+    .ch-body p { color: var(--muted); line-height: 1.85; font-size: .97rem; }
+    .ch-body p + p { margin-top: 1rem; }
+    .ch-body.dark p, .ch-body.pac p { color: rgba(255,255,255,.6); }
 
-    /* ─── PERUVIAN CUISINE ─── */
-    .peru-section { padding: 7rem 7vw; max-width: 1260px; margin: 0 auto; }
-    .peru-section .section-head { text-align: center; margin-bottom: 4rem; }
-    .peru-section .section-head .script-label { font-family: var(--ff-s); color: var(--tc); font-size: 1.1rem; display: block; margin-bottom: .5rem; }
-    .peru-section .section-head h2 { font-family: var(--ff-d); font-size: clamp(2rem,4vw,3.2rem); font-weight: 700; }
+    /* lime accent line above chapter text */
+    .ch-body::before { content: ''; display: block; width: 40px; height: 3px; background: var(--lime); margin-bottom: 1.5rem; flex-shrink: 0; }
+
+    /* QUOTE */
+    .quote-band { background: var(--tc); padding: 5.5rem 7vw; text-align: center; clip-path: polygon(0 7%, 100% 0, 100% 93%, 0 100%); margin: 1rem 0; position: relative; overflow: hidden; }
+    .quote-band::before { content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-family: var(--ff-d); font-size: 18vw; font-weight: 900; font-style: italic; color: rgba(255,255,255,.04); pointer-events: none; white-space: nowrap; }
+    .quote-band blockquote { font-family: var(--ff-d); font-style: italic; color: white; font-size: clamp(1.5rem,3.5vw,2.5rem); line-height: 1.3; max-width: 820px; margin: 0 auto; }
+    .quote-band cite { display: block; margin-top: 1.5rem; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.45); font-style: normal; }
+
+    /* PERU SECTION */
+    .peru { padding: 7rem 7vw; max-width: 1260px; margin: 0 auto; }
+    .peru-head { margin-bottom: 4rem; }
+    .peru-head .sl { font-family: var(--ff-s); color: var(--tc); font-size: 1.3rem; display: block; margin-bottom: .5rem; }
+    .peru-head h2 { font-family: var(--ff-d); font-size: clamp(2rem,4vw,3.2rem); font-weight: 700; }
     .peru-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-    .peru-card { overflow: hidden; position: relative; }
-    .peru-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform .7s ease; }
-    .peru-card:hover img { transform: scale(1.04); }
-    .peru-card-body { padding: 2rem 2rem 0; }
-    .peru-card-body h4 { font-family: var(--ff-d); font-size: 1.3rem; font-weight: 700; margin-bottom: .8rem; }
+    .peru-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform .7s; }
+    .peru-card:hover img { transform: scale(1.03); }
+    .peru-card-body { padding: 2rem 0 0; }
+    .peru-card-body h4 { font-family: var(--ff-d); font-size: 1.3rem; font-weight: 700; margin-bottom: .75rem; }
     .peru-card-body p { color: var(--muted); font-size: .9rem; line-height: 1.8; }
-    .peru-fact {
-      background: var(--dark); color: white; padding: 2.5rem 3rem;
-      margin-top: 3rem; display: flex; align-items: center; gap: 3rem;
-    }
-    .peru-fact-num { font-family: var(--ff-d); font-size: 3.5rem; font-weight: 900; color: var(--tc-l); line-height: 1; white-space: nowrap; }
-    .peru-fact-text { color: rgba(255,255,255,.65); font-size: .92rem; line-height: 1.75; }
+    .peru-card { overflow: hidden; }
 
-    /* ─── CTA BOTTOM ─── */
-    .cta-bottom {
-      background: var(--dark); padding: 7rem 7vw; text-align: center;
+    /* FACT BLOCK */
+    .fact-block {
+      background: var(--dark); padding: 3rem; margin-top: 3rem;
+      display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center;
     }
-    .cta-bottom .script-label { font-family: var(--ff-s); color: var(--tc-l); font-size: 1.3rem; display: block; margin-bottom: 1rem; }
-    .cta-bottom h2 { font-family: var(--ff-d); font-size: clamp(2rem, 4vw, 3rem); color: white; margin-bottom: 1rem; }
-    .cta-bottom p { color: rgba(255,255,255,.55); margin-bottom: 2.5rem; max-width: 560px; margin-left: auto; margin-right: auto; }
-    .btn { display: inline-block; text-decoration: none; font-size: .75rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; padding: .95rem 2.4rem; transition: all .3s; }
+    .fact-num { font-family: var(--ff-d); font-size: 4rem; font-weight: 900; color: var(--lime); line-height: 1; white-space: nowrap; }
+    .fact-text { color: rgba(255,255,255,.62); line-height: 1.8; font-size: .93rem; }
+    .fact-text strong { color: white; }
+
+    /* CTA */
+    .cta-bottom { background: var(--pac); padding: 6rem 7vw; text-align: center; }
+    .cta-bottom .sl { font-family: var(--ff-s); color: rgba(255,255,255,.55); font-size: 1.3rem; display: block; margin-bottom: 1rem; }
+    .cta-bottom h2 { font-family: var(--ff-d); font-size: clamp(2rem,4vw,3rem); color: white; margin-bottom: 1rem; }
+    .cta-bottom p { color: rgba(255,255,255,.55); margin-bottom: 2.5rem; max-width: 520px; margin-left: auto; margin-right: auto; }
+    .btn { display: inline-block; text-decoration: none; font-size: .75rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; padding: 1rem 2.5rem; transition: all .3s; }
     .btn-fill { background: var(--tc); color: white; }
     .btn-fill:hover { background: var(--tc-d); transform: translateY(-2px); }
-    .btn-ghost { border: 1.5px solid rgba(255,255,255,.4); color: white; margin-left: 1rem; }
-    .btn-ghost:hover { border-color: var(--tc-l); color: var(--tc-l); }
+    .btn-lime { background: var(--lime); color: white; margin-left: 1rem; }
+    .btn-lime:hover { background: var(--lime-d); transform: translateY(-2px); }
 
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--dark); color: white;
-      clip-path: polygon(0 4%, 100% 0, 100% 100%, 0 100%);
-      padding: 9rem 7vw 3rem;
-    }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; }
-    .footer-brand p { color: rgba(255,255,255,.42); font-size: .85rem; line-height: 1.9; margin-top: 1.2rem; }
-    .footer-col h4 { font-size: .7rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; color: var(--tc-l); margin-bottom: 1.5rem; }
+    /* FOOTER */
+    footer { background: var(--dark); color: white; clip-path: polygon(0 4%, 100% 0, 100% 100%, 0 100%); padding: 9rem 7vw 3rem; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; }
+    .footer-brand p { color: rgba(255,255,255,.38); font-size: .85rem; line-height: 1.95; margin-top: 1.2rem; }
+    .footer-col h4 { font-size: .68rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--lime); margin-bottom: 1.5rem; }
     .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .8rem; }
-    .footer-col a { color: rgba(255,255,255,.52); text-decoration: none; font-size: .85rem; transition: color .3s; }
+    .footer-col a { color: rgba(255,255,255,.48); text-decoration: none; font-size: .85rem; transition: color .3s; }
     .footer-col a:hover { color: white; }
-    .footer-bottom { border-top: 1px solid rgba(255,255,255,.07); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .footer-bottom p { color: rgba(255,255,255,.25); font-size: .78rem; }
-    .footer-social { display: flex; gap: 1.2rem; }
-    .footer-social a { color: rgba(255,255,255,.4); transition: color .3s; }
-    .footer-social a:hover { color: var(--tc-l); }
-    .footer-social svg { width: 18px; height: 18px; fill: currentColor; display: block; }
+    .footer-bot { border-top: 1px solid rgba(255,255,255,.06); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-bot p { color: rgba(255,255,255,.22); font-size: .78rem; }
+    .footer-soc { display: flex; gap: 1.2rem; }
+    .footer-soc a { color: rgba(255,255,255,.38); transition: color .3s; }
+    .footer-soc a:hover { color: var(--lime); }
+    .footer-soc svg { width: 18px; height: 18px; fill: currentColor; display: block; }
 
-    /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
-      .nav-center, .nav-right { display: none; }
-      .hamburger { display: flex; }
+      .nav-links, .nav-right { display: none; } .hamburger { display: flex; }
       .chapter { grid-template-columns: 1fr; }
-      .chapter:nth-child(even) .chapter-img { order: 0; }
-      .chapter-img { min-height: 300px; aspect-ratio: 16/9; }
-      .chapter-body { padding: 3.5rem 1.5rem; }
+      .chapter-flip .ch-img { order: 0; }
+      .ch-img { min-height: 280px; aspect-ratio: 16/9; }
+      .ch-body { padding: 3.5rem 1.5rem; }
+      .ch-num { font-size: 5rem; }
       .peru-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-      .quote-band { clip-path: none; padding: 4rem 1.5rem; }
+      .fact-block { grid-template-columns: 1fr; gap: 1rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .quote-band { clip-path: none; }
+      footer { clip-path: none; }
     }
     @media (max-width: 600px) {
-      .page-hero-content { padding: 0 1.5rem 4rem; }
-      .ceviche-intro { padding: 5rem 1.5rem 3rem; }
-      .peru-section { padding: 5rem 1.5rem; }
+      .hero-content { padding: 0 1.5rem 4rem; }
+      .intro-band { padding: 5rem 1.5rem 3rem; }
+      .peru { padding: 5rem 1.5rem; }
       .cta-bottom { padding: 5rem 1.5rem; }
-      .footer-grid { grid-template-columns: 1fr; }
-      footer { clip-path: none; padding-top: 5rem; }
-      .peru-fact { flex-direction: column; gap: 1rem; }
+      .footer-top { grid-template-columns: 1fr; }
+      footer { padding-top: 5rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
   <nav id="nav">
     <a href="index.html"><img src="https://firebasestorage.googleapis.com/v0/b/schillingroofbarhd.appspot.com/o/restaurants%2Flacevi%2Fimages%2Fgeneral%2Fla-Cevi-Logo-rgb-625x300_id_s2K6wVBCenUOjgcEg4MB.jpg?alt=media&token=58e969f9-0470-45ec-89af-1cdfe79e8ba6" class="nav-logo" alt="La Cevi"></a>
-    <ul class="nav-center">
+    <ul class="nav-links">
       <li><a href="index.html">Startseite</a></li>
-      <li><a href="ceviche.html" class="active">Ceviche</a></li>
+      <li><a href="ceviche.html" class="on">Ceviche</a></li>
       <li><a href="ueber-uns.html">Geschichte</a></li>
       <li><a href="kontakt.html">Kontakt</a></li>
     </ul>
     <div class="nav-right">
-      <a href="https://www.instagram.com/la_cevi" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-      </a>
-      <a href="https://www.facebook.com/LaCeviFrankfurt" target="_blank" rel="noopener" aria-label="Facebook">
-        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-      </a>
+      <a href="https://www.instagram.com/la_cevi" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+      <a href="https://www.facebook.com/LaCeviFrankfurt" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
     </div>
     <button class="hamburger" id="hamburger" aria-label="Menü"><span></span><span></span><span></span></button>
   </nav>
   <div class="mob-nav" id="mobNav">
     <button class="mob-close" id="mobClose">&#x2715;</button>
-    <a href="index.html">Startseite</a>
-    <a href="ceviche.html">Ceviche</a>
-    <a href="ueber-uns.html">Geschichte</a>
-    <a href="kontakt.html">Kontakt</a>
+    <a href="index.html">Startseite</a><a href="ceviche.html">Ceviche</a>
+    <a href="ueber-uns.html">Geschichte</a><a href="kontakt.html">Kontakt</a>
   </div>
 
-  <!-- PAGE HERO -->
-  <section class="page-hero">
-    <div class="page-hero-bg" id="heroBg"></div>
-    <div class="page-hero-overlay"></div>
-    <div class="page-hero-content">
-      <span class="page-eyebrow">Das Herzstück</span>
-      <h1 class="page-title">Ceviche</h1>
-      <p class="page-tagline">frisch &nbsp;·&nbsp; präzise &nbsp;·&nbsp; lebendig</p>
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Das Herzstück</span>
+      <h1 class="hero-title">Ceviche</h1>
+      <p class="hero-sub">frisch &nbsp;·&nbsp; präzise &nbsp;·&nbsp; lebendig</p>
     </div>
   </section>
 
-  <!-- INTRO TEXT -->
-  <div class="ceviche-intro" data-reveal>
-    <span class="script-label">Eine Geschmacksexplosion, die ihresgleichen sucht</span>
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-inner">
+      <span>Adlerfisch</span><span>Limonensaft</span><span>Koriander</span><span>Zwiebeln</span>
+      <span>Süßkartoffel</span><span>Gerösteter Mais</span><span>Sellerie</span><span>Ají Amarillo</span>
+      <span>Adlerfisch</span><span>Limonensaft</span><span>Koriander</span><span>Zwiebeln</span>
+      <span>Süßkartoffel</span><span>Gerösteter Mais</span><span>Sellerie</span><span>Ají Amarillo</span>
+    </div>
+  </div>
+
+  <div class="intro-band" data-r>
+    <span class="sl">Eine Geschmacksexplosion, die ihresgleichen sucht</span>
     <h2>Einst Armenküche.<br>Heute Kulturerbe der Welt.</h2>
-    <p>Damals von Hochseefischern erfunden, die auf engem Bootsdeck keinen Platz für eine Feuerstelle hatten, ist Ceviche heute in der Welt der Spitzenküche angekommen — und hat in Peru sogar einen eigenen Feiertag: Den 28. Juni, den Tag des Ceviche.</p>
-    <span class="origin-note">28. Juni — Tag des Ceviche in Peru</span>
+    <p>Damals von Hochseefischern erfunden — kein Feuer, kein Herd, nur Limonensaft und der Ozean. Ceviche ist heute in der Welt der Spitzenküche angekommen und hat in Peru sogar einen eigenen Feiertag.</p>
+    <span class="pill">28. Juni — Tag des Ceviche in Peru</span>
   </div>
 
-  <!-- KAPITEL 1: Das Rezept -->
-  <div class="chapter" data-reveal>
-    <div class="chapter-img">
-      <img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-18.jpg" alt="Ceviche bei La Cevi" loading="lazy">
-    </div>
-    <div class="chapter-body">
-      <span class="chapter-number">I</span>
-      <h3>Das Rezept —<br>jahrhundertealt und unsterblich</h3>
-      <p>Die Legende erzählt: Hochseefischer, die kein Platz für eine Kochstelle auf ihren Booten hatten, garten den frisch geangelten Fisch einfach in Limonensaft. Was aus der Not entstand, wurde zur Kunst.</p>
-      <p>Das Rezept ist seit Jahrhunderten dasselbe — und doch lebt es. Weil es von Köchen wie unserem Diego immer wieder neu gedacht wird.</p>
-    </div>
+  <!-- Kapitel I -->
+  <div class="chapter" data-r>
+    <div class="ch-img"><img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-18.jpg" alt="Ceviche" loading="lazy"></div>
+    <div class="ch-body cream"><span class="ch-num">I</span><h3>Das Rezept —<br>jahrhundertealt und unsterblich</h3><p>Die Legende: Hochseefischer garten ihren Fang in Limonensaft — kein Platz für Feuer auf dem Boot. Was aus der Not entstand, wurde zur Kunst.</p><p>Das Rezept ist seit Jahrhunderten dasselbe und doch lebt es. Weil es von Köchen wie unserem Diego immer wieder neu gedacht wird.</p></div>
   </div>
 
-  <!-- KAPITEL 2: Verlangt Perfektion -->
-  <div class="chapter" data-reveal>
-    <div class="chapter-img">
-      <img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-9.jpg" alt="Ceviche Zubereitung" loading="lazy">
-    </div>
-    <div class="chapter-body">
-      <span class="chapter-number">II</span>
-      <h3>Ceviche verlangt<br>höchste Perfektion</h3>
-      <p>Durch den Saft der Limonen gerinnt das Eiweiß — der Fisch erhält seinen Biss, ohne je Hitze zu berühren. Was so schlicht klingt, offenbart seine Tiefe erst im Detail.</p>
-      <p>Die Stücke des Fischs müssen die perfekte Größe haben. Die Limette den richtigen Säuregrad. Jede Komponente muss auf die andere abgestimmt sein wie Instrumente in einem Ensemble.</p>
-    </div>
+  <!-- Kapitel II -->
+  <div class="chapter chapter-flip" data-r>
+    <div class="ch-img"><img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-9.jpg" alt="Zubereitung" loading="lazy"></div>
+    <div class="ch-body sand"><span class="ch-num">II</span><h3>Verlangt höchste<br>Perfektion</h3><p>Durch Limonensaft gerinnt das Eiweiß — der Fisch erhält seinen Biss ohne Hitze. Doch was schlicht klingt, offenbart seine Tiefe erst im Detail.</p><p>Die Stücke müssen die perfekte Größe haben. Die Limette den richtigen Säuregrad. Jede Komponente muss auf die andere abgestimmt sein.</p></div>
   </div>
 
-  <!-- ZITAT -->
-  <div class="quote-band">
-    <blockquote>
-      Eben noch im Pazifik geschwommen. Jetzt auf Ihrem Teller als Ceviche.
-    </blockquote>
+  <!-- QUOTE -->
+  <div class="quote-band" data-r>
+    <blockquote>Eben noch im Pazifik geschwommen.<br>Jetzt auf Ihrem Teller als Ceviche.</blockquote>
     <cite>La Cevi Frankfurt — frischer geht's nicht</cite>
   </div>
 
-  <!-- KAPITEL 3: Kalt gegart -->
-  <div class="chapter dark-chapter" data-reveal>
-    <div class="chapter-img">
-      <img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-8.jpg" alt="Ceviche Anrichtung" loading="lazy">
-    </div>
-    <div class="chapter-body">
-      <span class="chapter-number" style="opacity:.2">III</span>
-      <h3>Ceviche ist<br>kalt gegart</h3>
-      <p>In mundgerechte Happen geschnittener Adlerfisch, gegart allein durch die Kraft des Limonensafts. Verfeinert mit hauchdünn geschnittenen Zwiebeln, Sellerie und Koriander.</p>
-      <p>Serviert mit Süßkartoffeln und geröstetem Mais — jede Textur ein Kontrapunkt, jeder Geschmack eine Antwort auf den nächsten.</p>
-    </div>
+  <!-- Kapitel III -->
+  <div class="chapter" data-r>
+    <div class="ch-img"><img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-8.jpg" alt="Ceviche Anrichtung" loading="lazy"></div>
+    <div class="ch-body pac"><span class="ch-num" style="color:rgba(255,255,255,.12);opacity:1">III</span><h3>Kalt gegart</h3><p>In mundgerechte Happen geschnittener Adlerfisch, gegart allein durch die Kraft des Limonensafts. Verfeinert mit hauchdünn geschnittenen Zwiebeln, Sellerie und Koriander.</p><p>Serviert mit Süßkartoffeln und geröstetem Mais — jede Textur ein Kontrapunkt, jeder Geschmack eine Antwort auf den nächsten.</p></div>
   </div>
 
-  <!-- KAPITEL 4: Benötigt Talent -->
-  <div class="chapter" data-reveal>
-    <div class="chapter-img">
-      <img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-11-1024x678.jpg" alt="La Cevi Küche" loading="lazy">
-    </div>
-    <div class="chapter-body">
-      <span class="chapter-number">IV</span>
-      <h3>Ceviche benötigt<br>echtes Talent</h3>
-      <p>Um ein annähernd originalgetreues peruanisches Geschmackserlebnis zu kreieren, braucht man viel Erfahrung — und Leidenschaft, die sich nicht lernen lässt.</p>
-      <p>Unser Koch Diego hat diese Leidenschaft seit seiner Kindheit. Er hat in den Küchen Perus gelernt, bei Spitzenrestaurants wie Astrid &amp; Gastón gearbeitet — und bringt dieses Handwerk jetzt nach Frankfurt.</p>
-    </div>
+  <!-- Kapitel IV -->
+  <div class="chapter chapter-flip" data-r>
+    <div class="ch-img"><img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-11-1024x678.jpg" alt="La Cevi Küche" loading="lazy"></div>
+    <div class="ch-body dark"><span class="ch-num" style="color:rgba(255,255,255,.08);opacity:1">IV</span><h3>Benötigt echtes<br>Talent</h3><p>Um ein originalgetreues peruanisches Geschmackserlebnis zu kreieren, braucht man Erfahrung — und Leidenschaft, die sich nicht lernen lässt.</p><p>Unser Koch Diego hat in den Küchen Perus gelernt, bei Spitzenrestaurants wie Astrid &amp; Gastón gearbeitet — und bringt dieses Handwerk nach Frankfurt.</p></div>
   </div>
 
-  <!-- PERUANISCHE KÜCHE -->
-  <section class="peru-section">
-    <div class="section-head">
-      <span class="script-label">Mehr als Ceviche</span>
+  <!-- Peruanische Küche -->
+  <section class="peru">
+    <div class="peru-head" data-r>
+      <span class="sl">Mehr als Ceviche</span>
       <h2>Die peruanische Küche</h2>
     </div>
     <div class="peru-grid">
-      <div class="peru-card" data-reveal>
-        <img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-11-1024x678.jpg" alt="Peruanische Vielfalt" loading="lazy">
+      <div class="peru-card" data-r>
+        <img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-11-1024x678.jpg" alt="Vielfalt" loading="lazy">
         <div class="peru-card-body">
           <h4>Vielfältig wie kein anderes Land</h4>
-          <p>Die peruanische Küche ist eine Fusion aus chinesischen, spanischen, arabischen, japanischen, afrikanischen und französischen Einflüssen — geformt von Küste, Urwald und Anden. Allein 3.000 verschiedene Kartoffelsorten wachsen in Peru. Und der peruanische Koch sucht für jedes Gericht die perfekte.</p>
+          <p>Fusion aus chinesischen, spanischen, arabischen, japanischen, afrikanischen und französischen Einflüssen — geformt von Küste, Urwald und Anden. Allein 3.000 verschiedene Kartoffelsorten wachsen in Peru.</p>
         </div>
       </div>
-      <div class="peru-card" data-reveal>
-        <img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-10-1024x678.jpg" alt="Kulinarisch prämiert" loading="lazy">
+      <div class="peru-card" data-r>
+        <img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-10-1024x678.jpg" alt="Prämiert" loading="lazy">
         <div class="peru-card-body">
           <h4>Viermal bestes kulinarisches Reiseziel der Welt</h4>
-          <p>Peru hat viermal in Folge den World Travel Award als bestes kulinarisches Reiseziel gewonnen. Perus bekanntester VIP ist kein Fußballer, kein Politiker — sondern ein Koch. Gastón Acurio, der in einem der 50 besten Restaurants der Welt kocht. Unser Diego durfte bei ihm lernen.</p>
+          <p>Peru hat viermal in Folge den World Travel Award gewonnen. Perus bekanntester VIP ist kein Fußballer — sondern ein Koch. Gastón Acurio. Unser Diego durfte bei ihm lernen.</p>
         </div>
       </div>
     </div>
-    <div class="peru-fact" data-reveal>
-      <div class="peru-fact-num">4 ×</div>
-      <div class="peru-fact-text">Peru wurde viermal hintereinander mit dem <strong style="color:white">World Travel Award</strong> als bestes kulinarisches Reiseziel der Welt ausgezeichnet. Frankfurt hat wegen seiner Lage zum Flughafen ideale Voraussetzungen für fangfrischen Fisch — eben noch im Pazifik, jetzt auf Ihrem Teller.</div>
+    <div class="fact-block" data-r>
+      <div class="fact-num">4 ×</div>
+      <div class="fact-text">Peru wurde <strong>viermal hintereinander</strong> mit dem World Travel Award als bestes kulinarisches Reiseziel der Welt ausgezeichnet. Frankfurt hat durch seine Nähe zum Flughafen ideale Voraussetzungen für fangfrischen Fisch — eben noch im Pazifik, jetzt auf Ihrem Teller.</div>
     </div>
   </section>
 
-  <!-- CTA -->
   <section class="cta-bottom">
-    <span class="script-label">Frankfurt trifft Lima</span>
-    <h2>Jetzt endlich auch hier</h2>
+    <span class="sl">Frankfurt trifft Lima</span>
+    <h2>Jetzt auch hier</h2>
     <p>London, Paris, New York — Ceviche ist in den Weltmetropolen seit Jahren angekommen. Willkommen in Frankfurt.</p>
     <a href="https://www.gastronaut.com/la-cevi" target="_blank" rel="noopener" class="btn btn-fill">Tisch reservieren</a>
-    <a href="https://la-cevi.de/wp-content/uploads/2025.07.03_La-Cevi-ceviche_Speisen-und-Getraenke.pdf" target="_blank" rel="noopener" class="btn btn-ghost">Speisekarte</a>
+    <a href="https://la-cevi.de/wp-content/uploads/2025.07.03_La-Cevi-ceviche_Speisen-und-Getraenke.pdf" target="_blank" rel="noopener" class="btn btn-lime">Speisekarte</a>
   </section>
 
-  <!-- FOOTER -->
   <footer>
-    <div class="footer-grid">
+    <div class="footer-top">
       <div class="footer-brand">
         <img src="https://firebasestorage.googleapis.com/v0/b/schillingroofbarhd.appspot.com/o/restaurants%2Flacevi%2Fimages%2Fgeneral%2Fla-Cevi-Logo-rgb-625x300_id_s2K6wVBCenUOjgcEg4MB.jpg?alt=media&token=58e969f9-0470-45ec-89af-1cdfe79e8ba6" class="nav-logo" alt="La Cevi">
         <p>Peruanische Küche mit Herz.<br>Eine Liebesgeschichte aus Lima,<br>jetzt in Frankfurt Nordend.</p>
       </div>
-      <div class="footer-col">
-        <h4>Navigation</h4>
-        <ul>
-          <li><a href="index.html">Startseite</a></li>
-          <li><a href="ceviche.html">Ceviche</a></li>
-          <li><a href="ueber-uns.html">Geschichte</a></li>
-          <li><a href="kontakt.html">Kontakt &amp; Anfahrt</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Schnellzugriff</h4>
-        <ul>
-          <li><a href="https://www.gastronaut.com/la-cevi" target="_blank">Tisch reservieren</a></li>
-          <li><a href="https://www.bon-bon.de/gutschein/la-cevi/" target="_blank">Gutschein kaufen</a></li>
-          <li><a href="https://la-cevi.de/wp-content/uploads/2025.07.03_La-Cevi-ceviche_Speisen-und-Getraenke.pdf" target="_blank">Speisekarte</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Kontakt</h4>
-        <ul>
-          <li><a href="tel:06966377778">069 / 66 37 77 78</a></li>
-          <li><a href="mailto:info@la-cevi.de">info@la-cevi.de</a></li>
-        </ul>
-        <h4 style="margin-top:1.8rem">Rechtliches</h4>
-        <ul>
-          <li><a href="#">Impressum</a></li>
-          <li><a href="#">Datenschutz</a></li>
-        </ul>
-      </div>
+      <div class="footer-col"><h4>Navigation</h4><ul><li><a href="index.html">Startseite</a></li><li><a href="ceviche.html">Ceviche</a></li><li><a href="ueber-uns.html">Geschichte</a></li><li><a href="kontakt.html">Kontakt</a></li></ul></div>
+      <div class="footer-col"><h4>Schnellzugriff</h4><ul><li><a href="https://www.gastronaut.com/la-cevi" target="_blank">Tisch reservieren</a></li><li><a href="https://www.bon-bon.de/gutschein/la-cevi/" target="_blank">Gutschein</a></li><li><a href="https://la-cevi.de/wp-content/uploads/2025.07.03_La-Cevi-ceviche_Speisen-und-Getraenke.pdf" target="_blank">Speisekarte PDF</a></li></ul></div>
+      <div class="footer-col"><h4>Kontakt</h4><ul><li><a href="tel:06966377778">069 / 66 37 77 78</a></li><li><a href="mailto:info@la-cevi.de">info@la-cevi.de</a></li></ul><h4 style="margin-top:1.8rem">Rechtliches</h4><ul><li><a href="#">Impressum</a></li><li><a href="#">Datenschutz</a></li></ul></div>
     </div>
-    <div class="footer-bottom">
+    <div class="footer-bot">
       <p>© 2024 La Cevi Frankfurt — Alle Rechte vorbehalten</p>
-      <div class="footer-social">
-        <a href="https://www.instagram.com/la_cevi" target="_blank" rel="noopener" aria-label="Instagram">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </a>
-        <a href="https://www.facebook.com/LaCeviFrankfurt" target="_blank" rel="noopener" aria-label="Facebook">
-          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        </a>
-        <a href="https://www.yelp.de/biz/la-cevi-frankfurt-am-main" target="_blank" rel="noopener" aria-label="Yelp">
-          <svg viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.365 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/></svg>
-        </a>
+      <div class="footer-soc">
+        <a href="https://www.instagram.com/la_cevi" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        <a href="https://www.facebook.com/LaCeviFrankfurt" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        <a href="https://www.yelp.de/biz/la-cevi-frankfurt-am-main" target="_blank" rel="noopener" aria-label="Yelp"><svg viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.365 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/></svg></a>
       </div>
     </div>
   </footer>
 
   <script>
-    const lenis = new Lenis({ lerp: 0.1 });
+    const lenis = new Lenis({ lerp: 0.09 });
     function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
     gsap.registerPlugin(ScrollTrigger);
@@ -418,45 +328,19 @@
     gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    // Hero entrance
-    gsap.set(['.page-eyebrow','.page-title','.page-tagline'], { opacity: 0, y: 28 });
-    const tl = gsap.timeline({ delay: 0.2 });
-    tl.to('#heroBg', { scale: 1, duration: 1.8, ease: 'power2.out' })
-      .to('.page-eyebrow', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=1.4')
-      .to('.page-title',   { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out' }, '-=0.35')
-      .to('.page-tagline', { opacity: 1, y: 0, duration: 0.6 }, '-=0.3');
+    gsap.set(['.hero-eyebrow','.hero-title','.hero-sub'], { opacity: 0, y: 28 });
+    gsap.timeline({ delay: .2 })
+      .to('#heroBg', { scale: 1, duration: 1.8, ease: 'power2.out' })
+      .to('.hero-eyebrow', { opacity: 1, y: 0, duration: .65, ease: 'power2.out' }, '-=1.4')
+      .to('.hero-title',   { opacity: 1, y: 0, duration: .9,  ease: 'power3.out' }, '-=.4')
+      .to('.hero-sub',     { opacity: 1, y: 0, duration: .6 }, '-=.3');
 
-    gsap.to('#heroBg', {
-      yPercent: 20, ease: 'none',
-      scrollTrigger: { trigger: '.page-hero', start: 'top top', end: 'bottom top', scrub: true }
-    });
+    gsap.to('#heroBg', { yPercent: 20, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+    ScrollTrigger.create({ start: 'top -60', onUpdate: self => document.getElementById('nav').classList.toggle('scrolled', self.scroll() > 60) });
+    gsap.utils.toArray('[data-r]').forEach(el => gsap.from(el, { y: 60, opacity: 0, duration: .9, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 88%' } }));
+    gsap.utils.toArray('.ch-num').forEach(n => gsap.to(n, { y: -50, ease: 'none', scrollTrigger: { trigger: n.closest('.chapter'), start: 'top bottom', end: 'bottom top', scrub: true } }));
 
-    ScrollTrigger.create({
-      start: 'top -60',
-      onUpdate: self => document.getElementById('nav').classList.toggle('scrolled', self.scroll() > 60)
-    });
-
-    gsap.utils.toArray('[data-reveal]').forEach(el => {
-      gsap.from(el, {
-        y: 50, opacity: 0, duration: 0.85, ease: 'power2.out',
-        scrollTrigger: { trigger: el, start: 'top 87%' }
-      });
-    });
-
-    // Chapter number parallax
-    gsap.utils.toArray('.chapter-number').forEach(n => {
-      gsap.to(n, {
-        y: -40, ease: 'none',
-        scrollTrigger: { trigger: n.closest('.chapter'), start: 'top bottom', end: 'bottom top', scrub: true }
-      });
-    });
-
-    // Mobile nav
-    document.getElementById('hamburger').addEventListener('click', () => {
-      const mob = document.getElementById('mobNav');
-      mob.classList.add('open');
-      gsap.fromTo('.mob-nav a', { opacity: 0, y: 25 }, { opacity: 1, y: 0, stagger: 0.08, duration: 0.4 });
-    });
+    document.getElementById('hamburger').addEventListener('click', () => { const m = document.getElementById('mobNav'); m.classList.add('open'); gsap.fromTo('.mob-nav a', { opacity: 0, y: 25 }, { opacity: 1, y: 0, stagger: .08, duration: .4 }); });
     document.getElementById('mobClose').addEventListener('click', () => document.getElementById('mobNav').classList.remove('open'));
   </script>
 </body>
