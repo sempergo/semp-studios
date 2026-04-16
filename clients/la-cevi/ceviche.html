@@ -84,7 +84,7 @@
     /* CHAPTERS */
     .chapter { display: grid; grid-template-columns: 1fr 1fr; min-height: 560px; align-items: stretch; }
     .chapter-flip .ch-img { order: -1; }
-    .ch-img { overflow: hidden; min-height: 380px; position: relative; }
+    .ch-img { overflow: hidden; min-height: 380px; position: relative; border-radius: 16px; }
     .ch-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 8s ease; }
     .chapter:hover .ch-img img { transform: scale(1.04); }
     .ch-body { padding: 5rem 7vw; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
@@ -120,7 +120,7 @@
     .peru-head .sl { font-family: var(--ff-s); color: var(--tc); font-size: 1.3rem; display: block; margin-bottom: .5rem; }
     .peru-head h2 { font-family: var(--ff-d); font-size: clamp(2rem,4vw,3.2rem); font-weight: 700; }
     .peru-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-    .peru-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform .7s; }
+    .peru-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform .7s; border-radius: 12px; }
     .peru-card:hover img { transform: scale(1.03); }
     .peru-card-body { padding: 2rem 0 0; }
     .peru-card-body h4 { font-family: var(--ff-d); font-size: 1.3rem; font-weight: 700; margin-bottom: .75rem; }
@@ -131,6 +131,7 @@
     .fact-block {
       background: var(--dark); padding: 3rem; margin-top: 3rem;
       display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: center;
+      border-radius: 20px;
     }
     .fact-num { font-family: var(--ff-d); font-size: 4rem; font-weight: 900; color: var(--lime); line-height: 1; white-space: nowrap; }
     .fact-text { color: rgba(255,255,255,.62); line-height: 1.8; font-size: .93rem; }
@@ -141,7 +142,7 @@
     .cta-bottom .sl { font-family: var(--ff-s); color: rgba(255,255,255,.55); font-size: 1.3rem; display: block; margin-bottom: 1rem; }
     .cta-bottom h2 { font-family: var(--ff-d); font-size: clamp(2rem,4vw,3rem); color: white; margin-bottom: 1rem; }
     .cta-bottom p { color: rgba(255,255,255,.55); margin-bottom: 2.5rem; max-width: 520px; margin-left: auto; margin-right: auto; }
-    .btn { display: inline-block; text-decoration: none; font-size: .75rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; padding: 1rem 2.5rem; transition: all .3s; }
+    .btn { display: inline-block; text-decoration: none; font-size: .75rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; padding: 1rem 2.5rem; transition: all .3s; border-radius: 50px; }
     .btn-fill { background: var(--tc); color: white; }
     .btn-fill:hover { background: var(--tc-d); transform: translateY(-2px); }
     .btn-lime { background: var(--lime); color: white; margin-left: 1rem; }
