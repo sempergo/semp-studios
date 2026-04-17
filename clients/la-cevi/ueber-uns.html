@@ -6,13 +6,12 @@
   <title>Unsere Geschichte — La Cevi Frankfurt | Eine Liebesgeschichte aus Lima</title>
   <meta name="description" content="Eine Reise nach Lima, eine Begegnung mit Heidi, das Ceviche — und ein Koch namens Diego. Die Geschichte hinter La Cevi Frankfurt.">
   <meta property="og:title" content="Unsere Geschichte — La Cevi Frankfurt">
+  <meta property="og:description" content="Bogotá, Lima, Heidi, Ceviche, Hochzeit, Diego, Frankfurt. Die Geschichte hinter La Cevi.">
   <meta property="og:image" content="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-17-1024x678.jpg">
   <link rel="icon" href="https://la-cevi.de/wp-content/uploads/cropped-la-Cevi-favicon-32x32.png">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
-
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@latest/dist/lenis.min.js"></script>
@@ -20,182 +19,288 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --tc:#C4622D; --tc-d:#9E4A1E; --tc-l:#E07845;
-      --lime:#7AB648; --lime-d:#558230;
-      --pac:#1B4F7A; --sand:#F2E8D0; --cream:#FAF7F0;
-      --dark:#1A0F08; --text:#2D1A0A; --muted:#7A5C40;
-      --ff-d:'Playfair Display',Georgia,serif;
-      --ff-b:'DM Sans',system-ui,sans-serif;
-      --ff-s:'Dancing Script',cursive;
+      --tc:    #C4622D; --tc-d: #9E4A1E; --tc-l: #E07845;
+      --lime:  #7AB648; --lime-d: #558230;
+      --pac:   #1B4F7A;
+      --sand:  #F2E8D0; --off: #F5F0E8; --cream: #FAF7F0;
+      --dark:  #0f0a05; --text: #2D1A0A; --muted: #7A5C40;
+      --ff-d:  'Playfair Display', Georgia, serif;
+      --ff-b:  'DM Sans', system-ui, sans-serif;
+      --ff-s:  'Dancing Script', cursive;
     }
     html { scroll-behavior: auto; }
-    body { font-family: var(--ff-b); background: var(--cream); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+    body { font-family: var(--ff-b); background: var(--off); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9000; opacity: .05;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    .cursor-dot {
+      width: 10px; height: 10px; background: var(--lime); border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 9999; top: 0; left: 0;
+      will-change: transform; transition: width .25s, height .25s, background .25s, border .25s;
+    }
+    .cursor-dot.big { width: 44px; height: 44px; background: transparent; border: 1.5px solid var(--lime); margin: -17px 0 0 -17px; }
+    @media (hover: none) { .cursor-dot { display: none; } }
+
+    .float-cta {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 150;
+      background: var(--tc); color: white; padding: .85rem 1.8rem; border-radius: 50px;
+      font-size: .7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      text-decoration: none; opacity: 0; transform: translateY(16px);
+      transition: opacity .4s, transform .4s, background .25s;
+      box-shadow: 0 8px 30px rgba(196,98,45,.4); pointer-events: none;
+    }
+    .float-cta.on { opacity: 1; transform: translateY(0); pointer-events: all; }
+    .float-cta:hover { background: var(--tc-d); }
+    @media (max-width: 600px) { .float-cta { display: none; } }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 1.2rem 5vw; display: flex; align-items: center; justify-content: space-between;
+      transition: background .45s, box-shadow .45s;
+    }
+    nav.scrolled { background: rgba(15,10,5,.97); backdrop-filter: blur(18px); box-shadow: 0 1px 0 rgba(255,255,255,.04); }
+    .nav-logo { height: 36px; filter: brightness(0) invert(1); opacity: .9; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,.8); text-decoration: none; font-size: .7rem; font-weight: 400; letter-spacing: .16em; text-transform: uppercase; transition: color .3s; }
+    .nav-links a:hover, .nav-links a.on { color: var(--lime); }
+    .nav-right { display: flex; gap: .9rem; align-items: center; }
+    .nav-right a { color: rgba(255,255,255,.65); transition: color .3s; }
+    .nav-right a:hover { color: var(--lime); }
+    .nav-right svg { width: 17px; height: 17px; fill: currentColor; display: block; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; border: none; background: none; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: white; transition: .3s; }
+    .mob-nav { display: none; position: fixed; inset: 0; background: var(--dark); z-index: 300; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; }
+    .mob-nav.open { display: flex; }
+    .mob-nav a { color: white; text-decoration: none; font-family: var(--ff-d); font-size: clamp(2rem,7vw,3.5rem); font-style: italic; opacity: 0; }
+    .mob-close { position: absolute; top: 1.5rem; right: 2rem; color: white; font-size: 1.8rem; cursor: pointer; background: none; border: none; }
 
     /* WAVES */
-    .hero-wave { position:absolute; bottom:0; left:0; right:0; z-index:3; line-height:0; }
-    .wv { display:block; margin:0; line-height:0; }
-    .hero-wave svg, .wv svg { width:100%; height:70px; display:block; }
-    @media (max-width:600px) { .hero-wave svg, .wv svg { height:48px; } }
+    .hero-wave { position: absolute; bottom: 0; left: 0; right: 0; z-index: 4; line-height: 0; opacity: 0; }
+    .wv { display: block; margin: 0; line-height: 0; }
+    .hero-wave svg, .wv svg { width: 100%; height: 70px; display: block; }
+    @media (max-width: 600px) { .hero-wave svg, .wv svg { height: 48px; } }
 
-    /* GRAIN */
-    body::before {
-      content:''; position:fixed; inset:0; pointer-events:none; z-index:9000; opacity:.045;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size:200px 200px;
+    /* HERO */
+    .hero {
+      position: relative; height: 92vh; min-height: 620px;
+      overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;
     }
-
-    /* NAV */
-    nav { position:fixed; top:0; left:0; right:0; z-index:200; padding:1.2rem 5vw; display:flex; align-items:center; justify-content:space-between; transition:background .45s,box-shadow .45s; }
-    nav.scrolled { background:rgba(26,15,8,.97); backdrop-filter:blur(18px); box-shadow:0 1px 0 rgba(255,255,255,.04); }
-    .nav-logo { height:36px; filter:brightness(0) invert(1); opacity:.92; display:block; }
-    .nav-links { display:flex; align-items:center; gap:2rem; list-style:none; }
-    .nav-links a { color:rgba(255,255,255,.85); text-decoration:none; font-size:.72rem; font-weight:400; letter-spacing:.14em; text-transform:uppercase; transition:color .3s; }
-    .nav-links a:hover, .nav-links a.on { color:var(--lime); }
-    .nav-right { display:flex; gap:.9rem; align-items:center; }
-    .nav-right a { color:rgba(255,255,255,.7); transition:color .3s; }
-    .nav-right a:hover { color:var(--lime); }
-    .nav-right svg { width:17px; height:17px; fill:currentColor; display:block; }
-    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; border:none; background:none; }
-    .hamburger span { display:block; width:24px; height:2px; background:white; }
-    .mob-nav { display:none; position:fixed; inset:0; background:var(--dark); z-index:300; flex-direction:column; align-items:center; justify-content:center; gap:2.5rem; }
-    .mob-nav.open { display:flex; }
-    .mob-nav a { color:white; text-decoration:none; font-family:var(--ff-d); font-size:clamp(2rem,7vw,3.5rem); font-style:italic; opacity:0; }
-    .mob-close { position:absolute; top:1.5rem; right:2rem; color:white; font-size:1.8rem; cursor:pointer; background:none; border:none; }
-
-    /* PAGE HERO */
-    .hero { position:relative; height:80vh; min-height:580px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-    .hero-bg { position:absolute; inset:0; background:url('https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-17-1024x678.jpg') center 30%/cover no-repeat; transform:scale(1.06); will-change:transform; }
-    .hero-overlay { position:absolute; inset:0; background:linear-gradient(160deg, rgba(20,10,4,.8) 0%, rgba(20,10,4,.5) 50%, rgba(20,10,4,.88) 100%); }
-    .hero-center { position:relative; z-index:2; text-align:center; padding:0 7vw; }
-    .hero-eyebrow { font-family:var(--ff-s); color:var(--lime); font-size:1.5rem; display:block; margin-bottom:1rem; opacity:0; }
-    .hero-title { font-family:var(--ff-d); font-size:clamp(3.5rem,9vw,8rem); font-weight:900; font-style:italic; color:white; line-height:.92; opacity:0; }
-    .hero-sub { margin-top:1.5rem; font-size:.7rem; letter-spacing:.32em; text-transform:uppercase; color:rgba(255,255,255,.45); opacity:0; }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-17-1024x678.jpg') center 30% / cover no-repeat;
+      transform: scale(1.1); will-change: transform;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to top, rgba(10,5,2,.97) 0%, rgba(10,5,2,.7) 38%, rgba(10,5,2,.12) 72%, transparent 100%),
+        linear-gradient(115deg, rgba(10,5,2,.5) 0%, transparent 55%);
+    }
+    .hero-vert {
+      position: absolute; left: 2.5vw; bottom: 42%; z-index: 3;
+      writing-mode: vertical-rl; transform: rotate(180deg);
+      font-size: .6rem; letter-spacing: .26em; text-transform: uppercase;
+      color: rgba(255,255,255,.2); user-select: none;
+    }
+    .hero-content { position: relative; z-index: 3; padding: 0 6vw 4.5rem 7vw; }
+    .hero-row-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .5rem; }
+    .hero-script { font-family: var(--ff-s); color: var(--tc-l); font-size: 1.6rem; }
+    .hero-year { font-size: .6rem; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.25); }
+    .hero-mask { overflow: hidden; }
+    .hero-title {
+      font-family: var(--ff-d); font-weight: 900; font-style: italic; color: white;
+      font-size: clamp(4.5rem, 13vw, 12rem);
+      line-height: .88; letter-spacing: -.025em; display: block;
+      transform: translateY(110%);
+    }
+    .hero-title em { font-style: normal; color: var(--tc-l); }
+    .hero-row-bot {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1.5rem; margin-top: 2.5rem; opacity: 0;
+    }
+    .hero-sub { font-size: .68rem; letter-spacing: .34em; text-transform: uppercase; color: rgba(255,255,255,.38); }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
 
     /* MARQUEE */
-    .marquee-wrap { background:var(--lime); padding:.65rem 0; overflow:hidden; }
-    .marquee-inner { display:flex; white-space:nowrap; animation:scrollMarquee 40s linear infinite; }
-    .marquee-inner span { display:inline-block; font-size:.72rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:white; padding:0 2rem; }
-    .marquee-inner span::after { content:'·'; margin-left:2rem; opacity:.5; }
-    @keyframes scrollMarquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .marquee-wrap { background: var(--lime); padding: .8rem 0; overflow: hidden; }
+    .marquee-inner { display: flex; white-space: nowrap; animation: scrollM 32s linear infinite; }
+    .marquee-inner span { display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: white; padding: 0 2.5rem; }
+    .marquee-inner span::after { content: '·'; margin-left: 2.5rem; opacity: .45; }
+    @keyframes scrollM { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-    /* ─── CHAPTER 1 WRAPPER ─── */
-    .story-wrap { max-width:1280px; margin:0 auto; padding:7rem 7vw 0; }
+    /* BUTTONS */
+    .btn { display: inline-block; text-decoration: none; font-size: .73rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; padding: 1rem 2.4rem; transition: all .3s; cursor: pointer; border: none; border-radius: 50px; }
+    .btn-fill { background: var(--tc); color: white; }
+    .btn-fill:hover { background: var(--tc-d); transform: translateY(-2px); }
+    .btn-ghost-w { border: 1.5px solid rgba(255,255,255,.4); color: white; }
+    .btn-ghost-w:hover { border-color: var(--lime); color: var(--lime); }
+    .btn-ghost-d { border: 1.5px solid var(--tc); color: var(--tc); }
+    .btn-ghost-d:hover { background: var(--tc); color: white; }
 
-    .chapter-label { margin-bottom:4rem; }
-    .chapter-label .kicker { font-size:.68rem; letter-spacing:.25em; text-transform:uppercase; color:var(--lime); display:block; margin-bottom:.75rem; font-weight:600; }
-    .chapter-label h2 { font-family:var(--ff-d); font-size:clamp(2.8rem,6vw,5rem); font-weight:900; line-height:.92; }
+    /* MANIFESTO */
+    .manifesto {
+      background: var(--dark); padding: 10rem 10vw;
+      position: relative; overflow: hidden;
+    }
+    .manifesto::before {
+      content: 'LIMA';
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      font-family: var(--ff-d); font-size: 28vw; font-weight: 900; font-style: italic;
+      color: rgba(255,255,255,.03); white-space: nowrap; pointer-events: none; line-height: 1;
+    }
+    .manifesto-pre { font-family: var(--ff-s); color: rgba(255,255,255,.45); font-size: 1.4rem; display: block; margin-bottom: 2.5rem; }
+    .manifesto blockquote {
+      font-family: var(--ff-d); font-style: italic; font-weight: 900;
+      font-size: clamp(2.8rem, 5.5vw, 5.5rem); color: white;
+      line-height: 1.05; max-width: 860px;
+    }
+    .manifesto blockquote em { font-style: normal; color: var(--tc-l); }
+    .manifesto-rule { width: 60px; height: 3px; background: var(--lime); margin-top: 4rem; }
 
-    .story-grid { display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:start; margin-bottom:6rem; }
-    .story-grid.flip .s-img { order:2; }
-    .story-grid.flip .s-text { order:1; }
+    /* STORY CHAPTERS (light) */
+    .story-wrap { max-width: 1400px; margin: 0 auto; padding: 8rem 7vw 0; }
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: center; margin-bottom: 8rem; }
+    .story-grid.flip .s-img { order: 2; }
+    .story-grid.flip .s-text { order: 1; }
+    .s-img { position: relative; }
+    .s-img img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; border-radius: 24px; }
+    .year-badge {
+      position: absolute; bottom: -1.5rem; left: -1.5rem;
+      background: var(--tc); color: white; padding: .9rem 1.6rem;
+      font-family: var(--ff-d); font-size: 1.5rem; font-weight: 900;
+      box-shadow: 0 8px 28px rgba(196,98,45,.4); border-radius: 18px;
+    }
+    .s-text { padding-top: .5rem; }
+    .s-text::before { content: ''; display: block; width: 44px; height: 3px; background: var(--lime); margin-bottom: 1.8rem; }
+    .s-text .sl { font-family: var(--ff-s); color: var(--tc); font-size: 1.3rem; display: block; margin-bottom: .9rem; }
+    .s-text h3 {
+      font-family: var(--ff-d); font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+      font-weight: 700; line-height: 1.08; margin-bottom: 1.6rem;
+    }
+    .s-text p { color: var(--muted); line-height: 1.9; font-size: .97rem; }
+    .s-text p + p { margin-top: 1.1rem; }
 
-    .s-img { position:relative; }
-    .s-img img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; border-radius:20px; }
-    .year-badge { position:absolute; bottom:-1.5rem; left:-1.5rem; background:var(--tc); color:white; padding:.9rem 1.4rem; font-family:var(--ff-d); font-size:1.4rem; font-weight:900; box-shadow:0 8px 24px rgba(196,98,45,.35); border-radius:16px; }
-
-    .s-text { padding-top:.5rem; }
-    .s-text .sl { font-family:var(--ff-s); color:var(--tc); font-size:1.3rem; display:block; margin-bottom:1rem; }
-    .s-text h3 { font-family:var(--ff-d); font-size:clamp(1.7rem,2.5vw,2.4rem); font-weight:700; line-height:1.1; margin-bottom:1.5rem; }
-    .s-text p { color:var(--muted); line-height:1.9; font-size:.97rem; }
-    .s-text p+p { margin-top:1.1rem; }
-    .s-text::before { content:''; display:block; width:40px; height:3px; background:var(--lime); margin-bottom:1.5rem; }
-
-    /* TIMELINE */
-    .tl-wrap { padding:6rem 7vw; max-width:960px; margin:0 auto; position:relative; }
-    .tl-wrap::before { content:''; position:absolute; left:calc(7vw + 19px); top:6rem; bottom:6rem; width:2px; background:linear-gradient(to bottom,var(--tc),rgba(196,98,45,.15)); }
-    .tl-item { display:flex; gap:3rem; margin-bottom:3.5rem; }
-    .tl-dot { flex-shrink:0; width:40px; height:40px; border-radius:50%; background:var(--tc); display:flex; align-items:center; justify-content:center; z-index:1; margin-top:.15rem; }
-    .tl-dot span { color:white; font-weight:700; font-size:.75rem; font-family:var(--ff-d); }
-    .tl-content h4 { font-family:var(--ff-d); font-size:1.2rem; font-weight:700; margin-bottom:.5rem; }
-    .tl-content p { color:var(--muted); font-size:.9rem; line-height:1.8; }
+    /* TIMELINE editorial */
+    .tl-section { padding: 0 7vw 8rem; max-width: 1400px; margin: 0 auto; }
+    .tl-head { margin-bottom: 5rem; }
+    .tl-head .kicker { font-size: .68rem; letter-spacing: .25em; text-transform: uppercase; color: var(--lime); display: block; margin-bottom: .75rem; font-weight: 600; }
+    .tl-head h2 { font-family: var(--ff-d); font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 900; line-height: .92; }
+    .tl-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.5rem; }
+    .tl-card {
+      padding: 2.5rem; border-radius: 24px;
+      background: var(--off); border: 1px solid rgba(45,26,10,.08);
+      position: relative; overflow: hidden;
+      transition: transform .35s, box-shadow .35s;
+    }
+    .tl-card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(45,26,10,.1); }
+    .tl-card-num {
+      font-family: var(--ff-d); font-size: 6rem; font-weight: 900; font-style: italic;
+      color: var(--tc); opacity: .12; position: absolute; top: 1rem; right: 1.5rem;
+      line-height: 1;
+    }
+    .tl-year { font-size: .65rem; letter-spacing: .22em; text-transform: uppercase; color: var(--lime); font-weight: 700; display: block; margin-bottom: .9rem; }
+    .tl-card h4 { font-family: var(--ff-d); font-size: 1.3rem; font-weight: 700; margin-bottom: .65rem; line-height: 1.15; }
+    .tl-card p { color: var(--muted); font-size: .88rem; line-height: 1.82; }
 
     /* PULLQUOTE */
-    .pullquote {
-      background:var(--tc); padding:6rem 10vw; text-align:center;
-      position:relative; overflow:hidden;
-    }
+    .pullquote { background: var(--tc); padding: 9rem 10vw; text-align: center; position: relative; overflow: hidden; }
     .pullquote::before {
-      content:'LIMA'; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-      font-family:var(--ff-d); font-size:22vw; font-weight:900; font-style:italic;
-      color:rgba(255,255,255,.04); pointer-events:none; white-space:nowrap;
+      content: 'LIMA'; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      font-family: var(--ff-d); font-size: 22vw; font-weight: 900; font-style: italic;
+      color: rgba(255,255,255,.04); pointer-events: none; white-space: nowrap;
     }
     .pullquote blockquote {
-      font-family:var(--ff-d); font-style:italic; font-size:clamp(1.6rem,3.5vw,2.8rem);
-      color:white; line-height:1.25; max-width:820px; margin:0 auto;
+      font-family: var(--ff-d); font-style: italic; font-size: clamp(2.2rem, 5vw, 4.5rem);
+      color: white; line-height: 1.1; max-width: 820px; margin: 0 auto; font-weight: 900;
     }
-    .pullquote blockquote::before { content:'\201E'; font-size:5rem; line-height:0; vertical-align:-.6em; margin-right:.1em; opacity:.4; font-style:normal; display:block; margin-bottom:-.5rem; }
-    .pullquote cite { display:block; margin-top:2rem; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.4); font-style:normal; }
+    .pullquote-rule { width: 60px; height: 3px; background: var(--lime); margin: 3rem auto 0; }
+    .pullquote cite { display: block; margin-top: 2.5rem; font-size: .7rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.38); font-style: normal; }
 
-    /* ─── CHAPTER 2 (dark) ─── */
-    .ch2 { background:var(--dark); padding:9rem 0; }
-    .ch2-inner { max-width:1280px; margin:0 auto; padding:0 7vw; }
-    .ch2 .chapter-label h2 { color:white; }
-    .ch2 .chapter-label .kicker { color:var(--lime); }
-
-    .dark-grid { display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:start; margin-bottom:5rem; }
-    .dark-grid .ds-text .sl { font-family:var(--ff-s); color:var(--tc-l); font-size:1.3rem; display:block; margin-bottom:1rem; }
-    .dark-grid .ds-text h3 { font-family:var(--ff-d); font-size:clamp(1.7rem,2.5vw,2.4rem); font-weight:700; color:white; line-height:1.1; margin-bottom:1.5rem; }
-    .dark-grid .ds-text p { color:rgba(255,255,255,.58); line-height:1.9; font-size:.97rem; }
-    .dark-grid .ds-text p+p { margin-top:1rem; }
-    .dark-grid .ds-text::before { content:''; display:block; width:40px; height:3px; background:var(--lime); margin-bottom:1.5rem; }
-    .dark-grid .s-img img { filter:brightness(.85); }
+    /* DARK CHAPTER — Lima Story */
+    .dark-story { background: var(--dark); padding: 9rem 0; }
+    .dark-story-inner { max-width: 1400px; margin: 0 auto; padding: 0 7vw; }
+    .dark-chapter-label { margin-bottom: 5rem; }
+    .dark-chapter-label .kicker { font-size: .68rem; letter-spacing: .25em; text-transform: uppercase; color: var(--lime); display: block; margin-bottom: .75rem; font-weight: 600; }
+    .dark-chapter-label h2 { font-family: var(--ff-d); font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 900; line-height: .92; color: white; }
+    .dark-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: center; margin-bottom: 7rem; }
+    .dark-grid .ds-text::before { content: ''; display: block; width: 44px; height: 3px; background: var(--lime); margin-bottom: 1.8rem; }
+    .dark-grid .ds-text .sl { font-family: var(--ff-s); color: var(--tc-l); font-size: 1.3rem; display: block; margin-bottom: .9rem; }
+    .dark-grid .ds-text h3 { font-family: var(--ff-d); font-size: clamp(1.8rem, 2.6vw, 2.6rem); font-weight: 700; color: white; line-height: 1.08; margin-bottom: 1.6rem; }
+    .dark-grid .ds-text p { color: rgba(255,255,255,.56); line-height: 1.9; font-size: .97rem; }
+    .dark-grid .ds-text p + p { margin-top: 1.1rem; }
+    .dark-grid .s-img img { filter: brightness(.82); }
 
     /* DIEGO */
-    .diego-block { display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:center; margin-top:4rem; }
-    .diego-text .sl { font-family:var(--ff-s); color:var(--lime); font-size:1.4rem; display:block; margin-bottom:1rem; }
-    .diego-text h3 { font-family:var(--ff-d); font-size:clamp(2.5rem,4vw,4rem); font-weight:900; font-style:italic; color:white; margin-bottom:1.5rem; line-height:.95; }
-    .diego-text p { color:rgba(255,255,255,.58); line-height:1.9; }
-    .diego-text p+p { margin-top:1rem; }
-    .diego-img img { width:100%; aspect-ratio:3/4; object-fit:cover; display:block; border-radius:20px; }
+    .diego-block { display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: center; border-top: 1px solid rgba(255,255,255,.08); padding-top: 6rem; }
+    .diego-img img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; border-radius: 24px; }
+    .diego-text::before { content: ''; display: block; width: 44px; height: 3px; background: var(--lime); margin-bottom: 1.8rem; }
+    .diego-text .sl { font-family: var(--ff-s); color: var(--lime); font-size: 1.4rem; display: block; margin-bottom: .9rem; }
+    .diego-text h3 {
+      font-family: var(--ff-d); font-size: clamp(3rem, 5vw, 5rem);
+      font-weight: 900; font-style: italic; color: white; margin-bottom: 1.5rem; line-height: .92;
+    }
+    .diego-text p { color: rgba(255,255,255,.56); line-height: 1.9; }
+    .diego-text p + p { margin-top: 1.1rem; }
 
-    /* CTA */
-    .cta-wrap { padding:6rem 7vw; text-align:center; background:var(--sand); }
-    .cta-wrap .sl { font-family:var(--ff-s); color:var(--tc); font-size:1.3rem; display:block; margin-bottom:1rem; }
-    .cta-wrap h2 { font-family:var(--ff-d); font-size:clamp(2rem,4vw,3rem); font-weight:700; margin-bottom:1rem; }
-    .cta-wrap p { color:var(--muted); margin-bottom:2.5rem; max-width:480px; margin-left:auto; margin-right:auto; }
-    .btn { display:inline-block; text-decoration:none; font-size:.75rem; font-weight:500; letter-spacing:.15em; text-transform:uppercase; padding:1rem 2.5rem; transition:all .3s; border-radius:50px; }
-    .btn-fill { background:var(--tc); color:white; }
-    .btn-fill:hover { background:var(--tc-d); transform:translateY(-2px); }
-    .btn-ghost { border:1.5px solid var(--tc); color:var(--tc); margin-left:1rem; }
-    .btn-ghost:hover { background:var(--tc); color:white; }
+    /* CTA SAND */
+    .cta-sand { background: var(--sand); padding: 8rem 7vw; text-align: center; }
+    .cta-sand .sl { font-family: var(--ff-s); color: var(--tc); font-size: 1.4rem; display: block; margin-bottom: 1rem; }
+    .cta-sand h2 { font-family: var(--ff-d); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; line-height: .95; margin-bottom: 1rem; }
+    .cta-sand p { color: var(--muted); margin-bottom: 3rem; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.8; }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* SCRIPT LABEL */
+    .sl { font-family: var(--ff-s); font-size: 1.1rem; display: block; margin-bottom: .6rem; }
 
     /* FOOTER */
-    footer { background:var(--dark); color:white; padding:9rem 7vw 3rem; }
-    .footer-top { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; margin-bottom:4rem; }
-    .footer-brand p { color:rgba(255,255,255,.38); font-size:.85rem; line-height:1.95; margin-top:1.2rem; }
-    .footer-col h4 { font-size:.68rem; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:var(--lime); margin-bottom:1.5rem; }
-    .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:.8rem; }
-    .footer-col a { color:rgba(255,255,255,.48); text-decoration:none; font-size:.85rem; transition:color .3s; }
-    .footer-col a:hover { color:white; }
-    .footer-bot { border-top:1px solid rgba(255,255,255,.06); padding-top:2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
-    .footer-bot p { color:rgba(255,255,255,.22); font-size:.78rem; }
-    .footer-soc { display:flex; gap:1.2rem; }
-    .footer-soc a { color:rgba(255,255,255,.38); transition:color .3s; }
-    .footer-soc a:hover { color:var(--lime); }
-    .footer-soc svg { width:18px; height:18px; fill:currentColor; display:block; }
+    footer { background: var(--dark); color: white; padding: 9rem 7vw 3rem; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; }
+    .footer-brand .nav-logo { margin-bottom: 1.5rem; }
+    .footer-brand p { color: rgba(255,255,255,.35); font-size: .85rem; line-height: 1.95; }
+    .footer-col h4 { font-size: .67rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--lime); margin-bottom: 1.5rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .8rem; }
+    .footer-col a { color: rgba(255,255,255,.45); text-decoration: none; font-size: .85rem; transition: color .3s; }
+    .footer-col a:hover { color: white; }
+    .footer-bot { border-top: 1px solid rgba(255,255,255,.06); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-bot p { color: rgba(255,255,255,.2); font-size: .78rem; }
+    .footer-soc { display: flex; gap: 1.2rem; }
+    .footer-soc a { color: rgba(255,255,255,.35); transition: color .3s; }
+    .footer-soc a:hover { color: var(--lime); }
+    .footer-soc svg { width: 18px; height: 18px; fill: currentColor; display: block; }
 
-    @media (max-width:900px) {
-      .nav-links,.nav-right { display:none; } .hamburger { display:flex; }
-      .story-grid,.dark-grid,.diego-block { grid-template-columns:1fr; gap:2.5rem; }
-      .story-grid.flip .s-img,.story-grid.flip .s-text { order:0; }
-      .year-badge { bottom:1rem; left:1rem; }
-      .tl-wrap::before { left:calc(1.5rem + 19px); }
-      .tl-wrap { padding:5rem 1.5rem; }
-      .pullquote { padding:5rem 1.5rem; }
-      .ch2 { padding:6rem 0; }
-      .footer-top { grid-template-columns:1fr 1fr; }
+    @media (max-width: 900px) {
+      .nav-links, .nav-right { display: none; } .hamburger { display: flex; }
+      .story-grid, .dark-grid, .diego-block { grid-template-columns: 1fr; gap: 3rem; }
+      .story-grid.flip .s-img, .story-grid.flip .s-text { order: 0; }
+      .year-badge { bottom: 1rem; left: 1rem; }
+      .tl-grid { grid-template-columns: 1fr 1fr; }
+      .manifesto { padding: 7rem 7vw; }
+      .dark-story { padding: 6rem 0; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
     }
-    @media (max-width:600px) {
-      .story-wrap { padding:5rem 1.5rem 0; }
-      .ch2-inner { padding:0 1.5rem; }
-      .cta-wrap { padding:5rem 1.5rem; }
-      .footer-top { grid-template-columns:1fr; }
-      footer { padding-top:5rem; }
-      .hero-center { padding:0 1.5rem; }
+    @media (max-width: 600px) {
+      .hero-content { padding: 0 1.5rem 4rem; }
+      .hero-vert { display: none; }
+      .manifesto { padding: 6rem 1.5rem; }
+      .manifesto blockquote { font-size: clamp(2.2rem, 8vw, 3rem); }
+      .story-wrap { padding: 5rem 1.5rem 0; }
+      .tl-section { padding: 0 1.5rem 5rem; }
+      .tl-grid { grid-template-columns: 1fr; }
+      .dark-story-inner { padding: 0 1.5rem; }
+      .cta-sand { padding: 6rem 1.5rem; }
+      .footer-top { grid-template-columns: 1fr; }
+      footer { padding-top: 5rem; }
     }
   </style>
 </head>
 <body>
+
+  <div class="cursor-dot" id="cursorDot"></div>
+  <a href="https://www.gastronaut.com/la-cevi" target="_blank" rel="noopener" class="float-cta" id="floatCta">Reservieren</a>
 
   <nav id="nav">
     <a href="index.html"><img src="https://firebasestorage.googleapis.com/v0/b/schillingroofbarhd.appspot.com/o/restaurants%2Flacevi%2Fimages%2Fgeneral%2Fla-Cevi-Logo-rgb-625x300_id_s2K6wVBCenUOjgcEg4MB.jpg?alt=media&token=58e969f9-0470-45ec-89af-1cdfe79e8ba6" class="nav-logo" alt="La Cevi"></a>
@@ -213,21 +318,37 @@
   </nav>
   <div class="mob-nav" id="mobNav">
     <button class="mob-close" id="mobClose">&#x2715;</button>
-    <a href="index.html">Startseite</a><a href="ceviche.html">Ceviche</a>
-    <a href="ueber-uns.html">Geschichte</a><a href="kontakt.html">Kontakt</a>
+    <a href="index.html">Startseite</a>
+    <a href="ceviche.html">Ceviche</a>
+    <a href="ueber-uns.html">Geschichte</a>
+    <a href="kontakt.html">Kontakt</a>
   </div>
 
-  <section class="hero">
+  <!-- HERO -->
+  <section class="hero" id="hero">
     <div class="hero-bg" id="heroBg"></div>
     <div class="hero-overlay"></div>
-    <div class="hero-center">
-      <span class="hero-eyebrow">Mit Liebe</span>
-      <h1 class="hero-title">Eine Geschichte<br><em>aus Lima</em></h1>
-      <p class="hero-sub">Liebe &nbsp;·&nbsp; Ceviche &nbsp;·&nbsp; Frankfurt</p>
+    <div class="hero-vert" aria-hidden="true">Bogotá &nbsp;·&nbsp; Lima &nbsp;·&nbsp; Heidi &nbsp;·&nbsp; Frankfurt &nbsp;·&nbsp; 2016</div>
+    <div class="hero-content">
+      <div class="hero-row-top">
+        <span class="hero-script">Mit Liebe gemacht</span>
+        <span class="hero-year">April 2016</span>
+      </div>
+      <div class="hero-mask">
+        <h1 class="hero-title">Eine<br><em>Geschichte.</em></h1>
+      </div>
+      <div class="hero-row-bot">
+        <p class="hero-sub">liebe &nbsp;·&nbsp; ceviche &nbsp;·&nbsp; frankfurt</p>
+        <div class="hero-actions">
+          <a href="https://www.gastronaut.com/la-cevi" target="_blank" rel="noopener" class="btn btn-fill">Tisch reservieren</a>
+          <a href="kontakt.html" class="btn btn-ghost-w">Anfahrt</a>
+        </div>
+      </div>
     </div>
     <div class="hero-wave" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#7AB648"/></svg></div>
   </section>
 
+  <!-- MARQUEE -->
   <div class="marquee-wrap" aria-hidden="true">
     <div class="marquee-inner">
       <span>Bogotá</span><span>Lima</span><span>Heidi</span><span>Ceviche</span><span>Hochzeit</span>
@@ -236,14 +357,18 @@
       <span>Diego</span><span>Frankfurt</span><span>2016</span><span>Nordend</span><span>La Cevi</span>
     </div>
   </div>
-  <div class="wv" aria-hidden="true" style="background:#7AB648;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#FAF7F0"/></svg></div>
+  <div class="wv" aria-hidden="true" style="background:#7AB648;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#0f0a05"/></svg></div>
 
-  <!-- KAPITEL I -->
+  <!-- MANIFESTO -->
+  <section class="manifesto" data-r>
+    <span class="manifesto-pre">Wie alles begann</span>
+    <blockquote>Eine Reise.<br>Eine Begegnung.<br><em>Eine Liebe.</em></blockquote>
+    <div class="manifesto-rule"></div>
+  </section>
+  <div class="wv" aria-hidden="true" style="background:#0f0a05;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#F5F0E8"/></svg></div>
+
+  <!-- KAPITEL I - Story -->
   <div class="story-wrap">
-    <div class="chapter-label" data-r>
-      <span class="kicker">Kapitel I</span>
-      <h2>2016 eröffnet</h2>
-    </div>
     <div class="story-grid" data-r>
       <div class="s-img">
         <img src="https://la-cevi.de/wp-content/uploads/La_Cevi_La_Cevi__-FFM__Delinski_7c063b95_Lemon_One-2-1024x683.jpg" alt="La Cevi" loading="lazy">
@@ -252,38 +377,75 @@
       <div class="s-text">
         <span class="sl">Der Beginn</span>
         <h3>Eine lange Reise.<br>Eine neue Heimat.</h3>
-        <p>Die Liebe meines Lebens, ein völlig neues kulinarisches Lebensgefühl und den Traum, diese mit nach Frankfurt zu bringen – brachte ich von einer langen Reise mit nach Hause.</p>
-        <p>Aber das alles wusste ich noch nicht, als ich vor 10 Jahren auf einen Trip durch Südamerika aufbrach. Ich war in Kolumbien, Mexico, Guatemala. Doch mein bewegendstes Erlebnis machte ich in Peru.</p>
-        <p>Mit Stolz haben wir unser Restaurant „La Cevi" am Merianplatz im April 2016 eröffnet und sind am 04.10.2019 in die Weberstrasse 84 in eine grössere und schönere Location umgezogen.</p>
+        <p>Die Liebe meines Lebens, ein völlig neues kulinarisches Lebensgefühl und den Traum, diese mit nach Frankfurt zu bringen — alles brachte ich von einer langen Reise durch Südamerika mit nach Hause.</p>
+        <p>Aber das alles wusste ich noch nicht, als ich aufbrach. Ich war in Kolumbien, Mexiko, Guatemala. Doch mein bewegendstes Erlebnis machte ich in Peru.</p>
+        <p>Mit Stolz haben wir La Cevi im April 2016 am Merianplatz eröffnet und sind 2019 in die Weberstrasse 84 umgezogen.</p>
       </div>
     </div>
   </div>
 
-  <!-- TIMELINE -->
-  <div class="tl-wrap">
-    <div class="tl-item" data-r><div class="tl-dot"><span>1</span></div><div class="tl-content"><h4>Die Reise beginnt</h4><p>Kolumbien, Mexiko, Guatemala — doch das bewegendste Erlebnis wartet in Peru.</p></div></div>
-    <div class="tl-item" data-r><div class="tl-dot"><span>2</span></div><div class="tl-content"><h4>Bogotá → Lima</h4><p>Im Flugzeug rät ein Sitznachbar eindringlich: Probier die Köstlichkeiten Perus. Du wirst dich darin verlieben.</p></div></div>
-    <div class="tl-item" data-r><div class="tl-dot"><span>3</span></div><div class="tl-content"><h4>Heidi &amp; das erste Ceviche</h4><p>Eine wunderbare Peruanerin namens Heidi. Ceviche, Pisco. Eine unvergessliche Nacht in Lima.</p></div></div>
-    <div class="tl-item" data-r><div class="tl-dot"><span>4</span></div><div class="tl-content"><h4>Die Hochzeit</h4><p>Drei Jahre später heirateten wir — und träumten gemeinsam davon, Perus Küche nach Deutschland zu bringen.</p></div></div>
-    <div class="tl-item" data-r><div class="tl-dot"><span>5</span></div><div class="tl-content"><h4>Diego kommt dazu</h4><p>Eine weitere Reise nach Lima. Der Koch, der alles vervollständigt: Diego.</p></div></div>
-    <div class="tl-item" data-r><div class="tl-dot"><span>6</span></div><div class="tl-content"><h4>April 2016 — La Cevi öffnet</h4><p>Frankfurt Nordend. Der Traum wird Wirklichkeit. Peru kommt nach Frankfurt.</p></div></div>
+  <!-- TIMELINE CARDS -->
+  <div class="tl-section">
+    <div class="tl-head" data-r>
+      <span class="kicker">Schritt für Schritt</span>
+      <h2>So entstand<br>La Cevi</h2>
+    </div>
+    <div class="tl-grid">
+      <div class="tl-card" data-r>
+        <span class="tl-card-num">1</span>
+        <span class="tl-year">Südamerika</span>
+        <h4>Die Reise beginnt</h4>
+        <p>Kolumbien, Mexiko, Guatemala — doch das bewegendste Erlebnis wartet in Peru.</p>
+      </div>
+      <div class="tl-card" data-r>
+        <span class="tl-card-num">2</span>
+        <span class="tl-year">Bogotá → Lima</span>
+        <h4>Der Rat eines Fremden</h4>
+        <p>Im Flugzeug rät ein Sitznachbar eindringlich: Probier die Köstlichkeiten Perus. Du wirst dich darin verlieben.</p>
+      </div>
+      <div class="tl-card" data-r>
+        <span class="tl-card-num">3</span>
+        <span class="tl-year">Lima, eine Nacht</span>
+        <h4>Heidi &amp; das erste Ceviche</h4>
+        <p>Eine wunderbare Peruanerin namens Heidi. Ceviche, Pisco. Eine unvergessliche Nacht in Lima.</p>
+      </div>
+      <div class="tl-card" data-r>
+        <span class="tl-card-num">4</span>
+        <span class="tl-year">Drei Jahre später</span>
+        <h4>Die Hochzeit</h4>
+        <p>Drei Jahre später heirateten wir — und träumten gemeinsam davon, Perus Küche nach Deutschland zu bringen.</p>
+      </div>
+      <div class="tl-card" data-r>
+        <span class="tl-card-num">5</span>
+        <span class="tl-year">Lima, erneut</span>
+        <h4>Diego kommt dazu</h4>
+        <p>Eine weitere Reise nach Lima. Der Koch, der alles vervollständigt: Diego. Ausgebildet bei Gastón Acurio.</p>
+      </div>
+      <div class="tl-card" data-r>
+        <span class="tl-card-num">6</span>
+        <span class="tl-year">April 2016</span>
+        <h4>La Cevi öffnet</h4>
+        <p>Frankfurt Nordend. Der Traum wird Wirklichkeit. Peru kommt nach Frankfurt.</p>
+      </div>
+    </div>
   </div>
 
-  <div class="wv" aria-hidden="true" style="background:#FAF7F0;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#C4622D"/></svg></div>
+  <div class="wv" aria-hidden="true" style="background:#F5F0E8;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#C4622D"/></svg></div>
 
   <!-- PULLQUOTE -->
   <div class="pullquote" data-r>
-    <blockquote>Ich verliebte mich in diese wunderschöne Frau namens Heidi — und in das peruanische Essen.</blockquote>
+    <blockquote>Ich verliebte mich<br>in Heidi — und in<br>das peruanische Essen.</blockquote>
+    <div class="pullquote-rule"></div>
     <cite>Über den Abend, der alles veränderte</cite>
   </div>
-  <div class="wv" aria-hidden="true" style="background:#C4622D;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#1A0F08"/></svg></div>
+  <div class="wv" aria-hidden="true" style="background:#C4622D;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#0f0a05"/></svg></div>
 
-  <!-- KAPITEL II (dark) -->
-  <section class="ch2">
-    <div class="ch2-inner">
-      <div class="chapter-label" data-r>
+  <!-- DARK — Kapitel II -->
+  <section class="dark-story">
+    <div class="dark-story-inner">
+      <div class="dark-chapter-label" data-r>
         <span class="kicker">Kapitel II</span>
-        <h2>Wie alles begann</h2>
+        <h2>Der Traum<br>wird wirklich</h2>
       </div>
 
       <div class="dark-grid" data-r>
@@ -292,51 +454,54 @@
         </div>
         <div class="ds-text">
           <span class="sl">Lima, der letzte Tag</span>
-          <h3>Das Schicksal hatte einen Plan</h3>
-          <p>Es war mein letzter Tag in Südamerika. Ich saß im Flugzeug von Bogota nach Lima, der Hauptstadt von Peru und kulinarischste Stadt Amerikas. Mein Sitznachbar riet mir eindringlich, die Köstlichkeiten Perus zu probieren, er sagte ich würde mich darin verlieben.</p>
-          <p>Und wie es das Schicksal so wollte, traf ich abends in dieser wunderbaren Stadt eine wunderbare Peruanerin, die mich auf Ceviche, die Nationalspeise der Peruaner und Pisco einlud. Mein Sitznachbar behielt Recht. Ich verliebte mich in diese wunderschöne Frau namens Heidi und in das peruanische Essen.</p>
+          <h3>Das Schicksal<br>hatte einen Plan</h3>
+          <p>Es war mein letzter Tag in Südamerika. Ich saß im Flugzeug von Bogota nach Lima — der kulinarischsten Stadt Amerikas. Mein Sitznachbar riet mir eindringlich, die Köstlichkeiten Perus zu probieren. Er sagte, ich würde mich darin verlieben.</p>
+          <p>Und wie es das Schicksal so wollte, traf ich abends in dieser wunderbaren Stadt eine wunderbare Peruanerin, die mich auf Ceviche und Pisco einlud. Mein Sitznachbar behielt Recht.</p>
         </div>
       </div>
 
       <div class="dark-grid" data-r>
         <div class="ds-text">
           <span class="sl">Frankfurt, drei Jahre später</span>
-          <h3>Der Traum wird wirklich</h3>
-          <p>Nach diesem unvergesslichen Abend hatte ich nur noch den Gedanken, Heidi für immer an meiner Seite zu haben. Dieser Traum erfüllte sich und 3 Jahre später heirateten wir.</p>
-          <p>Zusammen wollten wir Perus kulinarische Lebensart nach Deutschland zu bringen. Da ich vorher schon Gastronom war, war es naheliegend, ein Restaurant zu eröffnen. Nun fehlte uns noch eine Komponente: ein Koch mit Leidenschaft, Hingabe und viel Erfahrung auf dem Gebiet der peruanischen Kochkunst.</p>
+          <h3>Der Traum<br>wird wirklich</h3>
+          <p>Nach diesem unvergesslichen Abend hatte ich nur noch den Gedanken, Heidi für immer an meiner Seite zu haben. Drei Jahre später heirateten wir.</p>
+          <p>Zusammen wollten wir Perus kulinarische Lebensart nach Deutschland bringen. Da ich vorher schon Gastronom war, war es naheliegend, ein Restaurant zu eröffnen. Nun fehlte noch eine Komponente: ein Koch mit Leidenschaft und echter Erfahrung.</p>
         </div>
         <div class="s-img">
           <img src="https://la-cevi.de/wp-content/uploads/La_Cevi_La_Cevi__-FFM__Delinski_7c063b95_Lemon_One-7-1024x683.jpg" alt="Restaurant" loading="lazy">
         </div>
       </div>
 
-      <hr style="border:none;height:1px;background:rgba(255,255,255,.08);margin:5rem 0">
-
+      <!-- DIEGO -->
       <div class="diego-block" data-r>
         <div class="diego-img">
-          <img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-17-1024x678.jpg" alt="Diego der Koch" loading="lazy">
+          <img src="https://la-cevi.de/wp-content/uploads/La-Cevi-Frankfurt-17-1024x678.jpg" alt="Diego" loading="lazy">
         </div>
         <div class="diego-text">
           <span class="sl">Der dritte im Bunde</span>
           <h3>Diego</h3>
-          <p>Und das Schicksal meinte es noch mal gut mit uns: Heidi und ich flogen 3 Jahre später zusammen nach Lima und lernten dort genau so jemanden kennen, den wir gesucht hatten: Diego.</p>
-          <p>Diego hat Kochen von der Pike auf gelernt, er versteht sein Handwerk wie kein anderer, sein Traum vom Kochen führte ihn durch zahllose Küchen Perus, wie z.B. durch die des Spitzenrestaurants Astrid &amp; Gastón.</p>
-          <p>Wir konnten ihn von unserem Traum von einem Restaurant in Deutschland begeistern und mit Feuer und Flamme bildete er sich in der Zeit weiter, bis wir endlich das perfekte Ambiente in Frankfurt gefunden hatten, um diesen Traum endlich wahr werden zu lassen.</p>
+          <p>Das Schicksal meinte es noch einmal gut mit uns: Heidi und ich flogen gemeinsam nach Lima und lernten dort genau jemanden kennen, den wir gesucht hatten: Diego.</p>
+          <p>Diego hat Kochen von der Pike auf gelernt. Sein Traum führte ihn durch zahllose Küchen Perus — darunter das Spitzenrestaurant Astrid &amp; Gastón.</p>
+          <p>Wir konnten ihn von unserem Traum begeistern. Mit Feuer und Flamme bildete er sich weiter, bis wir das perfekte Ambiente in Frankfurt Nordend gefunden hatten.</p>
         </div>
       </div>
     </div>
   </section>
-  <div class="wv" aria-hidden="true" style="background:#1A0F08;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#F2E8D0"/></svg></div>
+  <div class="wv" aria-hidden="true" style="background:#0f0a05;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#F2E8D0"/></svg></div>
 
-  <section class="cta-wrap">
+  <!-- CTA -->
+  <section class="cta-sand" data-r>
     <span class="sl">Teil der Geschichte werden</span>
-    <h2>Besucht uns im Nordend</h2>
+    <h2>Besucht uns<br>im Nordend</h2>
     <p>Jeder Tisch trägt ein Stück dieser Geschichte. Kommt vorbei.</p>
-    <a href="https://www.gastronaut.com/la-cevi" target="_blank" rel="noopener" class="btn btn-fill">Tisch reservieren</a>
-    <a href="kontakt.html" class="btn btn-ghost">Anfahrt</a>
+    <div class="cta-actions">
+      <a href="https://www.gastronaut.com/la-cevi" target="_blank" rel="noopener" class="btn btn-fill">Tisch reservieren</a>
+      <a href="kontakt.html" class="btn btn-ghost-d">Anfahrt</a>
+    </div>
   </section>
-  <div class="wv" aria-hidden="true" style="background:#F2E8D0;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#1A0F08"/></svg></div>
+  <div class="wv" aria-hidden="true" style="background:#F2E8D0;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#0f0a05"/></svg></div>
 
+  <!-- FOOTER -->
   <footer>
     <div class="footer-top">
       <div class="footer-brand">
@@ -345,20 +510,25 @@
       </div>
       <div class="footer-col"><h4>Navigation</h4><ul><li><a href="index.html">Startseite</a></li><li><a href="ceviche.html">Ceviche</a></li><li><a href="ueber-uns.html">Geschichte</a></li><li><a href="kontakt.html">Kontakt</a></li></ul></div>
       <div class="footer-col"><h4>Schnellzugriff</h4><ul><li><a href="https://www.gastronaut.com/la-cevi" target="_blank">Tisch reservieren</a></li><li><a href="https://www.bon-bon.de/gutschein/la-cevi/" target="_blank">Gutschein</a></li><li><a href="https://la-cevi.de/wp-content/uploads/2025.07.03_La-Cevi-ceviche_Speisen-und-Getraenke.pdf" target="_blank">Speisekarte PDF</a></li></ul></div>
-      <div class="footer-col"><h4>Kontakt</h4><ul><li><a href="tel:06966377778">069 / 66 37 77 78</a></li><li><a href="mailto:info@la-cevi.de">info@la-cevi.de</a></li></ul><h4 style="margin-top:1.8rem">Rechtliches</h4><ul><li><a href="#">Impressum</a></li><li><a href="#">Datenschutz</a></li></ul></div>
+      <div class="footer-col"><h4>Kontakt</h4><ul><li><a href="tel:06966377778">069 / 66 37 77 78</a></li><li><a href="mailto:info@la-cevi.de">info@la-cevi.de</a></li><li><a href="kontakt.html">Weberstrasse 84, FFM</a></li></ul><h4 style="margin-top:1.8rem">Rechtliches</h4><ul><li><a href="#">Impressum</a></li><li><a href="#">Datenschutz</a></li></ul></div>
     </div>
     <div class="footer-bot">
       <p>© 2024 La Cevi Frankfurt — Alle Rechte vorbehalten</p>
       <div class="footer-soc">
         <a href="https://www.instagram.com/la_cevi" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
         <a href="https://www.facebook.com/LaCeviFrankfurt" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-        <a href="https://www.yelp.de/biz/la-cevi-frankfurt-am-main" target="_blank" rel="noopener" aria-label="Yelp"><svg viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.365 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/></svg></a>
       </div>
     </div>
   </footer>
 
   <script>
-    const lenis = new Lenis({ lerp: 0.09 });
+    const dot = document.getElementById('cursorDot');
+    let mx = 0, my = 0, cx = 0, cy = 0;
+    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function tick() { cx += (mx-cx)*.14; cy += (my-cy)*.14; dot.style.transform = `translate(${cx-5}px,${cy-5}px)`; requestAnimationFrame(tick); })();
+    document.querySelectorAll('a,button').forEach(el => { el.addEventListener('mouseenter', () => dot.classList.add('big')); el.addEventListener('mouseleave', () => dot.classList.remove('big')); });
+
+    const lenis = new Lenis({ lerp: 0.08 });
     function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
     gsap.registerPlugin(ScrollTrigger);
@@ -366,19 +536,36 @@
     gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    gsap.set(['.hero-eyebrow','.hero-title','.hero-sub'], { opacity: 0, y: 28 });
-    gsap.timeline({ delay: .2 })
-      .to('#heroBg', { scale: 1, duration: 1.8, ease: 'power2.out' })
-      .to('.hero-eyebrow', { opacity: 1, y: 0, duration: .65 }, '-=1.4')
-      .to('.hero-title',   { opacity: 1, y: 0, duration: .9, ease: 'power3.out' }, '-=.4')
-      .to('.hero-sub',     { opacity: 1, y: 0, duration: .6 }, '-=.3');
+    gsap.set('.hero-title', { y: '110%' });
+    gsap.set(['.hero-script', '.hero-year', '.hero-vert'], { opacity: 0, y: 18 });
+    gsap.set('.hero-row-bot', { opacity: 0, y: 22 });
+    gsap.set('.hero-wave', { opacity: 0 });
 
-    gsap.to('#heroBg', { yPercent: 20, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-    ScrollTrigger.create({ start: 'top -60', onUpdate: self => document.getElementById('nav').classList.toggle('scrolled', self.scroll() > 60) });
-    gsap.utils.toArray('[data-r]').forEach(el => gsap.from(el, { y: 60, opacity: 0, duration: .9, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 88%' } }));
-    gsap.from('.tl-item', { x: -40, opacity: 0, duration: .65, stagger: .1, ease: 'power2.out', scrollTrigger: { trigger: '.tl-wrap', start: 'top 80%' } });
+    const tl = gsap.timeline({ delay: .08 });
+    tl.to('#heroBg',       { scale: 1, duration: 2.2, ease: 'power2.out' })
+      .to('.hero-title',   { y: '0%', duration: 1.15, ease: 'power4.out' }, '-=2')
+      .to('.hero-script',  { opacity: 1, y: 0, duration: .65, ease: 'power2.out' }, '-=.9')
+      .to('.hero-year',    { opacity: 1, y: 0, duration: .5 }, '-=.5')
+      .to('.hero-row-bot', { opacity: 1, y: 0, duration: .6, ease: 'power2.out' }, '-=.35')
+      .to('.hero-vert',    { opacity: 1, y: 0, duration: .5 }, '-=.5')
+      .to('.hero-wave',    { opacity: 1, duration: .55 }, '-=.4');
 
-    document.getElementById('hamburger').addEventListener('click', () => { const m = document.getElementById('mobNav'); m.classList.add('open'); gsap.fromTo('.mob-nav a', { opacity: 0, y: 25 }, { opacity: 1, y: 0, stagger: .08, duration: .4 }); });
+    gsap.to('#heroBg', { yPercent: 28, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+    ScrollTrigger.create({ start: 'top -60', onUpdate: s => document.getElementById('nav').classList.toggle('scrolled', s.scroll() > 60) });
+    const floatCta = document.getElementById('floatCta');
+    ScrollTrigger.create({ start: 'top -80vh', onUpdate: s => floatCta.classList.toggle('on', s.scroll() > window.innerHeight * .7) });
+
+    gsap.utils.toArray('[data-r]').forEach(el => {
+      gsap.from(el, { y: 65, opacity: 0, duration: .95, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 88%' } });
+    });
+
+    gsap.from('.tl-card', { y: 50, opacity: 0, duration: .75, stagger: .1, ease: 'power2.out', scrollTrigger: { trigger: '.tl-grid', start: 'top 82%' } });
+
+    document.getElementById('hamburger').addEventListener('click', () => {
+      const m = document.getElementById('mobNav'); m.classList.add('open');
+      gsap.fromTo('.mob-nav a', { opacity: 0, y: 25 }, { opacity: 1, y: 0, stagger: .08, duration: .4 });
+    });
     document.getElementById('mobClose').addEventListener('click', () => document.getElementById('mobNav').classList.remove('open'));
   </script>
 </body>

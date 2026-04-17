@@ -4,15 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kontakt &amp; Anfahrt — La Cevi Frankfurt | Weberstrasse 84</title>
-  <meta name="description" content="La Cevi in Frankfurt Nordend. Weberstrasse 84, 60318 Frankfurt. Öffnungszeiten, Anfahrt, Reservierung.">
+  <meta name="description" content="La Cevi in Frankfurt Nordend. Weberstrasse 84, 60318 Frankfurt. Öffnungszeiten, Anfahrt und Reservierung.">
   <meta property="og:title" content="Kontakt &amp; Anfahrt — La Cevi Frankfurt">
+  <meta property="og:description" content="Weberstrasse 84, Frankfurt Nordend. Wir freuen uns auf euch.">
   <meta property="og:image" content="https://la-cevi.de/wp-content/uploads/la-cevi-ceviche-frankfurt-peru-aussen-1024x831.jpg">
   <link rel="icon" href="https://la-cevi.de/wp-content/uploads/cropped-la-Cevi-favicon-32x32.png">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
-
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@latest/dist/lenis.min.js"></script>
@@ -20,163 +19,232 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --tc:#C4622D; --tc-d:#9E4A1E; --tc-l:#E07845;
-      --lime:#7AB648; --lime-d:#558230;
-      --pac:#1B4F7A; --sand:#F2E8D0; --cream:#FAF7F0;
-      --dark:#1A0F08; --text:#2D1A0A; --muted:#7A5C40;
-      --ff-d:'Playfair Display',Georgia,serif;
-      --ff-b:'DM Sans',system-ui,sans-serif;
-      --ff-s:'Dancing Script',cursive;
+      --tc:    #C4622D; --tc-d: #9E4A1E; --tc-l: #E07845;
+      --lime:  #7AB648; --lime-d: #558230;
+      --pac:   #1B4F7A;
+      --sand:  #F2E8D0; --off: #F5F0E8; --cream: #FAF7F0;
+      --dark:  #0f0a05; --text: #2D1A0A; --muted: #7A5C40;
+      --ff-d:  'Playfair Display', Georgia, serif;
+      --ff-b:  'DM Sans', system-ui, sans-serif;
+      --ff-s:  'Dancing Script', cursive;
     }
     html { scroll-behavior: auto; }
-    body { font-family: var(--ff-b); background: var(--cream); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+    body { font-family: var(--ff-b); background: var(--off); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9000; opacity: .05;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    .cursor-dot {
+      width: 10px; height: 10px; background: var(--lime); border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 9999; top: 0; left: 0;
+      will-change: transform; transition: width .25s, height .25s, background .25s, border .25s;
+    }
+    .cursor-dot.big { width: 44px; height: 44px; background: transparent; border: 1.5px solid var(--lime); margin: -17px 0 0 -17px; }
+    @media (hover: none) { .cursor-dot { display: none; } }
+
+    .float-cta {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 150;
+      background: var(--tc); color: white; padding: .85rem 1.8rem; border-radius: 50px;
+      font-size: .7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      text-decoration: none; opacity: 0; transform: translateY(16px);
+      transition: opacity .4s, transform .4s, background .25s;
+      box-shadow: 0 8px 30px rgba(196,98,45,.4); pointer-events: none;
+    }
+    .float-cta.on { opacity: 1; transform: translateY(0); pointer-events: all; }
+    .float-cta:hover { background: var(--tc-d); }
+    @media (max-width: 600px) { .float-cta { display: none; } }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 1.2rem 5vw; display: flex; align-items: center; justify-content: space-between;
+      transition: background .45s, box-shadow .45s;
+    }
+    nav.scrolled { background: rgba(15,10,5,.97); backdrop-filter: blur(18px); box-shadow: 0 1px 0 rgba(255,255,255,.04); }
+    .nav-logo { height: 36px; filter: brightness(0) invert(1); opacity: .9; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,.8); text-decoration: none; font-size: .7rem; font-weight: 400; letter-spacing: .16em; text-transform: uppercase; transition: color .3s; }
+    .nav-links a:hover, .nav-links a.on { color: var(--lime); }
+    .nav-right { display: flex; gap: .9rem; align-items: center; }
+    .nav-right a { color: rgba(255,255,255,.65); transition: color .3s; }
+    .nav-right a:hover { color: var(--lime); }
+    .nav-right svg { width: 17px; height: 17px; fill: currentColor; display: block; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; border: none; background: none; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: white; transition: .3s; }
+    .mob-nav { display: none; position: fixed; inset: 0; background: var(--dark); z-index: 300; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; }
+    .mob-nav.open { display: flex; }
+    .mob-nav a { color: white; text-decoration: none; font-family: var(--ff-d); font-size: clamp(2rem,7vw,3.5rem); font-style: italic; opacity: 0; }
+    .mob-close { position: absolute; top: 1.5rem; right: 2rem; color: white; font-size: 1.8rem; cursor: pointer; background: none; border: none; }
 
     /* WAVES */
-    .hero-wave { position:absolute; bottom:0; left:0; right:0; z-index:3; line-height:0; }
-    .wv { display:block; margin:0; line-height:0; }
-    .hero-wave svg, .wv svg { width:100%; height:70px; display:block; }
-    @media (max-width:600px) { .hero-wave svg, .wv svg { height:48px; } }
+    .hero-wave { position: absolute; bottom: 0; left: 0; right: 0; z-index: 4; line-height: 0; opacity: 0; }
+    .wv { display: block; margin: 0; line-height: 0; }
+    .hero-wave svg, .wv svg { width: 100%; height: 70px; display: block; }
+    @media (max-width: 600px) { .hero-wave svg, .wv svg { height: 48px; } }
 
-    /* GRAIN */
-    body::before {
-      content:''; position:fixed; inset:0; pointer-events:none; z-index:9000; opacity:.045;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size:200px 200px;
+    /* HERO */
+    .hero {
+      position: relative; height: 80vh; min-height: 560px;
+      overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;
     }
-
-    /* NAV */
-    nav { position:fixed; top:0; left:0; right:0; z-index:200; padding:1.2rem 5vw; display:flex; align-items:center; justify-content:space-between; transition:background .45s,box-shadow .45s; }
-    nav.scrolled { background:rgba(26,15,8,.97); backdrop-filter:blur(18px); box-shadow:0 1px 0 rgba(255,255,255,.04); }
-    .nav-logo { height:36px; filter:brightness(0) invert(1); opacity:.92; display:block; }
-    .nav-links { display:flex; align-items:center; gap:2rem; list-style:none; }
-    .nav-links a { color:rgba(255,255,255,.85); text-decoration:none; font-size:.72rem; font-weight:400; letter-spacing:.14em; text-transform:uppercase; transition:color .3s; }
-    .nav-links a:hover, .nav-links a.on { color:var(--lime); }
-    .nav-right { display:flex; gap:.9rem; align-items:center; }
-    .nav-right a { color:rgba(255,255,255,.7); transition:color .3s; }
-    .nav-right a:hover { color:var(--lime); }
-    .nav-right svg { width:17px; height:17px; fill:currentColor; display:block; }
-    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; border:none; background:none; }
-    .hamburger span { display:block; width:24px; height:2px; background:white; }
-    .mob-nav { display:none; position:fixed; inset:0; background:var(--dark); z-index:300; flex-direction:column; align-items:center; justify-content:center; gap:2.5rem; }
-    .mob-nav.open { display:flex; }
-    .mob-nav a { color:white; text-decoration:none; font-family:var(--ff-d); font-size:clamp(2rem,7vw,3.5rem); font-style:italic; opacity:0; }
-    .mob-close { position:absolute; top:1.5rem; right:2rem; color:white; font-size:1.8rem; cursor:pointer; background:none; border:none; }
-
-    /* PAGE HERO */
-    .hero { position:relative; height:55vh; min-height:400px; display:flex; align-items:flex-end; overflow:hidden; }
-    .hero-bg { position:absolute; inset:0; background:url('https://la-cevi.de/wp-content/uploads/la-cevi-ceviche-frankfurt-peru-aussen-1024x831.jpg') center 45%/cover no-repeat; transform:scale(1.06); will-change:transform; }
-    .hero-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(20,10,4,.9) 0%,rgba(20,10,4,.3) 55%,rgba(20,10,4,.08) 100%); }
-    .hero-content { position:relative; z-index:2; padding:0 7vw 5rem; }
-    .hero-eyebrow { font-family:var(--ff-s); color:var(--lime); font-size:1.4rem; display:block; margin-bottom:.5rem; opacity:0; }
-    .hero-title { font-family:var(--ff-d); font-weight:900; color:white; font-size:clamp(3rem,7vw,6rem); line-height:.9; letter-spacing:-.025em; opacity:0; }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://la-cevi.de/wp-content/uploads/la-cevi-ceviche-frankfurt-peru-aussen-1024x831.jpg') center 45% / cover no-repeat;
+      transform: scale(1.08); will-change: transform;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to top, rgba(10,5,2,.96) 0%, rgba(10,5,2,.6) 40%, rgba(10,5,2,.08) 75%, transparent 100%),
+        linear-gradient(110deg, rgba(10,5,2,.42) 0%, transparent 55%);
+    }
+    .hero-content { position: relative; z-index: 3; padding: 0 6vw 4.5rem 7vw; }
+    .hero-row-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .5rem; }
+    .hero-script { font-family: var(--ff-s); color: var(--lime); font-size: 1.6rem; }
+    .hero-addr { font-size: .6rem; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.25); }
+    .hero-mask { overflow: hidden; }
+    .hero-title {
+      font-family: var(--ff-d); font-weight: 900; color: white;
+      font-size: clamp(4.5rem, 13vw, 12rem);
+      line-height: .85; letter-spacing: -.03em; display: block;
+      transform: translateY(110%);
+    }
+    .hero-title em { font-style: italic; color: var(--tc-l); }
+    .hero-row-bot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 2.5rem; opacity: 0; }
+    .hero-sub { font-size: .68rem; letter-spacing: .34em; text-transform: uppercase; color: rgba(255,255,255,.38); }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
 
     /* MARQUEE */
-    .marquee-wrap { background:var(--lime); padding:.65rem 0; overflow:hidden; }
-    .marquee-inner { display:flex; white-space:nowrap; animation:scrollMarquee 30s linear infinite; }
-    .marquee-inner span { display:inline-block; font-size:.72rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:white; padding:0 2rem; }
-    .marquee-inner span::after { content:'·'; margin-left:2rem; opacity:.5; }
-    @keyframes scrollMarquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .marquee-wrap { background: var(--lime); padding: .8rem 0; overflow: hidden; }
+    .marquee-inner { display: flex; white-space: nowrap; animation: scrollM 25s linear infinite; }
+    .marquee-inner span { display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: white; padding: 0 2.5rem; }
+    .marquee-inner span::after { content: '·'; margin-left: 2.5rem; opacity: .45; }
+    @keyframes scrollM { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-    /* MAIN LAYOUT */
-    .contact-wrap { max-width:1400px; margin:0 auto; padding:7rem 5vw 0; }
-    .contact-grid { display:grid; grid-template-columns:3fr 2fr; gap:5rem; align-items:start; }
+    /* BUTTONS */
+    .btn { display: inline-block; text-decoration: none; font-size: .73rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; padding: 1rem 2.4rem; transition: all .3s; cursor: pointer; border: none; border-radius: 50px; }
+    .btn-fill { background: var(--tc); color: white; }
+    .btn-fill:hover { background: var(--tc-d); transform: translateY(-2px); }
+    .btn-ghost-w { border: 1.5px solid rgba(255,255,255,.4); color: white; }
+    .btn-ghost-w:hover { border-color: var(--lime); color: var(--lime); }
+    .btn-lime { background: var(--lime); color: white; }
+    .btn-lime:hover { background: var(--lime-d); transform: translateY(-2px); }
 
-    /* MAP */
-    .map-sticky { position:sticky; top:100px; }
-    .map-frame { width:100%; aspect-ratio:4/3; border:none; display:block; border-radius:22px; }
-    .map-link { display:inline-flex; align-items:center; gap:.5rem; margin-top:1rem; font-size:.8rem; color:var(--tc); text-decoration:none; font-weight:500; letter-spacing:.06em; transition:color .3s; }
-    .map-link:hover { color:var(--tc-d); }
-    .map-link svg { width:16px; height:16px; fill:currentColor; }
+    /* DARK ADDRESS STRIP */
+    .addr-strip { background: var(--dark); padding: 7rem 7vw; }
+    .addr-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+    .addr-headline .sl { font-family: var(--ff-s); color: rgba(255,255,255,.45); font-size: 1.4rem; display: block; margin-bottom: 2rem; }
+    .addr-headline h2 {
+      font-family: var(--ff-d); font-style: italic; font-weight: 900;
+      font-size: clamp(3rem, 6vw, 6rem); color: white; line-height: .88;
+    }
+    .addr-headline h2 em { font-style: normal; color: var(--tc-l); }
+    .addr-details { display: flex; flex-direction: column; gap: 2rem; }
+    .addr-item { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; }
+    .addr-item .label { font-size: .63rem; letter-spacing: .22em; text-transform: uppercase; color: var(--lime); font-weight: 600; display: block; margin-bottom: .55rem; }
+    .addr-item p { color: rgba(255,255,255,.55); font-size: .95rem; line-height: 1.8; }
+    .addr-item a { color: white; text-decoration: none; font-weight: 500; transition: color .3s; }
+    .addr-item a:hover { color: var(--lime); }
+    .addr-tel { font-family: var(--ff-d); font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 700; color: var(--tc-l) !important; }
+
+    /* CONTACT GRID */
+    .contact-section { padding: 8rem 7vw; max-width: 1400px; margin: 0 auto; }
+    .contact-head { margin-bottom: 5rem; }
+    .contact-head .sl { font-family: var(--ff-s); color: var(--tc); font-size: 1.3rem; display: block; margin-bottom: .6rem; }
+    .contact-head h2 { font-family: var(--ff-d); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; line-height: .95; }
+    .contact-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 5rem; align-items: start; }
+    .map-sticky { position: sticky; top: 100px; }
+    .map-frame { width: 100%; aspect-ratio: 4/3; border: none; display: block; border-radius: 24px; }
+    .map-link { display: inline-flex; align-items: center; gap: .5rem; margin-top: 1rem; font-size: .8rem; color: var(--tc); text-decoration: none; font-weight: 500; letter-spacing: .06em; transition: color .3s; }
+    .map-link:hover { color: var(--tc-d); }
+    .map-link svg { width: 16px; height: 16px; fill: currentColor; }
 
     /* INFO BLOCKS */
-    .info-col { display:flex; flex-direction:column; gap:3.5rem; }
-    .sl { font-family:var(--ff-s); font-size:1.1rem; display:block; margin-bottom:.6rem; }
-    .ib h3 { font-family:var(--ff-d); font-size:1.5rem; font-weight:700; margin-bottom:1.2rem; }
-    .ib .sl { color:var(--tc); }
-    .address-list { display:flex; flex-direction:column; gap:.4rem; }
-    .address-list span { font-size:.95rem; color:var(--muted); }
-    .address-list a { color:var(--tc); text-decoration:none; font-weight:500; transition:color .3s; }
-    .address-list a:hover { color:var(--tc-d); }
-
-    /* HOURS TABLE */
-    .hours-table { width:100%; border-collapse:collapse; }
-    .hours-table tr { border-bottom:1px solid rgba(45,26,10,.1); }
-    .hours-table tr:last-child { border:none; }
-    .hours-table td { padding:.9rem 0; font-size:.9rem; }
-    .hours-table td:last-child { text-align:right; font-weight:500; }
-    .hours-table .closed { color:var(--muted); font-style:italic; font-weight:400; }
+    .info-col { display: flex; flex-direction: column; gap: 3.5rem; }
+    .ib { }
+    .ib .sl { font-family: var(--ff-s); color: var(--tc); font-size: 1.1rem; display: block; margin-bottom: .5rem; }
+    .ib h3 { font-family: var(--ff-d); font-size: 1.6rem; font-weight: 700; margin-bottom: 1.2rem; }
+    .info-list { display: flex; flex-direction: column; gap: .4rem; }
+    .info-list span { font-size: .95rem; color: var(--muted); }
+    .info-list a { color: var(--tc); text-decoration: none; font-weight: 500; transition: color .3s; }
+    .info-list a:hover { color: var(--tc-d); }
+    .hours-table { width: 100%; border-collapse: collapse; }
+    .hours-table tr { border-bottom: 1px solid rgba(45,26,10,.1); }
+    .hours-table tr:last-child { border: none; }
+    .hours-table td { padding: .9rem 0; font-size: .9rem; }
+    .hours-table td:last-child { text-align: right; font-weight: 500; }
+    .hours-table .closed { color: var(--muted); font-style: italic; font-weight: 400; }
 
     /* ACTION CARDS */
-    .action-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .ac {
-      text-decoration:none; padding:1.75rem;
-      display:flex; flex-direction:column; gap:.45rem;
-      transition:transform .3s, background .3s;
-      position:relative; overflow:hidden;
-      border-radius:24px;
+      text-decoration: none; padding: 2rem;
+      display: flex; flex-direction: column; gap: .5rem;
+      transition: transform .3s, filter .3s;
+      border-radius: 22px;
     }
-    .ac.tc-bg { background:var(--tc); color:white; }
-    .ac.pac-bg { background:var(--pac); color:white; }
-    .ac.lime-bg { background:var(--lime); color:white; }
-    .ac.dark-bg { background:var(--dark); color:white; }
-    .ac:hover { transform:translateY(-4px); }
-    .ac.tc-bg:hover { background:var(--tc-d); }
-    .ac.pac-bg:hover { background:#163f62; }
-    .ac.lime-bg:hover { background:var(--lime-d); }
-    .ac .ac-icon { font-size:1.5rem; }
-    .ac strong { font-family:var(--ff-d); font-size:1rem; display:block; }
-    .ac span { font-size:.78rem; opacity:.7; }
+    .ac:hover { transform: translateY(-5px); filter: brightness(1.08); }
+    .ac.tc-bg { background: var(--tc); color: white; }
+    .ac.pac-bg { background: var(--pac); color: white; }
+    .ac.lime-bg { background: var(--lime); color: white; }
+    .ac.dark-bg { background: var(--dark); color: white; }
+    .ac .ac-icon { font-size: 1.6rem; }
+    .ac strong { font-family: var(--ff-d); font-size: 1.05rem; display: block; }
+    .ac span { font-size: .78rem; opacity: .7; }
 
-    /* STRIP */
-    .strip {
-      background:var(--tc); margin-top:0; padding:5rem 7vw;
-      display:grid; grid-template-columns:repeat(3,1fr); gap:3rem; text-align:center;
-    }
-    .strip-item { color:white; }
-    .strip-icon { font-size:2.2rem; display:block; margin-bottom:.9rem; }
-    .strip-item h4 { font-family:var(--ff-d); font-size:1.2rem; font-weight:700; margin-bottom:.5rem; }
-    .strip-item p { font-size:.88rem; opacity:.72; line-height:1.7; }
-    .strip-item a { color:white; text-underline-offset:3px; }
+    /* DIRECTIONS STRIP */
+    .strip { background: var(--tc); padding: 6rem 7vw; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; text-align: center; }
+    .strip-item { color: white; }
+    .strip-icon { font-size: 2.2rem; display: block; margin-bottom: 1rem; }
+    .strip-item h4 { font-family: var(--ff-d); font-size: 1.25rem; font-weight: 700; margin-bottom: .6rem; }
+    .strip-item p { font-size: .9rem; opacity: .72; line-height: 1.75; }
+    .strip-item a { color: white; text-underline-offset: 3px; }
 
-    /* BTN */
-    .btn { display:inline-block; text-decoration:none; font-size:.75rem; font-weight:500; letter-spacing:.15em; text-transform:uppercase; padding:1rem 2.5rem; transition:all .3s; border-radius:50px; }
-    .btn-fill { background:var(--tc); color:white; }
-    .btn-fill:hover { background:var(--tc-d); transform:translateY(-2px); }
+    /* SCRIPT LABEL */
+    .sl { font-family: var(--ff-s); font-size: 1.1rem; display: block; margin-bottom: .6rem; }
 
     /* FOOTER */
-    footer { background:var(--dark); color:white; padding:9rem 7vw 3rem; }
-    .footer-top { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; margin-bottom:4rem; }
-    .footer-brand p { color:rgba(255,255,255,.38); font-size:.85rem; line-height:1.95; margin-top:1.2rem; }
-    .footer-col h4 { font-size:.68rem; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:var(--lime); margin-bottom:1.5rem; }
-    .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:.8rem; }
-    .footer-col a { color:rgba(255,255,255,.48); text-decoration:none; font-size:.85rem; transition:color .3s; }
-    .footer-col a:hover { color:white; }
-    .footer-bot { border-top:1px solid rgba(255,255,255,.06); padding-top:2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
-    .footer-bot p { color:rgba(255,255,255,.22); font-size:.78rem; }
-    .footer-soc { display:flex; gap:1.2rem; }
-    .footer-soc a { color:rgba(255,255,255,.38); transition:color .3s; }
-    .footer-soc a:hover { color:var(--lime); }
-    .footer-soc svg { width:18px; height:18px; fill:currentColor; display:block; }
+    footer { background: var(--dark); color: white; padding: 9rem 7vw 3rem; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; }
+    .footer-brand .nav-logo { margin-bottom: 1.5rem; }
+    .footer-brand p { color: rgba(255,255,255,.35); font-size: .85rem; line-height: 1.95; }
+    .footer-col h4 { font-size: .67rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--lime); margin-bottom: 1.5rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .8rem; }
+    .footer-col a { color: rgba(255,255,255,.45); text-decoration: none; font-size: .85rem; transition: color .3s; }
+    .footer-col a:hover { color: white; }
+    .footer-bot { border-top: 1px solid rgba(255,255,255,.06); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-bot p { color: rgba(255,255,255,.2); font-size: .78rem; }
+    .footer-soc { display: flex; gap: 1.2rem; }
+    .footer-soc a { color: rgba(255,255,255,.35); transition: color .3s; }
+    .footer-soc a:hover { color: var(--lime); }
+    .footer-soc svg { width: 18px; height: 18px; fill: currentColor; display: block; }
 
-    @media (max-width:900px) {
-      .nav-links,.nav-right { display:none; } .hamburger { display:flex; }
-      .contact-grid { grid-template-columns:1fr; }
-      .map-sticky { position:static; }
-      .map-frame { aspect-ratio:16/9; }
-      .strip { grid-template-columns:1fr; }
-      .footer-top { grid-template-columns:1fr 1fr; }
+    @media (max-width: 900px) {
+      .nav-links, .nav-right { display: none; } .hamburger { display: flex; }
+      .addr-inner { grid-template-columns: 1fr; gap: 3.5rem; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .map-sticky { position: static; }
+      .map-frame { aspect-ratio: 16/9; }
+      .strip { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
     }
-    @media (max-width:600px) {
-      .hero-content { padding:0 1.5rem 4rem; }
-      .contact-wrap { padding:5rem 1.5rem 0; }
-      .action-grid { grid-template-columns:1fr; }
-      .strip { padding:4rem 1.5rem; }
-      .footer-top { grid-template-columns:1fr; }
-      footer { padding-top:5rem; }
+    @media (max-width: 600px) {
+      .hero-content { padding: 0 1.5rem 4rem; }
+      .addr-strip { padding: 5rem 1.5rem; }
+      .contact-section { padding: 5rem 1.5rem; }
+      .action-grid { grid-template-columns: 1fr; }
+      .strip { padding: 5rem 1.5rem; }
+      .footer-top { grid-template-columns: 1fr; }
+      footer { padding-top: 5rem; }
     }
   </style>
 </head>
 <body>
+
+  <div class="cursor-dot" id="cursorDot"></div>
+  <a href="https://www.gastronaut.com/la-cevi" target="_blank" rel="noopener" class="float-cta" id="floatCta">Reservieren</a>
 
   <nav id="nav">
     <a href="index.html"><img src="https://firebasestorage.googleapis.com/v0/b/schillingroofbarhd.appspot.com/o/restaurants%2Flacevi%2Fimages%2Fgeneral%2Fla-Cevi-Logo-rgb-625x300_id_s2K6wVBCenUOjgcEg4MB.jpg?alt=media&token=58e969f9-0470-45ec-89af-1cdfe79e8ba6" class="nav-logo" alt="La Cevi"></a>
@@ -194,20 +262,36 @@
   </nav>
   <div class="mob-nav" id="mobNav">
     <button class="mob-close" id="mobClose">&#x2715;</button>
-    <a href="index.html">Startseite</a><a href="ceviche.html">Ceviche</a>
-    <a href="ueber-uns.html">Geschichte</a><a href="kontakt.html">Kontakt</a>
+    <a href="index.html">Startseite</a>
+    <a href="ceviche.html">Ceviche</a>
+    <a href="ueber-uns.html">Geschichte</a>
+    <a href="kontakt.html">Kontakt</a>
   </div>
 
-  <section class="hero">
+  <!-- HERO -->
+  <section class="hero" id="hero">
     <div class="hero-bg" id="heroBg"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <span class="hero-eyebrow">Frankfurt Nordend</span>
-      <h1 class="hero-title">Kontakt<br>&amp; Anfahrt</h1>
+      <div class="hero-row-top">
+        <span class="hero-script">Frankfurt Nordend</span>
+        <span class="hero-addr">Weberstrasse 84 · 60318</span>
+      </div>
+      <div class="hero-mask">
+        <h1 class="hero-title">Kom<em>men.</em><br>Bleiben.</h1>
+      </div>
+      <div class="hero-row-bot">
+        <p class="hero-sub">Di – Do ab 18:00 &nbsp;·&nbsp; Fr ab 17:00 &nbsp;·&nbsp; Sa &amp; So ab 12:00</p>
+        <div class="hero-actions">
+          <a href="https://www.gastronaut.com/la-cevi" target="_blank" rel="noopener" class="btn btn-fill">Tisch reservieren</a>
+          <a href="https://wa.me/496966377778" target="_blank" rel="noopener" class="btn btn-ghost-w">WhatsApp</a>
+        </div>
+      </div>
     </div>
     <div class="hero-wave" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#7AB648"/></svg></div>
   </section>
 
+  <!-- MARQUEE -->
   <div class="marquee-wrap" aria-hidden="true">
     <div class="marquee-inner">
       <span>Weberstrasse 84</span><span>60318 Frankfurt</span><span>069 / 66 37 77 78</span>
@@ -218,9 +302,39 @@
       <span>Sa &amp; So ab 12:00</span><span>Online reservieren</span>
     </div>
   </div>
-  <div class="wv" aria-hidden="true" style="background:#7AB648;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#FAF7F0"/></svg></div>
+  <div class="wv" aria-hidden="true" style="background:#7AB648;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#0f0a05"/></svg></div>
 
-  <div class="contact-wrap">
+  <!-- DARK ADDRESS STRIP -->
+  <section class="addr-strip">
+    <div class="addr-inner">
+      <div class="addr-headline" data-r>
+        <span class="sl">Ihr findet uns hier</span>
+        <h2>Weber<em>strasse</em><br>84.</h2>
+      </div>
+      <div class="addr-details" data-r>
+        <div class="addr-item">
+          <span class="label">Adresse</span>
+          <p>Weberstrasse 84<br>60318 Frankfurt am Main<br>Frankfurt Nordend · U-Bahn: Merianplatz</p>
+        </div>
+        <div class="addr-item">
+          <span class="label">Telefon</span>
+          <p><a href="tel:06966377778" class="addr-tel">069 / 66 37 77 78</a></p>
+        </div>
+        <div class="addr-item">
+          <span class="label">Öffnungszeiten</span>
+          <p>Mo geschlossen · Di – Do 18:00–00:00<br>Fr 17:00–00:00 · Sa &amp; So 12:00–00:00</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="wv" aria-hidden="true" style="background:#0f0a05;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#F5F0E8"/></svg></div>
+
+  <!-- CONTACT SECTION -->
+  <section class="contact-section">
+    <div class="contact-head" data-r>
+      <span class="sl">Direkt in Kontakt</span>
+      <h2>Wie können<br>wir helfen?</h2>
+    </div>
     <div class="contact-grid">
 
       <div class="map-sticky" data-r>
@@ -237,25 +351,6 @@
 
       <div class="info-col">
         <div class="ib" data-r>
-          <span class="sl">Ihr findet uns hier</span>
-          <h3>Adresse</h3>
-          <div class="address-list">
-            <span>Weberstrasse 84</span>
-            <span>60318 Frankfurt am Main</span>
-            <span>Frankfurt Nordend</span>
-          </div>
-        </div>
-
-        <div class="ib" data-r>
-          <span class="sl">Schreibt oder ruft an</span>
-          <h3>Kontakt</h3>
-          <div class="address-list">
-            <span><a href="tel:06966377778">069 / 66 37 77 78</a></span>
-            <span><a href="mailto:info@la-cevi.de">info@la-cevi.de</a></span>
-          </div>
-        </div>
-
-        <div class="ib" data-r>
           <span class="sl">Wann sind wir da?</span>
           <h3>Öffnungszeiten</h3>
           <table class="hours-table">
@@ -270,8 +365,8 @@
         </div>
 
         <div class="ib" data-r>
-          <span class="sl">Direkt handeln</span>
-          <h3>Wie können wir helfen?</h3>
+          <span class="sl">Wie möchtest du dich melden?</span>
+          <h3>Direktkontakt</h3>
           <div class="action-grid">
             <a href="https://www.gastronaut.com/la-cevi" target="_blank" rel="noopener" class="ac tc-bg">
               <span class="ac-icon">🗓</span>
@@ -298,10 +393,11 @@
       </div>
 
     </div>
-  </div>
+  </section>
 
-  <div class="wv" aria-hidden="true" style="background:#FAF7F0;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#C4622D"/></svg></div>
+  <div class="wv" aria-hidden="true" style="background:#F5F0E8;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#C4622D"/></svg></div>
 
+  <!-- DIRECTIONS STRIP -->
   <div class="strip" data-r>
     <div class="strip-item">
       <span class="strip-icon">🚇</span>
@@ -314,14 +410,14 @@
       <p>Parkmöglichkeiten in der<br>Weberstrasse und Umgebung</p>
     </div>
     <div class="strip-item">
-      <span class="strip-icon">🅿️</span>
+      <span class="strip-icon">🗓</span>
       <h4>Reservierung</h4>
       <p>Reservierungen sind 15 Minuten gültig.<br><a href="https://www.gastronaut.com/la-cevi" target="_blank">Jetzt online buchen.</a></p>
     </div>
   </div>
+  <div class="wv" aria-hidden="true" style="background:#C4622D;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#0f0a05"/></svg></div>
 
-  <div class="wv" aria-hidden="true" style="background:#C4622D;line-height:0"><svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,25 C240,70 480,0 720,38 C960,76 1200,8 1440,40 L1440,70 L0,70 Z" fill="#1A0F08"/></svg></div>
-
+  <!-- FOOTER -->
   <footer>
     <div class="footer-top">
       <div class="footer-brand">
@@ -330,20 +426,25 @@
       </div>
       <div class="footer-col"><h4>Navigation</h4><ul><li><a href="index.html">Startseite</a></li><li><a href="ceviche.html">Ceviche</a></li><li><a href="ueber-uns.html">Geschichte</a></li><li><a href="kontakt.html">Kontakt</a></li></ul></div>
       <div class="footer-col"><h4>Schnellzugriff</h4><ul><li><a href="https://www.gastronaut.com/la-cevi" target="_blank">Tisch reservieren</a></li><li><a href="https://www.bon-bon.de/gutschein/la-cevi/" target="_blank">Gutschein</a></li><li><a href="https://la-cevi.de/wp-content/uploads/2025.07.03_La-Cevi-ceviche_Speisen-und-Getraenke.pdf" target="_blank">Speisekarte PDF</a></li></ul></div>
-      <div class="footer-col"><h4>Kontakt</h4><ul><li><a href="tel:06966377778">069 / 66 37 77 78</a></li><li><a href="mailto:info@la-cevi.de">info@la-cevi.de</a></li></ul><h4 style="margin-top:1.8rem">Rechtliches</h4><ul><li><a href="#">Impressum</a></li><li><a href="#">Datenschutz</a></li></ul></div>
+      <div class="footer-col"><h4>Kontakt</h4><ul><li><a href="tel:06966377778">069 / 66 37 77 78</a></li><li><a href="mailto:info@la-cevi.de">info@la-cevi.de</a></li><li><a href="kontakt.html">Weberstrasse 84, FFM</a></li></ul><h4 style="margin-top:1.8rem">Rechtliches</h4><ul><li><a href="#">Impressum</a></li><li><a href="#">Datenschutz</a></li></ul></div>
     </div>
     <div class="footer-bot">
       <p>© 2024 La Cevi Frankfurt — Alle Rechte vorbehalten</p>
       <div class="footer-soc">
         <a href="https://www.instagram.com/la_cevi" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
         <a href="https://www.facebook.com/LaCeviFrankfurt" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-        <a href="https://www.yelp.de/biz/la-cevi-frankfurt-am-main" target="_blank" rel="noopener" aria-label="Yelp"><svg viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12.017 24c6.624 0 11.99-5.365 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/></svg></a>
       </div>
     </div>
   </footer>
 
   <script>
-    const lenis = new Lenis({ lerp: 0.09 });
+    const dot = document.getElementById('cursorDot');
+    let mx = 0, my = 0, cx = 0, cy = 0;
+    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function tick() { cx += (mx-cx)*.14; cy += (my-cy)*.14; dot.style.transform = `translate(${cx-5}px,${cy-5}px)`; requestAnimationFrame(tick); })();
+    document.querySelectorAll('a,button').forEach(el => { el.addEventListener('mouseenter', () => dot.classList.add('big')); el.addEventListener('mouseleave', () => dot.classList.remove('big')); });
+
+    const lenis = new Lenis({ lerp: 0.08 });
     function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
     gsap.registerPlugin(ScrollTrigger);
@@ -351,18 +452,34 @@
     gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    gsap.set(['.hero-eyebrow','.hero-title'], { opacity: 0, y: 28 });
-    gsap.timeline({ delay: .2 })
-      .to('#heroBg', { scale: 1, duration: 1.6, ease: 'power2.out' })
-      .to('.hero-eyebrow', { opacity: 1, y: 0, duration: .6 }, '-=1.2')
-      .to('.hero-title',   { opacity: 1, y: 0, duration: .85, ease: 'power3.out' }, '-=.35');
+    gsap.set('.hero-title', { y: '110%' });
+    gsap.set(['.hero-script', '.hero-addr'], { opacity: 0, y: 18 });
+    gsap.set('.hero-row-bot', { opacity: 0, y: 22 });
+    gsap.set('.hero-wave', { opacity: 0 });
 
-    gsap.to('#heroBg', { yPercent: 18, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-    ScrollTrigger.create({ start: 'top -60', onUpdate: self => document.getElementById('nav').classList.toggle('scrolled', self.scroll() > 60) });
-    gsap.utils.toArray('[data-r]').forEach(el => gsap.from(el, { y: 55, opacity: 0, duration: .9, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 88%' } }));
+    const tl = gsap.timeline({ delay: .08 });
+    tl.to('#heroBg',       { scale: 1, duration: 2.0, ease: 'power2.out' })
+      .to('.hero-title',   { y: '0%', duration: 1.1, ease: 'power4.out' }, '-=1.8')
+      .to('.hero-script',  { opacity: 1, y: 0, duration: .65, ease: 'power2.out' }, '-=.85')
+      .to('.hero-addr',    { opacity: 1, y: 0, duration: .5 }, '-=.5')
+      .to('.hero-row-bot', { opacity: 1, y: 0, duration: .6, ease: 'power2.out' }, '-=.35')
+      .to('.hero-wave',    { opacity: 1, duration: .55 }, '-=.4');
+
+    gsap.to('#heroBg', { yPercent: 22, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+    ScrollTrigger.create({ start: 'top -60', onUpdate: s => document.getElementById('nav').classList.toggle('scrolled', s.scroll() > 60) });
+    const floatCta = document.getElementById('floatCta');
+    ScrollTrigger.create({ start: 'top -80vh', onUpdate: s => floatCta.classList.toggle('on', s.scroll() > window.innerHeight * .7) });
+
+    gsap.utils.toArray('[data-r]').forEach(el => {
+      gsap.from(el, { y: 65, opacity: 0, duration: .95, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 88%' } });
+    });
     gsap.from('.ac', { y: 25, opacity: 0, duration: .5, stagger: .08, ease: 'power2.out', scrollTrigger: { trigger: '.action-grid', start: 'top 90%' } });
 
-    document.getElementById('hamburger').addEventListener('click', () => { const m = document.getElementById('mobNav'); m.classList.add('open'); gsap.fromTo('.mob-nav a', { opacity: 0, y: 25 }, { opacity: 1, y: 0, stagger: .08, duration: .4 }); });
+    document.getElementById('hamburger').addEventListener('click', () => {
+      const m = document.getElementById('mobNav'); m.classList.add('open');
+      gsap.fromTo('.mob-nav a', { opacity: 0, y: 25 }, { opacity: 1, y: 0, stagger: .08, duration: .4 });
+    });
     document.getElementById('mobClose').addEventListener('click', () => document.getElementById('mobNav').classList.remove('open'));
   </script>
 </body>
