@@ -654,8 +654,7 @@ footer ul a:hover { opacity: 1; color: var(--sand); }
 
     <!-- hero image -->
     <div class="card will-reveal" id="hero-card">
-      <!-- swap with: <img src="images/hero-sandwich.jpg" alt="Rashcook Falafel Sandwich" loading="eager"> -->
-      <div class="img-ph img-ph-hero">img · sandwich · 4:5</div>
+      <img src="images/hero.png" alt="Rashcook Falafel Wrap in Packpapier" loading="eager">
     </div>
   </div>
 
@@ -679,8 +678,7 @@ footer ul a:hover { opacity: 1; color: var(--sand); }
 
     <div class="product-grid">
       <div class="product-img will-reveal" id="product-img">
-        <!-- swap with: <img src="images/hummus-falafel.jpg" alt="Rashcook Hummus mit Falafel" loading="lazy"> -->
-        <div class="img-ph img-ph-product">img · falafel + hummus · 4:5</div>
+        <img src="images/product-hummus.png" alt="Rashcook Hummus mit Falafel-Bällen" loading="lazy">
         <span class="product-badge">100 % vegan · täglich frisch</span>
       </div>
 
@@ -716,8 +714,7 @@ footer ul a:hover { opacity: 1; color: var(--sand); }
 
     <div class="story-grid">
       <div class="story-portrait will-reveal" id="story-img">
-        <!-- swap with: <img src="images/storefront.jpg" alt="Rashcook Berger Straße" loading="lazy"> -->
-        <div class="img-ph img-ph-story">img · rashcook fassade · 4:5</div>
+        <img src="images/storefront.png" alt="Rashcook Berger Straße Fassade" loading="lazy">
       </div>
 
       <div class="story-copy">
@@ -908,33 +905,30 @@ footer ul a:hover { opacity: 1; color: var(--sand); }
   document.getElementById('band').innerHTML = h;
 })();
 
-// Impressions tiles
+// Impressions tiles — echte Fotos
 (function(){
   const A = [
-    {r:'3/4',  l:'falafel · overhead',       c:'#ead9bd', t:'dark'},
-    {r:'1/1',  l:'hummus · nahaufnahme',      c:'#d8c29b', t:'mid'},
-    {r:'4/5',  l:'berger str. · fassade',     c:'#1f4733', t:'light'},
-    {r:'3/2',  l:'zutaten · kräuter',         c:'#e8d5b5', t:'dark'},
-    {r:'1/1',  l:'falafel · wrap close-up',   c:'#c4623a', t:'light'},
-    {r:'3/4',  l:'gewürzstand · marrakesch',  c:'#d8c29b', t:'dark'},
-    {r:'4/5',  l:'rashcook · schild',         c:'#1f4733', t:'light'},
-    {r:'3/2',  l:'skyline plaza · theke',     c:'#ead9bd', t:'dark'},
+    {src:'images/imp-spread.png',         r:'3/2', alt:'Rashcook Gerichte Spread'},
+    {src:'images/imp-hummus-overhead.png', r:'1/1', alt:'Hummus Overhead'},
+    {src:'images/imp-bowl.png',            r:'1/1', alt:'Falafel Bowl'},
+    {src:'images/hero.png',               r:'3/4', alt:'Falafel Wrap in Packpapier'},
+    {src:'images/imp-sandwich2.png',       r:'1/1', alt:'Falafel Sandwich'},
+    {src:'images/product-hummus.png',      r:'3/4', alt:'Hummus mit Falafel'},
+    {src:'images/storefront.png',          r:'3/4', alt:'Rashcook Fassade'},
+    {src:'images/imp-hummus2.png',         r:'1/1', alt:'Hummus Bowl mit Brot'},
   ];
   const B = [
-    {r:'4/3',  l:'fritteuse · frisch',        c:'#ead9bd', t:'dark'},
-    {r:'1/1',  l:'berberitzen makro',         c:'#c4623a', t:'light'},
-    {r:'3/4',  l:'abendstimmung nordend',     c:'#1f4733', t:'light'},
-    {r:'4/5',  l:'hummus · vogelperspektive', c:'#d8c29b', t:'dark'},
-    {r:'3/2',  l:'sumach in schale',          c:'#e8d5b5', t:'dark'},
-    {r:'1/1',  l:'team bei der arbeit',       c:'#1f4733', t:'light'},
-    {r:'4/3',  l:'sesam · brot',              c:'#d8c29b', t:'dark'},
-    {r:'3/4',  l:'falafel spread',            c:'#ead9bd', t:'dark'},
+    {src:'images/imp-sandwich1.png',       r:'1/1', alt:'Falafel Sandwich offen'},
+    {src:'images/imp-hummus2.png',         r:'4/3', alt:'Hummus Bowl'},
+    {src:'images/imp-sandwich3.png',       r:'1/1', alt:'Falafel Sandwich'},
+    {src:'images/imp-sandwich4.png',       r:'1/1', alt:'Falafel Close-up'},
+    {src:'images/imp-bowl.png',            r:'4/3', alt:'Falafel Bowl Overhead'},
+    {src:'images/imp-spread.png',          r:'3/2', alt:'Gerichte Spread'},
+    {src:'images/hero.png',               r:'3/4', alt:'Wrap in Packpapier'},
+    {src:'images/imp-hummus-overhead.png', r:'1/1', alt:'Hummus Overhead'},
   ];
   function tile(t){
-    const fg = t.t === 'light' ? '#f4ecdc' : '#122a1f';
-    return `<div class="imp-tile" style="aspect-ratio:${t.r};background:${t.c}">
-      <div class="iph"><span class="ilabel" style="color:${fg === '#f4ecdc' ? '#1f4733' : '#122a1f'}">img · ${t.l}</span></div>
-    </div>`;
+    return `<div class="imp-tile" style="aspect-ratio:${t.r}"><img src="${t.src}" alt="${t.alt}" loading="lazy"></div>`;
   }
   function fill(id, arr){
     document.getElementById(id).innerHTML = arr.map(tile).join('') + arr.map(tile).join('');
