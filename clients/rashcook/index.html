@@ -657,8 +657,8 @@ footer ul a:hover { opacity: 1; color: var(--sand); }
     <!-- hero image -->
     <div class="card will-reveal" id="hero-card">
       <video autoplay muted loop playsinline>
-        <source src="images/hero.mov" type="video/mp4">
-        <img src="images/hero.png" alt="Rashcook Falafel Wrap in Packpapier">
+        <source src="images/hero.mp4" type="video/mp4">
+        <img src="images/hero.webp" alt="Rashcook Falafel Wrap in Packpapier">
       </video>
     </div>
   </div>
@@ -683,7 +683,7 @@ footer ul a:hover { opacity: 1; color: var(--sand); }
 
     <div class="product-grid">
       <div class="product-img will-reveal" id="product-img">
-        <img src="images/product-hummus.png" alt="Rashcook Hummus mit Falafel-Bällen" loading="lazy">
+        <img src="images/product-hummus.webp" alt="Rashcook Hummus mit Falafel-Bällen" loading="lazy">
         <span class="product-badge">100 % vegan · täglich frisch</span>
       </div>
 
@@ -719,7 +719,7 @@ footer ul a:hover { opacity: 1; color: var(--sand); }
 
     <div class="story-grid">
       <div class="story-portrait will-reveal" id="story-img">
-        <img src="images/storefront.png" alt="Rashcook Berger Straße Fassade" loading="lazy">
+        <img src="images/storefront.webp" alt="Rashcook Berger Straße Fassade" loading="lazy">
       </div>
 
       <div class="story-copy">
@@ -913,24 +913,24 @@ footer ul a:hover { opacity: 1; color: var(--sand); }
 // Impressions tiles — echte Fotos
 (function(){
   const A = [
-    {src:'images/imp-spread.png',         r:'3/2', alt:'Rashcook Gerichte Spread'},
-    {src:'images/imp-hummus-overhead.png', r:'1/1', alt:'Hummus Overhead'},
-    {src:'images/imp-bowl.png',            r:'1/1', alt:'Falafel Bowl'},
-    {src:'images/hero.png',               r:'3/4', alt:'Falafel Wrap in Packpapier'},
-    {src:'images/imp-sandwich2.png',       r:'1/1', alt:'Falafel Sandwich'},
-    {src:'images/product-hummus.png',      r:'3/4', alt:'Hummus mit Falafel'},
-    {src:'images/storefront.png',          r:'3/4', alt:'Rashcook Fassade'},
-    {src:'images/imp-hummus2.png',         r:'1/1', alt:'Hummus Bowl mit Brot'},
+    {src:'images/imp-spread.webp',         r:'3/2', alt:'Rashcook Gerichte Spread'},
+    {src:'images/imp-hummus-overhead.webp', r:'1/1', alt:'Hummus Overhead'},
+    {src:'images/imp-bowl.webp',            r:'1/1', alt:'Falafel Bowl'},
+    {src:'images/hero.webp',               r:'3/4', alt:'Falafel Wrap in Packpapier'},
+    {src:'images/imp-sandwich2.webp',       r:'1/1', alt:'Falafel Sandwich'},
+    {src:'images/product-hummus.webp',      r:'3/4', alt:'Hummus mit Falafel'},
+    {src:'images/storefront.webp',          r:'3/4', alt:'Rashcook Fassade'},
+    {src:'images/imp-hummus2.webp',         r:'1/1', alt:'Hummus Bowl mit Brot'},
   ];
   const B = [
-    {src:'images/imp-sandwich1.png',       r:'1/1', alt:'Falafel Sandwich offen'},
-    {src:'images/imp-hummus2.png',         r:'4/3', alt:'Hummus Bowl'},
-    {src:'images/imp-sandwich3.png',       r:'1/1', alt:'Falafel Sandwich'},
-    {src:'images/imp-sandwich4.png',       r:'1/1', alt:'Falafel Close-up'},
-    {src:'images/imp-bowl.png',            r:'4/3', alt:'Falafel Bowl Overhead'},
-    {src:'images/imp-spread.png',          r:'3/2', alt:'Gerichte Spread'},
-    {src:'images/hero.png',               r:'3/4', alt:'Wrap in Packpapier'},
-    {src:'images/imp-hummus-overhead.png', r:'1/1', alt:'Hummus Overhead'},
+    {src:'images/imp-sandwich1.webp',       r:'1/1', alt:'Falafel Sandwich offen'},
+    {src:'images/imp-hummus2.webp',         r:'4/3', alt:'Hummus Bowl'},
+    {src:'images/imp-sandwich3.webp',       r:'1/1', alt:'Falafel Sandwich'},
+    {src:'images/imp-sandwich4.webp',       r:'1/1', alt:'Falafel Close-up'},
+    {src:'images/imp-bowl.webp',            r:'4/3', alt:'Falafel Bowl Overhead'},
+    {src:'images/imp-spread.webp',          r:'3/2', alt:'Gerichte Spread'},
+    {src:'images/hero.webp',               r:'3/4', alt:'Wrap in Packpapier'},
+    {src:'images/imp-hummus-overhead.webp', r:'1/1', alt:'Hummus Overhead'},
   ];
   function tile(t){
     return `<div class="imp-tile" style="aspect-ratio:${t.r}"><img src="${t.src}" alt="${t.alt}" loading="lazy"></div>`;
