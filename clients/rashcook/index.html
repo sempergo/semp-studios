@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>rashcook — Marokkanische Falafel aus Frankfurt</title>
+<meta name="description" content="Frisch frittierte Falafel mit marokkanischer Seele. Berger Str. 157 & Skyline Plaza Frankfurt. 100% vegan. Seit 2019." />
+<meta property="og:title" content="rashcook — Marokkanische Falafel, Frankfurt" />
+<meta property="og:description" content="Frisch frittierte Falafel mit marokkanischer Seele. Berger Str. 157 & Skyline Plaza Frankfurt." />
+<meta property="og:image" content="images/hero-sandwich.jpg" />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%231f4733'/><circle cx='16' cy='16' r='6' fill='%23c4623a'/></svg>" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800;12..96,900&family=Inter+Tight:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@latest/dist/lenis.min.js"></script>
+
+<style>
+:root {
+  --green:      #1f4733;
+  --green-ink:  #122a1f;
+  --green-soft: #2f5b44;
+  --sand:       #ead9bd;
+  --sand-deep:  #d8c29b;
+  --paper:      #f4ecdc;
+  --ink:        #0f1a14;
+  --ink-2:      #33423a;
+  --accent:     #c4623a;
+  --accent-2:   #a13b2a;
+
+  --display: "Bricolage Grotesque", ui-sans-serif, sans-serif;
+  --sans:    "Inter Tight", ui-sans-serif, sans-serif;
+  --mono:    "JetBrains Mono", ui-monospace, monospace;
+
+  --maxw: 1320px;
+  --pad:  clamp(20px, 4vw, 64px);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* ── Cursor ── */
+.cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  mix-blend-mode: multiply;
+  transform: translate(-50%, -50%);
+  transition: width .3s cubic-bezier(.34,1.56,.64,1), height .3s cubic-bezier(.34,1.56,.64,1), background .3s;
+  will-change: transform;
+}
+.cursor.big { width: 44px; height: 44px; background: color-mix(in srgb, var(--accent) 28%, transparent); mix-blend-mode: normal; }
+@media (hover: none) { .cursor { display: none; } }
+
+/* ── Utils ── */
+.container { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--pad); }
+a { color: inherit; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.eyebrow {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.26em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 10px; color: var(--ink-2);
+}
+.eyebrow::before { content: ""; width: 18px; height: 1px; background: currentColor; opacity: .5; }
+
+/* ── Nav ── */
+nav.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: color-mix(in oklab, var(--paper) 88%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid color-mix(in oklab, var(--ink) 6%, transparent);
+  transition: background .3s;
+}
+nav.topnav.scrolled { background: color-mix(in oklab, var(--paper) 96%, transparent); }
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 15px var(--pad); max-width: var(--maxw); margin: 0 auto;
+}
+.logo {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--display); font-weight: 900; font-size: 22px; letter-spacing: -0.04em;
+  color: var(--green-ink); text-decoration: none;
+}
+.logo .dot {
+  width: 10px; height: 10px; background: var(--accent); border-radius: 50%; flex-shrink: 0;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+}
+.navlinks { display: flex; gap: 4px; align-items: center; }
+.navlinks a {
+  text-decoration: none; padding: 9px 14px; border-radius: 999px;
+  font-size: 14px; font-weight: 500; color: var(--ink);
+  transition: background .2s, color .2s;
+}
+.navlinks a:hover { background: color-mix(in oklab, var(--green) 8%, transparent); color: var(--green-ink); }
+.navlinks a.cta {
+  background: var(--green); color: var(--paper); font-weight: 600; padding: 10px 18px;
+}
+.navlinks a.cta:hover { background: var(--green-ink); }
+.navlinks .sep { width: 1px; height: 16px; background: color-mix(in oklab, var(--ink) 14%, transparent); margin: 0 4px; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 15px 22px; border-radius: 999px;
+  font-weight: 600; font-size: 15px; letter-spacing: -0.01em;
+  text-decoration: none; border: 1px solid transparent;
+  transition: transform .18s ease, background .2s, color .2s, border-color .2s;
+  cursor: pointer;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--accent); color: var(--paper); }
+.btn-primary:hover { background: var(--accent-2); }
+.btn-ghost { background: transparent; color: var(--paper); border-color: color-mix(in oklab, var(--paper) 30%, transparent); }
+.btn-ghost:hover { background: color-mix(in oklab, var(--paper) 10%, transparent); }
+.btn .arr { width: 14px; height: 14px; transition: transform .2s; flex-shrink: 0; }
+.btn:hover .arr { transform: translateX(3px); }
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  background: var(--green);
+  color: var(--paper);
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding-top: 68px;
+}
+.hero .pattern {
+  position: absolute; inset: 0; pointer-events: none;
+  opacity: 0.1; mix-blend-mode: soft-light;
+}
+.hero .glow {
+  position: absolute; bottom: -40%; left: -10%; right: -10%; height: 80%;
+  background: radial-gradient(55% 50% at 45% 55%, color-mix(in oklab, var(--accent) 28%, transparent), transparent 70%);
+  filter: blur(60px); pointer-events: none; z-index: 0;
+}
+.hero .inner {
+  position: relative; z-index: 2;
+  max-width: var(--maxw); margin: 0 auto; width: 100%;
+  padding: clamp(56px, 8vw, 110px) var(--pad) clamp(80px, 10vw, 130px);
+  display: grid; grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(32px, 5vw, 80px); align-items: end;
+}
+.hero-copy .eyebrow {
+  color: color-mix(in oklab, var(--paper) 62%, var(--sand));
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-family: var(--display); font-weight: 900;
+  font-size: clamp(60px, 9.5vw, 158px);
+  line-height: 0.84; letter-spacing: -0.048em;
+  margin-bottom: 28px;
+  font-variation-settings: "opsz" 96;
+}
+.hero h1 .line { display: block; overflow: hidden; }
+.hero h1 .line-inner { display: block; }
+.hero h1 em {
+  font-style: normal;
+  color: color-mix(in oklab, var(--sand) 93%, white);
+  position: relative; display: inline-block;
+}
+.hero h1 em::after {
+  content: ""; position: absolute;
+  left: -3%; right: -3%; bottom: 11%; height: 9%;
+  background: var(--accent); z-index: -1;
+  transform: skewX(-5deg); opacity: .55;
+}
+.hero .lede {
+  font-size: clamp(16px, 1.4vw, 20px); line-height: 1.5;
+  max-width: 44ch; margin-bottom: 36px;
+  color: color-mix(in oklab, var(--paper) 76%, var(--sand));
+}
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+/* Hero image card */
+.hero .card {
+  position: relative; aspect-ratio: 4/5;
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 48px 90px -30px rgba(0,0,0,.6);
+  border: 1px solid color-mix(in oklab, var(--paper) 12%, transparent);
+  will-change: transform;
+}
+.hero .card img { transition: transform .6s ease; }
+.hero .card:hover img { transform: scale(1.03); }
+
+/* placeholder fallback (removed once real image provided) */
+.img-ph {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+}
+.img-ph-hero {
+  background: linear-gradient(160deg,
+    color-mix(in oklab, var(--sand) 30%, var(--green)),
+    color-mix(in oklab, var(--accent) 22%, var(--green)) 55%,
+    var(--green-ink));
+  color: color-mix(in oklab, var(--paper) 40%, transparent);
+}
+.img-ph-product {
+  background: linear-gradient(155deg, var(--sand) 0%, var(--sand-deep) 50%, color-mix(in oklab, var(--green) 12%, var(--sand-deep)));
+  color: var(--ink-2);
+}
+.img-ph-story {
+  background: linear-gradient(160deg, color-mix(in oklab, var(--paper) 12%, var(--green)), var(--green-ink));
+  color: color-mix(in oklab, var(--paper) 35%, transparent);
+}
+
+.hero .meta {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+  padding: 18px var(--pad);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: color-mix(in oklab, var(--paper) 48%, transparent);
+  border-top: 1px solid color-mix(in oklab, var(--paper) 7%, transparent);
+}
+
+/* ── Band ── */
+.band {
+  background: var(--green-ink); color: var(--sand);
+  overflow: hidden;
+  border-top: 1px solid color-mix(in oklab, var(--paper) 7%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--paper) 7%, transparent);
+}
+.band-track {
+  display: flex; gap: 48px; align-items: center;
+  padding: 18px 0;
+  animation: band-l 75s linear infinite;
+  font-family: var(--display); font-weight: 900; letter-spacing: -0.02em;
+  font-size: clamp(22px, 3.2vw, 48px);
+  white-space: nowrap;
+  will-change: transform;
+}
+.band-track .bd { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+@keyframes band-l { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── Section scaffolding ── */
+.section { padding: clamp(80px, 10vw, 140px) 0; position: relative; }
+.section-num {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--ink-2); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-num::before { content: ""; width: 18px; height: 1px; background: currentColor; opacity: .45; }
+.section-h {
+  font-family: var(--display); font-weight: 900;
+  font-size: clamp(48px, 7vw, 104px);
+  letter-spacing: -0.042em; line-height: 0.88;
+  color: var(--green-ink);
+  font-variation-settings: "opsz" 96;
+}
+
+/* ── Speisekarte ── */
+.speisekarte { background: var(--paper); }
+.product-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 4.5vw, 72px); align-items: start;
+  margin-top: clamp(44px, 5vw, 72px);
+}
+.product-img {
+  position: relative; aspect-ratio: 4/5;
+  border-radius: 20px; overflow: hidden;
+  background: var(--sand-deep);
+  box-shadow: 0 32px 64px -32px rgba(0,0,0,.32);
+  will-change: transform;
+}
+.product-img img { transition: transform .7s ease; }
+.product-img:hover img { transform: scale(1.04); }
+.product-badge {
+  position: absolute; bottom: 20px; left: 20px; z-index: 2;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  background: color-mix(in oklab, var(--paper) 95%, transparent);
+  color: var(--green-ink); padding: 8px 12px; border-radius: 8px;
+  border: 1px solid color-mix(in oklab, var(--green-ink) 10%, transparent);
+  backdrop-filter: blur(4px);
+}
+.ingredients { padding: clamp(10px, 1.5vw, 24px) 0; }
+.ing-title {
+  font-family: var(--display); font-weight: 900;
+  font-size: clamp(28px, 3vw, 42px); letter-spacing: -0.032em; line-height: 1;
+  color: var(--green-ink); margin-bottom: 28px;
+}
+.poem { list-style: none; }
+.poem li {
+  display: grid; grid-template-columns: 30px 1fr auto; gap: 14px; align-items: baseline;
+  padding: 16px 0;
+  border-top: 1px solid color-mix(in oklab, var(--ink) 8%, transparent);
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(18px, 1.9vw, 26px); letter-spacing: -0.025em; line-height: 1.1;
+  color: var(--green-ink);
+  transition: color .2s;
+}
+.poem li:last-child { border-bottom: 1px solid color-mix(in oklab, var(--ink) 8%, transparent); }
+.poem li:hover { color: var(--green); }
+.poem .n {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.2em;
+  color: var(--ink-2); font-weight: 500; text-transform: uppercase; padding-top: 5px;
+}
+.poem .note {
+  font-family: var(--sans); font-weight: 400; font-size: 12px;
+  color: var(--ink-2); letter-spacing: 0;
+}
+.callout {
+  margin-top: 28px; padding: 22px 24px; border-radius: 14px;
+  background: color-mix(in oklab, var(--green) 5.5%, var(--paper));
+  border: 1px solid color-mix(in oklab, var(--green) 13%, transparent);
+  font-size: 14.5px; line-height: 1.55; color: var(--green-ink);
+  display: flex; gap: 14px;
+}
+.callout .k {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--green); white-space: nowrap; padding-top: 3px;
+}
+
+/* ── Story ── */
+.story {
+  background: var(--green); color: var(--paper);
+  position: relative; overflow: hidden; isolation: isolate;
+}
+.story .pattern {
+  position: absolute; inset: 0; pointer-events: none;
+  opacity: 0.07; mix-blend-mode: soft-light;
+}
+.story .section-num {
+  color: color-mix(in oklab, var(--paper) 50%, var(--sand));
+  position: relative; z-index: 2;
+}
+.story .section-num::before { opacity: .35; }
+.story-grid {
+  display: grid; grid-template-columns: 0.82fr 1.18fr;
+  gap: clamp(36px, 6vw, 96px); align-items: center;
+  margin-top: clamp(40px, 5vw, 72px);
+  position: relative; z-index: 2;
+}
+.story-portrait {
+  aspect-ratio: 4/5; border-radius: 20px; overflow: hidden;
+  box-shadow: 0 48px 90px -30px rgba(0,0,0,.55);
+  border: 1px solid color-mix(in oklab, var(--paper) 12%, transparent);
+  background: color-mix(in oklab, var(--paper) 7%, var(--green));
+  will-change: transform;
+}
+.story-portrait img { transition: transform .7s ease; }
+.story-portrait:hover img { transform: scale(1.03); }
+.story-copy .section-num {
+  color: color-mix(in oklab, var(--paper) 52%, var(--sand));
+  margin-bottom: 12px;
+}
+.story-copy h2 {
+  font-family: var(--display); font-weight: 900;
+  font-size: clamp(44px, 6vw, 88px); letter-spacing: -0.042em; line-height: 0.9;
+  color: var(--paper); margin-bottom: 28px;
+  font-variation-settings: "opsz" 96;
+}
+.story-copy h2 em { font-style: normal; color: var(--sand); }
+.story-copy p {
+  font-size: clamp(15px, 1.35vw, 18px); line-height: 1.62;
+  color: color-mix(in oklab, var(--paper) 76%, var(--sand));
+  max-width: 48ch; margin-bottom: 18px;
+}
+.pullquote {
+  font-family: var(--display); font-weight: 800; letter-spacing: -0.025em;
+  font-size: clamp(20px, 2.1vw, 30px); line-height: 1.1;
+  color: var(--sand); margin: 30px 0 10px;
+}
+.sig { font-family: var(--display); font-weight: 800; font-size: 22px; color: color-mix(in oklab, var(--sand) 70%, transparent); }
+.route {
+  display: flex; gap: 22px; margin-top: 34px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: color-mix(in oklab, var(--paper) 50%, transparent);
+}
+.route span { display: flex; align-items: center; gap: 8px; }
+.route .chev { opacity: .4; }
+
+/* ── Impressions ── */
+.impressions { background: var(--paper); overflow: hidden; }
+.impressions .container { padding-bottom: clamp(36px, 4vw, 56px); }
+.impressions h2 {
+  font-family: var(--display); font-weight: 900;
+  font-size: clamp(44px, 6vw, 88px); letter-spacing: -0.042em; line-height: 0.9;
+  color: var(--green-ink); margin-top: 12px; max-width: 16ch;
+  font-variation-settings: "opsz" 96;
+}
+.imp-rows { margin-top: clamp(36px, 4vw, 56px); margin-bottom: clamp(80px, 10vw, 140px); }
+.imp-row { overflow: hidden; margin-bottom: 18px; }
+.imp-row:last-child { margin-bottom: 0; }
+.imp-track {
+  display: flex; gap: 18px; align-items: stretch;
+  width: max-content; will-change: transform;
+}
+.imp-row-a .imp-track { animation: imp-l 60s linear infinite; }
+.imp-row-b .imp-track { animation: imp-r 78s linear infinite; }
+@keyframes imp-l { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes imp-r { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.imp-tile {
+  position: relative; flex: 0 0 auto;
+  height: clamp(230px, 26vw, 360px);
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--green-ink) 7%, transparent);
+  transition: transform .4s ease;
+}
+.imp-tile:hover { transform: scale(1.015); }
+.imp-tile img { width: 100%; height: 100%; object-fit: cover; }
+.imp-tile .iph {
+  width: 100%; height: 100%;
+  display: flex; align-items: flex-end; padding: 14px;
+}
+.imp-tile .ilabel {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  background: color-mix(in oklab, var(--paper) 92%, transparent);
+  color: var(--green-ink); padding: 6px 10px; border-radius: 6px;
+  border: 1px solid color-mix(in oklab, var(--green-ink) 10%, transparent);
+  backdrop-filter: blur(4px);
+}
+
+/* ── Locations ── */
+.locations { background: var(--sand); }
+.locations h2 { font-variation-settings: "opsz" 96; }
+.locations-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 3vw, 32px); margin-top: clamp(44px, 5vw, 72px);
+}
+.loc-card {
+  background: var(--paper); border-radius: 20px;
+  padding: clamp(24px, 3vw, 36px);
+  display: flex; flex-direction: column; gap: 18px;
+  border: 1px solid color-mix(in oklab, var(--green-ink) 6%, transparent);
+  box-shadow: 0 24px 48px -28px rgba(0,0,0,.22);
+  transition: transform .3s ease, box-shadow .3s ease;
+  position: relative; overflow: hidden;
+}
+.loc-card:hover { transform: translateY(-5px); box-shadow: 0 44px 72px -28px rgba(0,0,0,.28); }
+.loc-map {
+  aspect-ratio: 16/9; border-radius: 12px; overflow: hidden;
+  background: color-mix(in oklab, var(--green) 7%, var(--sand));
+  border: 1px solid color-mix(in oklab, var(--green-ink) 8%, transparent);
+  position: relative;
+}
+.loc-map svg { display: block; width: 100%; height: 100%; }
+.loc-pin {
+  position: absolute; top: 50%; left: 50%;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 22%, transparent),
+              0 0 0 14px color-mix(in oklab, var(--accent) 9%, transparent);
+  animation: loc-pulse 2.2s ease-in-out infinite;
+}
+@keyframes loc-pulse {
+  0%, 100% { box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 22%, transparent), 0 0 0 14px color-mix(in oklab, var(--accent) 9%, transparent); }
+  50%       { box-shadow: 0 0 0 9px color-mix(in oklab, var(--accent) 16%, transparent), 0 0 0 20px color-mix(in oklab, var(--accent) 5%, transparent); }
+}
+.loc-badge {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase;
+  background: var(--green); color: var(--paper);
+  padding: 6px 11px; border-radius: 999px;
+}
+.loc-card h3 {
+  font-family: var(--display); font-weight: 900; letter-spacing: -0.032em;
+  font-size: clamp(26px, 2.8vw, 38px); line-height: 0.95; color: var(--green-ink);
+  font-variation-settings: "opsz" 96;
+}
+.loc-addr { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+.loc-addr strong { color: var(--ink); font-weight: 600; display: block; margin-bottom: 4px; }
+.hours { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: 999px;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase;
+  background: color-mix(in oklab, var(--green) 6%, transparent);
+  border: 1px solid color-mix(in oklab, var(--green) 14%, transparent);
+  color: var(--ink-2);
+}
+.pill::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+.loc-cta {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 15px 20px; border-radius: 12px;
+  background: var(--green); color: var(--paper); text-decoration: none;
+  font-weight: 600; font-size: 14.5px; letter-spacing: -0.01em;
+  transition: background .2s, transform .18s ease;
+}
+.loc-cta:hover { background: var(--green-ink); transform: translateY(-1px); }
+.loc-cta svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+/* ── WhatsApp CTA ── */
+.wa-bar {
+  background: var(--accent); color: var(--paper);
+  padding: clamp(32px, 4vw, 56px) var(--pad);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+}
+.wa-bar h3 {
+  font-family: var(--display); font-weight: 900;
+  font-size: clamp(28px, 4vw, 56px); letter-spacing: -0.04em; line-height: 0.9;
+  font-variation-settings: "opsz" 96;
+}
+.wa-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 24px; border-radius: 999px;
+  background: var(--paper); color: var(--accent);
+  font-weight: 700; font-size: 15px; letter-spacing: -0.01em; text-decoration: none;
+  transition: transform .18s ease, background .2s;
+  white-space: nowrap;
+}
+.wa-btn:hover { transform: translateY(-2px); background: color-mix(in oklab, var(--paper) 90%, var(--sand)); }
+
+/* ── Footer ── */
+footer {
+  background: var(--green-ink);
+  color: color-mix(in oklab, var(--paper) 78%, var(--sand));
+  padding: clamp(56px, 7vw, 96px) 0 32px;
+  position: relative; overflow: hidden;
+}
+footer .pattern { position: absolute; inset: 0; opacity: 0.09; pointer-events: none; }
+footer .fg {
+  display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: clamp(24px, 4vw, 64px); position: relative; z-index: 2;
+}
+.f-logo {
+  font-family: var(--display); font-weight: 900; letter-spacing: -0.042em;
+  font-size: clamp(40px, 4.5vw, 64px); line-height: 0.9;
+  color: var(--paper); margin-bottom: 14px;
+  font-variation-settings: "opsz" 96;
+}
+.f-logo em { font-style: normal; color: var(--accent); }
+.f-sub { font-size: 13.5px; line-height: 1.55; max-width: 34ch; color: color-mix(in oklab, var(--paper) 58%, transparent); }
+footer h4 {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase;
+  margin-bottom: 14px; color: color-mix(in oklab, var(--paper) 44%, transparent); font-weight: 500;
+}
+footer ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+footer ul a { color: var(--paper); text-decoration: none; font-size: 14.5px; opacity: .82; transition: opacity .2s, color .2s; }
+footer ul a:hover { opacity: 1; color: var(--sand); }
+.f-base {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: clamp(40px, 5vw, 72px);
+  padding-top: 20px; border-top: 1px solid color-mix(in oklab, var(--paper) 9%, transparent);
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: color-mix(in oklab, var(--paper) 40%, transparent);
+  position: relative; z-index: 2; flex-wrap: wrap; gap: 12px;
+}
+.f-base a { color: inherit; text-decoration: none; }
+.f-base a:hover { color: var(--paper); }
+
+/* ── Responsive ── */
+@media (max-width: 980px) {
+  .hero .inner { grid-template-columns: 1fr; }
+  .hero .card { max-width: 420px; aspect-ratio: 3/2; }
+  .product-grid { grid-template-columns: 1fr; }
+  .story-grid { grid-template-columns: 1fr; }
+  .story-portrait { max-width: 380px; aspect-ratio: 1; }
+  .locations-grid { grid-template-columns: 1fr; }
+  footer .fg { grid-template-columns: 1fr 1fr; }
+  .wa-bar { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 640px) {
+  .navlinks .sep, .navlinks a:not(.cta) { display: none; }
+  .hero .meta { display: none; }
+  footer .fg { grid-template-columns: 1fr; }
+}
+
+/* GSAP initial states */
+.will-reveal { opacity: 0; }
+</style>
+</head>
+<body>
+
+<!-- ── Zellige SVG defs ── -->
+<svg width="0" height="0" style="position:absolute;pointer-events:none" aria-hidden="true">
+  <defs>
+    <pattern id="z-star" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="currentColor" stroke-width="1">
+        <path d="M60,18 L70,40 L94,42 L76,58 L82,82 L60,70 L38,82 L44,58 L26,42 L50,40 Z" stroke-opacity=".88"/>
+        <path d="M0,60 L26,42 M94,42 L120,60 M0,60 L26,78 M94,78 L120,60 M60,0 L50,40 M60,0 L70,40 M60,120 L50,82 M60,120 L70,82" stroke-opacity=".38"/>
+        <circle cx="0" cy="0" r="9" stroke-opacity=".22"/>
+        <circle cx="120" cy="0" r="9" stroke-opacity=".22"/>
+        <circle cx="0" cy="120" r="9" stroke-opacity=".22"/>
+        <circle cx="120" cy="120" r="9" stroke-opacity=".22"/>
+      </g>
+    </pattern>
+    <pattern id="mouchar" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="currentColor" stroke-width=".8" stroke-opacity=".5">
+        <path d="M30,0 L60,30 L30,60 L0,30 Z"/>
+        <path d="M30,10 L50,30 L30,50 L10,30 Z"/>
+        <path d="M0,0 L15,15 M60,0 L45,15 M0,60 L15,45 M60,60 L45,45"/>
+      </g>
+    </pattern>
+  </defs>
+</svg>
+
+<!-- cursor -->
+<div class="cursor" id="cursor"></div>
+
+<!-- ══ NAV ══ -->
+<nav class="topnav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <span class="dot"></span>
+      rashcook
+    </a>
+    <div class="navlinks">
+      <a href="#speisekarte">Speisekarte</a>
+      <a href="#story">Die Story</a>
+      <span class="sep"></span>
+      <a href="#orte" class="cta">Standorte</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<header class="hero">
+  <svg class="pattern" aria-hidden="true" preserveAspectRatio="none">
+    <rect width="100%" height="100%" fill="url(#z-star)" style="color:#ead9bd"/>
+  </svg>
+  <div class="glow"></div>
+
+  <div class="inner">
+    <!-- copy -->
+    <div class="hero-copy">
+      <div class="eyebrow will-reveal" id="hero-eyebrow">Rachid's Frankfurter Falafel · seit 2019</div>
+      <h1>
+        <span class="line"><span class="line-inner" id="hl1">Marokko</span></span>
+        <span class="line"><span class="line-inner" id="hl2">trifft</span></span>
+        <span class="line"><span class="line-inner" id="hl3"><em>Berger Str.</em></span></span>
+      </h1>
+      <p class="lede will-reveal" id="hero-lede">
+        Zimt-Note, Berberitzen, Sumach — frisch frittierte Falafel
+        mit der Seele Marrakeschs, serviert im Brot von nebenan.
+        Kein Trend. Keine Nostalgie. Einfach echt.
+      </p>
+      <div class="cta-row will-reveal" id="hero-cta">
+        <a href="#speisekarte" class="btn btn-primary">
+          Speisekarte
+          <svg class="arr" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#orte" class="btn btn-ghost">Beide Standorte</a>
+      </div>
+    </div>
+
+    <!-- hero image -->
+    <div class="card will-reveal" id="hero-card">
+      <!-- swap with: <img src="images/hero-sandwich.jpg" alt="Rashcook Falafel Sandwich" loading="eager"> -->
+      <div class="img-ph img-ph-hero">img · sandwich · 4:5</div>
+    </div>
+  </div>
+
+  <div class="meta" aria-hidden="true">
+    <span>N 50.1225° · E 8.6947°</span>
+    <span>Frankfurt / Marrakesch</span>
+    <span>100 % vegan</span>
+  </div>
+</header>
+
+<!-- ══ BAND ══ -->
+<div class="band" aria-hidden="true">
+  <div class="band-track" id="band"></div>
+</div>
+
+<!-- ══ SPEISEKARTE ══ -->
+<section class="section speisekarte" id="speisekarte">
+  <div class="container">
+    <div class="section-num will-reveal">Nr. 01 — Das Produkt</div>
+    <h2 class="section-h will-reveal">Die Falafel,<br/>wie sie Rachid kennt.</h2>
+
+    <div class="product-grid">
+      <div class="product-img will-reveal" id="product-img">
+        <!-- swap with: <img src="images/hummus-falafel.jpg" alt="Rashcook Hummus mit Falafel" loading="lazy"> -->
+        <div class="img-ph img-ph-product">img · falafel + hummus · 4:5</div>
+        <span class="product-badge">100 % vegan · täglich frisch</span>
+      </div>
+
+      <div class="ingredients">
+        <div class="eyebrow will-reveal" style="color:var(--ink-2);margin-bottom:12px">Zutatenliste als Gedicht</div>
+        <h3 class="ing-title will-reveal">Kichererbse,<br/>Kräuter, Feuer.</h3>
+
+        <ol class="poem" id="poem">
+          <li class="will-reveal"><span class="n">01</span><span>Zimt im Teig, unaufdringlich.</span><span class="note">marokkanische Seele</span></li>
+          <li class="will-reveal"><span class="n">02</span><span>Berberitzen — süß, sauer, laut.</span><span class="note">aus dem Atlas</span></li>
+          <li class="will-reveal"><span class="n">03</span><span>Sumach auf den Tomaten.</span><span class="note">wie Zitrone, anders</span></li>
+          <li class="will-reveal"><span class="n">04</span><span>Hummus, cremig. Täglich frisch.</span><span class="note">tahin aus Beirut</span></li>
+          <li class="will-reveal"><span class="n">05</span><span>Grie Soß auf Kichererbsen-Basis.</span><span class="note">vegan · 7 Kräuter · Hessen im Herzen</span></li>
+          <li class="will-reveal"><span class="n">06</span><span>Frisch frittiert. Immer. 3 Minuten.</span><span class="note">keine Heizlampe, kein Nachfrittieren</span></li>
+        </ol>
+
+        <div class="callout will-reveal">
+          <span class="k">Int.</span>
+          <div>Wir nennen sie <strong>„Frankfurter Falafel"</strong> — weil sie beides ist: marokkanische Seele, Frankfurter Herz. Du beißt rein, schmeckst Marrakesch, stehst aber auf der Berger.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STORY ══ -->
+<section class="section story" id="story">
+  <svg class="pattern" aria-hidden="true" preserveAspectRatio="none">
+    <rect width="100%" height="100%" fill="url(#mouchar)" style="color:#ead9bd"/>
+  </svg>
+  <div class="container">
+    <div class="section-num will-reveal">Nr. 02 — Die Story</div>
+
+    <div class="story-grid">
+      <div class="story-portrait will-reveal" id="story-img">
+        <!-- swap with: <img src="images/storefront.jpg" alt="Rashcook Berger Straße" loading="lazy"> -->
+        <div class="img-ph img-ph-story">img · rashcook fassade · 4:5</div>
+      </div>
+
+      <div class="story-copy">
+        <h2 class="will-reveal">Rachid.<br/><em>Marokko.</em><br/>Frankfurt.</h2>
+        <p class="will-reveal">
+          Rachid Belhabib ist in Frankfurt aufgewachsen. Zwischen Römer und Hauptbahnhof,
+          mit dem Geschmack von Tajine zu Hause und Apfelwein auf dem Schulhof.
+          Jeden Sommer nach Marrakesch — zur Großmutter, auf die Märkte, an die Stände,
+          wo aus ein paar Kichererbsen etwas Größeres wurde.
+        </p>
+        <p class="will-reveal">
+          2019 hat er die Berger Straße aufgemacht. Keine Franchise. Keine Story-Agentur.
+          Nur ein Rezeptbuch seiner Mutter, eine Fritteuse, und die Überzeugung,
+          dass Falafel mehr sein kann.
+        </p>
+        <p class="pullquote will-reveal">
+          „Aufgewachsen in Frankfurt.<br/>Verwurzelt in Marokko.<br/>Das schmeckst du."
+        </p>
+        <p class="sig will-reveal">— Rachid</p>
+        <div class="route will-reveal">
+          <span>Marrakesch <span class="chev">→</span></span>
+          <span>Casablanca <span class="chev">→</span></span>
+          <span>Frankfurt a. M.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ IMPRESSIONEN ══ -->
+<section class="section impressions" id="impressionen" style="padding-bottom:0">
+  <div class="container">
+    <div class="section-num will-reveal">Nr. 03 — Impressionen</div>
+    <h2 class="will-reveal">Aus dem Laden.<br/>Aus der Küche.<br/>Aus der Nachbarschaft.</h2>
+  </div>
+  <div class="imp-rows">
+    <div class="imp-row imp-row-a"><div class="imp-track" id="impA"></div></div>
+    <div class="imp-row imp-row-b"><div class="imp-track" id="impB"></div></div>
+  </div>
+</section>
+
+<!-- ══ STANDORTE ══ -->
+<section class="section locations" id="orte">
+  <div class="container">
+    <div class="section-num will-reveal">Nr. 04 — Zwei Orte, ein Geschmack</div>
+    <h2 class="section-h will-reveal">Komm vorbei.<br/>Wir frittieren.</h2>
+
+    <div class="locations-grid">
+      <article class="loc-card will-reveal" id="berger">
+        <div class="loc-map" aria-hidden="true">
+          <span class="loc-badge">Flagship</span>
+          <svg viewBox="0 0 400 200" preserveAspectRatio="none">
+            <g fill="none" stroke="#1f4733" stroke-opacity=".13" stroke-width="1.5">
+              <path d="M0,140 L400,100"/><path d="M0,60 L400,180"/>
+              <path d="M120,0 L260,200"/><path d="M300,0 L180,200"/>
+              <path d="M40,0 L40,200"/><path d="M360,0 L360,200"/>
+            </g>
+            <g fill="#1f4733" fill-opacity=".05">
+              <rect x="60" y="20" width="90" height="45" rx="4"/>
+              <rect x="180" y="30" width="70" height="50" rx="4"/>
+              <rect x="280" y="40" width="70" height="40" rx="4"/>
+              <rect x="70" y="110" width="80" height="60" rx="4"/>
+              <rect x="200" y="120" width="90" height="55" rx="4"/>
+            </g>
+          </svg>
+          <div class="loc-pin"></div>
+        </div>
+        <h3>Berger Straße 157</h3>
+        <div class="loc-addr">
+          <strong>Frankfurt am Main · Nordend</strong>
+          Berger Str. 157, 60389 Frankfurt<br/>
+          Tram 12 · „Höhenstraße"
+        </div>
+        <div class="hours">
+          <span class="pill">Mo–Sa 11–22 Uhr</span>
+          <span class="pill">So 12–21 Uhr</span>
+        </div>
+        <a class="loc-cta" href="https://maps.google.com/?q=Berger+Straße+157+Frankfurt" target="_blank" rel="noopener">
+          Route via Google Maps
+          <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </article>
+
+      <article class="loc-card will-reveal" id="skyline">
+        <div class="loc-map" aria-hidden="true">
+          <span class="loc-badge">im Mall · L2</span>
+          <svg viewBox="0 0 400 200" preserveAspectRatio="none">
+            <g fill="none" stroke="#1f4733" stroke-opacity=".13" stroke-width="1.5">
+              <path d="M0,100 L400,100"/><path d="M200,0 L200,200"/>
+              <path d="M60,40 L340,40"/><path d="M60,160 L340,160"/>
+              <path d="M80,0 L80,200"/><path d="M320,0 L320,200"/>
+            </g>
+            <g fill="#1f4733" fill-opacity=".05">
+              <rect x="90" y="50" width="100" height="40" rx="4"/>
+              <rect x="210" y="50" width="100" height="40" rx="4"/>
+              <rect x="90" y="110" width="100" height="40" rx="4"/>
+              <rect x="210" y="110" width="100" height="40" rx="4"/>
+            </g>
+          </svg>
+          <div class="loc-pin"></div>
+        </div>
+        <h3>Skyline Plaza<br/>Europa-Allee 6</h3>
+        <div class="loc-addr">
+          <strong>Frankfurt · Gallus / Europaviertel</strong>
+          Europa-Allee 6, 60327 Frankfurt<br/>
+          S-Bahn · „Messe" / U4 · „Festhalle"
+        </div>
+        <div class="hours">
+          <span class="pill">Mo–Sa 10–21 Uhr</span>
+          <span class="pill">So geschlossen</span>
+        </div>
+        <a class="loc-cta" href="https://maps.google.com/?q=Skyline+Plaza+Europa+Allee+6+Frankfurt" target="_blank" rel="noopener">
+          Route via Google Maps
+          <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHATSAPP BAR ══ -->
+<div class="wa-bar">
+  <h3>Fragen? Einfach schreiben.</h3>
+  <a class="wa-btn" href="https://wa.me/4915XXXXXXXX" target="_blank" rel="noopener">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    WhatsApp schreiben
+  </a>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <svg class="pattern" aria-hidden="true" preserveAspectRatio="none">
+    <rect width="100%" height="100%" fill="url(#z-star)" style="color:#ead9bd"/>
+  </svg>
+  <div class="container">
+    <div class="fg">
+      <div>
+        <div class="f-logo">rash<em>cook</em></div>
+        <div class="f-sub">
+          Marokkanische Falafel, frisch frittiert, in Frankfurt am Main.
+          Zwei Standorte. Eine Handschrift. 100 % vegan.
+        </div>
+      </div>
+      <div>
+        <h4>Entdecken</h4>
+        <ul>
+          <li><a href="#speisekarte">Speisekarte</a></li>
+          <li><a href="#">Catering</a></li>
+          <li><a href="#">Gutscheine</a></li>
+          <li><a href="#">Jobs</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Finden</h4>
+        <ul>
+          <li><a href="#berger">Berger Str. 157</a></li>
+          <li><a href="#skyline">Skyline Plaza</a></li>
+          <li><a href="#">Wolt & Lieferando</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Folgen</h4>
+        <ul>
+          <li><a href="#">Instagram @rashcook</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">Newsletter</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-base">
+      <span>© 2026 rashcook GmbH · Frankfurt am Main</span>
+      <span>
+        <a href="#">Impressum</a> &nbsp;·&nbsp;
+        <a href="#">Datenschutz</a> &nbsp;·&nbsp;
+        <a href="#">AGB</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ SCRIPTS ══ -->
+<script>
+// Band
+(function(){
+  const T = ['Zimt','Berberitze','Sumach','Kreuzkümmel','Koriander','Grie Soß vegan','Tahin','Harissa','frisch frittiert','Sesam','Kardamom','Minze'];
+  let h = '';
+  for(let i=0;i<5;i++) for(const t of T) h += '<span>'+t+'</span><span class="bd"></span>';
+  document.getElementById('band').innerHTML = h;
+})();
+
+// Impressions tiles
+(function(){
+  const A = [
+    {r:'3/4',  l:'falafel · overhead',       c:'#ead9bd', t:'dark'},
+    {r:'1/1',  l:'hummus · nahaufnahme',      c:'#d8c29b', t:'mid'},
+    {r:'4/5',  l:'berger str. · fassade',     c:'#1f4733', t:'light'},
+    {r:'3/2',  l:'zutaten · kräuter',         c:'#e8d5b5', t:'dark'},
+    {r:'1/1',  l:'falafel · wrap close-up',   c:'#c4623a', t:'light'},
+    {r:'3/4',  l:'gewürzstand · marrakesch',  c:'#d8c29b', t:'dark'},
+    {r:'4/5',  l:'rashcook · schild',         c:'#1f4733', t:'light'},
+    {r:'3/2',  l:'skyline plaza · theke',     c:'#ead9bd', t:'dark'},
+  ];
+  const B = [
+    {r:'4/3',  l:'fritteuse · frisch',        c:'#ead9bd', t:'dark'},
+    {r:'1/1',  l:'berberitzen makro',         c:'#c4623a', t:'light'},
+    {r:'3/4',  l:'abendstimmung nordend',     c:'#1f4733', t:'light'},
+    {r:'4/5',  l:'hummus · vogelperspektive', c:'#d8c29b', t:'dark'},
+    {r:'3/2',  l:'sumach in schale',          c:'#e8d5b5', t:'dark'},
+    {r:'1/1',  l:'team bei der arbeit',       c:'#1f4733', t:'light'},
+    {r:'4/3',  l:'sesam · brot',              c:'#d8c29b', t:'dark'},
+    {r:'3/4',  l:'falafel spread',            c:'#ead9bd', t:'dark'},
+  ];
+  function tile(t){
+    const fg = t.t === 'light' ? '#f4ecdc' : '#122a1f';
+    return `<div class="imp-tile" style="aspect-ratio:${t.r};background:${t.c}">
+      <div class="iph"><span class="ilabel" style="color:${fg === '#f4ecdc' ? '#1f4733' : '#122a1f'}">img · ${t.l}</span></div>
+    </div>`;
+  }
+  function fill(id, arr){
+    document.getElementById(id).innerHTML = arr.map(tile).join('') + arr.map(tile).join('');
+  }
+  fill('impA', A);
+  fill('impB', B);
+})();
+</script>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Smooth scroll
+const lenis = new Lenis();
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+
+// ── Nav scroll state
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
+// ── Cursor
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.12, ease: 'power2.out' });
+});
+document.querySelectorAll('a, button, .loc-card, .imp-tile').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+});
+
+// ── Hero entrance timeline
+const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+heroTl
+  .fromTo('#hero-eyebrow',  { opacity:0, y:20 },          { opacity:1, y:0, duration:0.65 }, 0.25)
+  .fromTo('#hl1',           { y:'110%' },                  { y:'0%',   duration:0.85 },       0.45)
+  .fromTo('#hl2',           { y:'110%' },                  { y:'0%',   duration:0.85 },       0.58)
+  .fromTo('#hl3',           { y:'110%' },                  { y:'0%',   duration:0.85 },       0.71)
+  .fromTo('#hero-lede',     { opacity:0, y:22 },           { opacity:1, y:0, duration:0.7 },  1.1)
+  .fromTo('#hero-cta',      { opacity:0, y:16 },           { opacity:1, y:0, duration:0.6 },  1.3)
+  .fromTo('#hero-card',     { opacity:0, y:48, scale:0.95 },{ opacity:1, y:0, scale:1, duration:1.1, ease:'power2.out' }, 0.55);
+
+// ── Scroll reveals (everything with .will-reveal not in hero)
+const heroIds = ['hero-eyebrow','hl1','hl2','hl3','hero-lede','hero-cta','hero-card'];
+document.querySelectorAll('.will-reveal').forEach(el => {
+  if(heroIds.includes(el.id)) return;
+  gsap.fromTo(el,
+    { opacity:0, y:38 },
+    { opacity:1, y:0, duration:0.75, ease:'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+    }
+  );
+});
+
+// ── Poem lines — stagger on scroll
+gsap.fromTo('.poem li',
+  { opacity:0, x:-22 },
+  { opacity:1, x:0, duration:0.6, stagger:0.09, ease:'power2.out',
+    scrollTrigger: { trigger:'#poem', start:'top 82%', once:true }
+  }
+);
+
+// ── Location cards stagger
+gsap.fromTo('.loc-card',
+  { opacity:0, y:50 },
+  { opacity:1, y:0, duration:0.85, stagger:0.18, ease:'power3.out',
+    scrollTrigger: { trigger:'.locations-grid', start:'top 82%', once:true }
+  }
+);
+
+// ── Product image parallax
+gsap.to('#product-img', {
+  yPercent: -10, ease: 'none',
+  scrollTrigger: { trigger:'.speisekarte', start:'top bottom', end:'bottom top', scrub:1.8 }
+});
+
+// ── Story portrait parallax
+gsap.to('#story-img', {
+  yPercent: -8, ease: 'none',
+  scrollTrigger: { trigger:'.story', start:'top bottom', end:'bottom top', scrub:1.8 }
+});
+
+// ── Hero card subtle float
+gsap.to('#hero-card', {
+  y: -18, duration: 3.5, repeat:-1, yoyo:true, ease:'sine.inOut', delay: 2
+});
+
+// ── Section headings split entrance (scale from slight rotation)
+document.querySelectorAll('.section-h').forEach(el => {
+  gsap.fromTo(el,
+    { opacity:0, y:44, rotationX:8, transformOrigin:'top left' },
+    { opacity:1, y:0, rotationX:0, duration:0.9, ease:'power3.out',
+      scrollTrigger: { trigger:el, start:'top 86%', once:true }
+    }
+  );
+});
+</script>
+
+</body>
+</html>
