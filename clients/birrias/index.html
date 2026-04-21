@@ -270,22 +270,12 @@
       flex: 1; position: relative; overflow: hidden;
       display: flex; align-items: center; justify-content: center;
     }
-    .card-img-bg {
+    .card-img img {
       position: absolute; inset: 0;
-      background: var(--green);
-      background-image: repeating-linear-gradient(
-        -45deg, transparent, transparent 12px,
-        rgba(0,0,0,0.06) 12px, rgba(0,0,0,0.06) 13px
-      );
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
     }
-    .card-img-bg.dark { background-color: #0a5a0a; }
-    .card-ph {
-      position: relative; z-index: 1;
-      display: flex; flex-direction: column; align-items: center;
-      gap: 1rem; color: rgba(255,255,255,0.35);
-      font-family: monospace; font-size: 0.65rem;
-      letter-spacing: 0.08em; text-transform: uppercase; text-align: center;
-    }
+    .card-wrap:hover .card-img img { transform: scale(1.06); }
     .card-info {
       background: var(--cream); padding: 1.5rem 2rem;
       display: flex; align-items: center; justify-content: space-between;
@@ -389,19 +379,6 @@
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
     .foto-card:hover .foto-cap { opacity: 1; transform: none; }
-    .fc1{background:#2a1510;background-image:repeating-linear-gradient(-38deg,transparent,transparent 15px,rgba(255,255,255,0.03) 15px,rgba(255,255,255,0.03) 16px)}
-    .fc2{background:#0d2a0d;background-image:repeating-linear-gradient( 52deg,transparent,transparent 15px,rgba(255,255,255,0.03) 15px,rgba(255,255,255,0.03) 16px)}
-    .fc3{background:#1e1008;background-image:repeating-linear-gradient(-60deg,transparent,transparent 15px,rgba(255,255,255,0.03) 15px,rgba(255,255,255,0.03) 16px)}
-    .fc4{background:#0c1e0c;background-image:repeating-linear-gradient( 30deg,transparent,transparent 15px,rgba(255,255,255,0.03) 15px,rgba(255,255,255,0.03) 16px)}
-    .fc5{background:#1a0c0c;background-image:repeating-linear-gradient(-22deg,transparent,transparent 15px,rgba(255,255,255,0.03) 15px,rgba(255,255,255,0.03) 16px)}
-    .fc6{background:#121a10;background-image:repeating-linear-gradient( 68deg,transparent,transparent 15px,rgba(255,255,255,0.03) 15px,rgba(255,255,255,0.03) 16px)}
-    .foto-ph {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 0.6rem; color: rgba(255,255,255,0.15);
-      font-family: monospace; font-size: 0.58rem;
-      letter-spacing: 0.1em; text-transform: uppercase; text-align: center;
-    }
     @media (max-width: 768px) {
       .foto-card { width: clamp(180px, 62vw, 280px); height: clamp(110px, 20vh, 180px); }
     }
@@ -712,17 +689,9 @@
       <div class="card-inner">
         <div class="card-front">
           <div class="card-img">
-            <div class="card-img-bg"></div>
+            <img src="assets/tacos-close.png" alt="Birria Tacos" loading="lazy">
             <div class="steam">
               <div class="sp"></div><div class="sp"></div><div class="sp"></div><div class="sp"></div>
-            </div>
-            <div class="card-ph">
-              <svg width="72" height="60" viewBox="0 0 72 60" fill="none">
-                <path d="M8 42 Q36 18 64 42" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                <ellipse cx="36" cy="48" rx="28" ry="10" stroke="white" stroke-width="2" fill="none"/>
-                <path d="M14 44 Q36 50 58 44" stroke="white" stroke-width="1.5" fill="none" opacity="0.5"/>
-              </svg>
-              Produktfoto<br>Birria Taco
             </div>
           </div>
           <div class="card-info">
@@ -756,17 +725,9 @@
       <div class="card-inner">
         <div class="card-front">
           <div class="card-img">
-            <div class="card-img-bg dark"></div>
+            <img src="assets/tacos-cilantro.png" alt="Beyond Tacos" loading="lazy">
             <div class="steam">
               <div class="sp"></div><div class="sp"></div><div class="sp"></div>
-            </div>
-            <div class="card-ph">
-              <svg width="72" height="60" viewBox="0 0 72 60" fill="none">
-                <path d="M8 42 Q36 18 64 42" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                <ellipse cx="36" cy="48" rx="28" ry="10" stroke="white" stroke-width="2" fill="none"/>
-                <circle cx="36" cy="26" r="4" stroke="white" stroke-width="1.5" fill="none" opacity="0.7"/>
-              </svg>
-              Produktfoto<br>Beyond Taco
             </div>
           </div>
           <div class="card-info">
@@ -1000,24 +961,26 @@
   // Foto strips
   (function() {
     const CARDS = [
-      { cls:'fc1', label:'Das Fleisch · 48h' },
-      { cls:'fc2', label:'Koriander · Frisch' },
-      { cls:'fc3', label:'Die Tortilla · Crispy' },
-      { cls:'fc4', label:'Consommé · Jalisco' },
-      { cls:'fc5', label:'Der Tunk-Moment' },
-      { cls:'fc6', label:'Frankfurt · Mitte' },
-      { cls:'fc1', label:'Zwiebeln · Weiß' },
-      { cls:'fc3', label:'Adobo · Jalisco' },
+      { src:'assets/tacos-close.png',    label:'Das Fleisch · Crispy' },
+      { src:'assets/tacos-tray.png',     label:'Consommé · Jalisco' },
+      { src:'assets/tacos-cilantro.png', label:'Koriander · Frisch' },
+      { src:'assets/tacos-table.png',    label:'Frankfurt · Tisch' },
+      { src:'assets/tacos-fries.png',    label:'Skinny Fries · Dazu' },
+      { src:'assets/lifestyle-eating.png', label:'Das Erlebnis' },
+      { src:'assets/tacos-overhead.png', label:'Der Tunk-Moment' },
+      { src:'assets/tacos-dark.png',     label:'Birria · Dunkel' },
+      { src:'assets/tacos-neon.png',     label:'Frankfurt · Neon' },
+      { src:'assets/tacos-autumn.png',   label:'Jalisco · Herbst' },
+      { src:'assets/tacos-wood.png',     label:'Zwiebeln · Weiß' },
     ];
-    const CAM = `<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="2" y="7" width="24" height="17" rx="2" stroke="currentColor" stroke-width="1.1"/><circle cx="14" cy="15" r="4.5" stroke="currentColor" stroke-width="1.1"/><path d="M9 7V5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>`;
 
     function build(id, items) {
       const t = document.getElementById(id);
       if (!t) return;
       let h = '';
-      for (let r = 0; r < 4; r++) {
+      for (let r = 0; r < 3; r++) {
         items.forEach(c => {
-          h += `<div class="foto-card"><div class="foto-card-inner ${c.cls}"><div class="foto-ph">${CAM}${c.label}</div></div><div class="foto-cap">${c.label}</div></div>`;
+          h += `<div class="foto-card"><div class="foto-card-inner" style="background:url(${c.src}) center/cover no-repeat #111"></div><div class="foto-cap">${c.label}</div></div>`;
         });
       }
       t.innerHTML = h;
