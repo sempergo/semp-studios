@@ -416,6 +416,28 @@
     @media (max-width: 768px) {
       .foto-card { width: clamp(220px, 68vw, 340px); height: clamp(140px, 24vh, 240px); }
     }
+    .foto-insta {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.6rem 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+    .foto-insta:hover { background: rgba(255,255,255,0.04); }
+    .foto-insta-label {
+      font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(245,239,224,0.45); font-weight: 400;
+    }
+    .foto-insta-handle {
+      font-family: 'Dela Gothic One', sans-serif;
+      font-size: 1.1rem; color: var(--chili);
+      transition: letter-spacing 0.3s ease;
+    }
+    .foto-insta:hover .foto-insta-handle { letter-spacing: 0.06em; }
+    @media (max-width: 600px) {
+      .foto-insta { padding: 1.4rem 1.5rem; }
+      .foto-insta-handle { font-size: 0.95rem; }
+    }
 
     /* ── STILLE ── */
     #stille {
@@ -834,6 +856,10 @@
   <div class="foto-strip" id="fs2">
     <div class="foto-track" id="ft2"></div>
   </div>
+  <a class="foto-insta" href="https://www.instagram.com/birrias_ffm" target="_blank" rel="noopener">
+    <span class="foto-insta-label">Mehr auf Instagram</span>
+    <span class="foto-insta-handle">@birrias_ffm →</span>
+  </a>
 </section>
 
 <!-- STILLE -->
