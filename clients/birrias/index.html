@@ -42,7 +42,7 @@
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       gap: 1.5rem;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
     }
     #preloader.out { opacity: 0; visibility: hidden; pointer-events: none; }
     .pre-logo { width: 140px; animation: dip 2s cubic-bezier(0.4,0,0.2,1) infinite; }
@@ -52,15 +52,15 @@
       letter-spacing: 0.08em;
       color: var(--black);
       opacity: 0;
-      animation: fadeUp 0.6s ease 0.4s forwards;
+      animation: fadeUp 0.5s ease 0.2s forwards;
     }
     .pre-bar {
       width: 120px; height: 2px; background: rgba(0,0,0,0.1); overflow: hidden;
-      opacity: 0; animation: fadeUp 0.4s ease 0.8s forwards;
+      opacity: 0; animation: fadeUp 0.3s ease 0.5s forwards;
     }
     .pre-bar-fill {
       height: 100%; background: var(--green);
-      animation: load 1.8s ease forwards;
+      animation: load 1s ease forwards;
     }
     @keyframes dip {
       0%,100% { transform: translateY(0) rotate(0deg); }
@@ -273,9 +273,8 @@
     .card-img img {
       position: absolute; inset: 0;
       width: 100%; height: 100%; object-fit: cover;
-      transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
+      will-change: transform;
     }
-    .card-wrap:hover .card-img img { transform: scale(1.06); }
     .card-info {
       background: var(--cream); padding: 1.5rem 2rem;
       display: flex; align-items: center; justify-content: space-between;
@@ -576,7 +575,7 @@
     @media (max-width: 900px) {
       .birria-grid { grid-template-columns: 1fr; gap: 3rem; }
       .taco-cards { grid-template-columns: 1fr; }
-      .card-wrap { height: 520px; }
+      .card-wrap { height: 600px; }
       .sides-grid { grid-template-columns: 1fr; }
       .standort-grid { grid-template-columns: 1fr; }
     }
@@ -585,6 +584,15 @@
       #birria, #menu, #brand, #standort { padding: 6rem 1.5rem; }
       .footer-inner { flex-direction: column; gap: 1.5rem; text-align: center; }
       .nav-links { gap: 1rem; }
+    }
+    @media (max-width: 480px) {
+      #nav { padding: 1.1rem 1.25rem; }
+      #nav.scrolled { top: 8px; left: 8px; right: 8px; padding: 0.7rem 1rem; }
+      .nav-logo { font-size: 1rem; }
+      .nav-logo img { width: 22px; }
+      .nav-links { gap: 0.75rem; }
+      .nav-links a { font-size: 0.68rem; letter-spacing: 0.07em; }
+      .nav-ig { display: none; }
     }
   </style>
 </head>
@@ -606,7 +614,7 @@
   <div class="nav-links">
     <a href="#menu">Menü</a>
     <a href="#standort">Standort</a>
-    <a href="https://www.instagram.com/birrias.frankfurt" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.instagram.com/birrias_ffm" target="_blank" rel="noopener" class="nav-ig">Instagram</a>
   </div>
 </nav>
 
@@ -860,22 +868,21 @@
       <div class="sec-label rv">— Standort &amp; Zeiten</div>
       <h2 class="s-heading rv rv-d1">Finde<br>uns.</h2>
       <div class="hours rv rv-d2">
-        <div class="h-row"><span>Montag – Donnerstag</span><span class="h-time">11:00 – 22:00</span></div>
-        <div class="h-row"><span>Freitag – Samstag</span><span class="h-time">11:00 – 23:00</span></div>
-        <div class="h-row"><span>Sonntag</span><span class="h-time">12:00 – 21:00</span></div>
+        <div class="h-row"><span>Mittwoch – Montag</span><span class="h-time">12:00 – 21:00</span></div>
+        <div class="h-row"><span>Dienstag</span><span class="h-time">Geschlossen</span></div>
       </div>
       <div class="address rv rv-d3">
         <strong>BIRRIAS Frankfurt</strong><br>
-        Kaiserstraße 39<br>
-        60329 Frankfurt am Main<br><br>
-        <a href="https://wa.me/4915123456789" target="_blank" rel="noopener" style="color:var(--green);font-weight:500;text-decoration:none;font-size:0.9rem;letter-spacing:0.05em;">→ WhatsApp reservieren</a>
+        Höhenstraße 24<br>
+        60385 Frankfurt am Main · Bornheim<br><br>
+        <a href="tel:+496915343272" style="color:var(--green);font-weight:500;text-decoration:none;font-size:0.9rem;letter-spacing:0.05em;">→ 069 153 43272</a>
       </div>
     </div>
     <div class="map-embed rv rv-d1">
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2558.7!2d8.6709!3d50.1055!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTDCsDA2JzE5LjgiTiA4wrA0MCcxNS4yIkU!5e0!3m2!1sde!2sde!4v1"
+        src="https://maps.google.com/maps?q=Höhenstraße+24,+60385+Frankfurt+am+Main&output=embed"
         allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-        title="BIRRIAS Frankfurt — Kaiserstraße 39"></iframe>
+        title="BIRRIAS Frankfurt — Höhenstraße 24"></iframe>
     </div>
   </div>
 </section>
@@ -891,7 +898,7 @@
       BIRRIAS
     </a>
     <div class="f-links">
-      <a href="https://www.instagram.com/birrias.frankfurt" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.instagram.com/birrias_ffm" target="_blank" rel="noopener">Instagram</a>
       <a href="#">Impressum</a>
       <a href="#">Datenschutz</a>
     </div>
@@ -940,13 +947,10 @@
   fillMarquee('mq1');
   fillMarquee('mq2');
 
-  let mqOff = 0, lastY = scrollY, scrollVel = 0;
-  window.addEventListener('scroll', () => { scrollVel = scrollY - lastY; lastY = scrollY; }, {passive:true});
+  let mqOff = 0;
 
   function runMarquee() {
-    scrollVel *= 0.9;
-    const speed = 1.2 + Math.abs(scrollVel) * 0.35;
-    mqOff -= speed;
+    mqOff -= 1.2;
     ['mq1','mq2'].forEach(id => {
       const t = document.getElementById(id);
       if (!t) return;
@@ -960,18 +964,31 @@
 
   // Foto strips
   (function() {
-    const CARDS = [
-      { src:'assets/tacos-close.png',    label:'Das Fleisch · Crispy' },
-      { src:'assets/tacos-tray.png',     label:'Consommé · Jalisco' },
-      { src:'assets/tacos-cilantro.png', label:'Koriander · Frisch' },
-      { src:'assets/tacos-table.png',    label:'Frankfurt · Tisch' },
-      { src:'assets/tacos-fries.png',    label:'Skinny Fries · Dazu' },
-      { src:'assets/lifestyle-eating.png', label:'Das Erlebnis' },
-      { src:'assets/tacos-overhead.png', label:'Der Tunk-Moment' },
-      { src:'assets/tacos-dark.png',     label:'Birria · Dunkel' },
-      { src:'assets/tacos-neon.png',     label:'Frankfurt · Neon' },
-      { src:'assets/tacos-autumn.png',   label:'Jalisco · Herbst' },
-      { src:'assets/tacos-wood.png',     label:'Zwiebeln · Weiß' },
+    const S1 = [
+      { src:'assets/tacos-close.png',      label:'Das Fleisch · Crispy' },
+      { src:'assets/tacos-neon.png',        label:'Frankfurt · Neon' },
+      { src:'assets/tacos-cilantro.png',    label:'Koriander · Frisch' },
+      { src:'assets/lifestyle-eating.png',  label:'Das Erlebnis' },
+      { src:'assets/tacos-wood.png',        label:'Zwiebeln · Weiß' },
+      { src:'assets/tacos-tray.png',        label:'Consommé · Jalisco' },
+      { src:'assets/tacos-autumn.png',      label:'Jalisco · Herbst' },
+      { src:'assets/tacos-fries.png',       label:'Skinny Fries · Dazu' },
+      { src:'assets/tacos-dark.png',        label:'Birria · Dunkel' },
+      { src:'assets/tacos-overhead.png',    label:'Der Tunk-Moment' },
+      { src:'assets/tacos-table.png',       label:'Frankfurt · Tisch' },
+    ];
+    const S2 = [
+      { src:'assets/tacos-dark.png',        label:'Birria · Dunkel' },
+      { src:'assets/tacos-table.png',       label:'Frankfurt · Tisch' },
+      { src:'assets/tacos-autumn.png',      label:'Jalisco · Herbst' },
+      { src:'assets/tacos-close.png',       label:'Das Fleisch · Crispy' },
+      { src:'assets/tacos-overhead.png',    label:'Der Tunk-Moment' },
+      { src:'assets/tacos-neon.png',        label:'Frankfurt · Neon' },
+      { src:'assets/tacos-fries.png',       label:'Skinny Fries · Dazu' },
+      { src:'assets/lifestyle-eating.png',  label:'Das Erlebnis' },
+      { src:'assets/tacos-cilantro.png',    label:'Koriander · Frisch' },
+      { src:'assets/tacos-wood.png',        label:'Zwiebeln · Weiß' },
+      { src:'assets/tacos-tray.png',        label:'Consommé · Jalisco' },
     ];
 
     function build(id, items) {
@@ -986,8 +1003,8 @@
       t.innerHTML = h;
     }
 
-    build('ft1', CARDS);
-    build('ft2', [...CARDS].reverse());
+    build('ft1', S1);
+    build('ft2', S2);
 
     const ft1 = document.getElementById('ft1');
     const ft2 = document.getElementById('ft2');
@@ -996,7 +1013,7 @@
     if (!ft1 || !ft2) return;
 
     let off1 = 0, off2 = 0, h1 = false, h2 = false;
-    requestAnimationFrame(() => { off2 = -(ft2.scrollWidth / 4); });
+    requestAnimationFrame(() => { off2 = -(ft2.scrollWidth / 3); });
 
     fs1.addEventListener('mouseenter', () => h1 = true);
     fs1.addEventListener('mouseleave', () => h1 = false);
@@ -1004,16 +1021,15 @@
     fs2.addEventListener('mouseleave', () => h2 = false);
 
     function animFoto() {
-      const boost = scrollVel * 0.18;
-      const unit = ft1.scrollWidth / 4;
+      const unit = ft1.scrollWidth / 3;
       if (!h1) {
-        off1 -= (1.4 + boost);
+        off1 -= 1.4;
         if (Math.abs(off1) >= unit) off1 = 0;
         ft1.style.transform = `translateX(${off1}px)`;
       }
       if (!h2) {
-        off2 += (1.4 + boost);
-        if (off2 >= 0) off2 = -(ft2.scrollWidth / 4);
+        off2 += 1.4;
+        if (off2 >= 0) off2 = -(ft2.scrollWidth / 3);
         ft2.style.transform = `translateX(${off2}px)`;
       }
       requestAnimationFrame(animFoto);
@@ -1108,37 +1124,50 @@
   }, { threshold: 0.08 });
   document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
-  // Hero headline builder
+  // Hero headline builder — words wrapped in nowrap spans to prevent mid-word line breaks
   function buildHero() {
     const h1 = document.getElementById('e-h1');
-    const lines = ['Zwei Tacos.', 'Das '];
-    const lastWord = 'reicht.';
-    let html = '';
-    let baseDelay = 0;
+    let charIdx = 0;
 
-    lines.forEach((line, li) => {
-      html += `<span class="h1-line">`;
-      for (let i = 0; i < line.length; i++) {
+    function wordSpan(word) {
+      let out = '<span style="display:inline-block;white-space:nowrap">';
+      for (let i = 0; i < word.length; i++) {
         const r = ((Math.random() * 14) - 7).toFixed(1);
-        const d = baseDelay + i * 38;
-        const ch = line[i] === ' ' ? '&nbsp;' : line[i];
-        html += `<span class="h1-letter" style="--r:${r}deg;transition-delay:${d}ms">${ch}</span>`;
+        out += `<span class="h1-letter" style="--r:${r}deg;transition-delay:${charIdx * 38}ms">${word[i]}</span>`;
+        charIdx++;
       }
-      if (li === lines.length - 1) {
-        html += `<span class="underline-w">`;
-        for (let i = 0; i < lastWord.length; i++) {
-          const r = ((Math.random() * 14) - 7).toFixed(1);
-          const d = baseDelay + line.length * 38 + i * 38;
-          html += `<span class="h1-letter" style="--r:${r}deg;transition-delay:${d}ms">${lastWord[i]}</span>`;
-        }
-        html += `<svg viewBox="0 0 280 20" preserveAspectRatio="none" style="height:20px;width:100%">
-          <path class="u-path" d="M2,14 C40,4 80,18 140,10 C200,2 240,16 278,8"
-            stroke="#C42B1C" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-        </svg></span>`;
-      }
-      html += `</span>`;
-      baseDelay += (line.length + (li === lines.length - 1 ? lastWord.length : 0)) * 38 + 80;
-    });
+      return out + '</span>';
+    }
+
+    function spaceSpan() {
+      const r = ((Math.random() * 14) - 7).toFixed(1);
+      const s = `<span class="h1-letter" style="--r:${r}deg;transition-delay:${charIdx * 38}ms">&nbsp;</span>`;
+      charIdx++;
+      return s;
+    }
+
+    // Line 1: "Zwei Tacos."
+    let html = '<span class="h1-line">';
+    html += wordSpan('Zwei');
+    html += spaceSpan();
+    html += wordSpan('Tacos.');
+    html += '</span>';
+
+    // Line 2: "Das reicht." — "reicht." gets the SVG underline
+    html += '<span class="h1-line">';
+    html += wordSpan('Das');
+    html += spaceSpan();
+    html += `<span class="underline-w"><span style="display:inline-block;white-space:nowrap">`;
+    for (let i = 0; i < 'reicht.'.length; i++) {
+      const r = ((Math.random() * 14) - 7).toFixed(1);
+      html += `<span class="h1-letter" style="--r:${r}deg;transition-delay:${charIdx * 38}ms">${'reicht.'[i]}</span>`;
+      charIdx++;
+    }
+    html += `</span><svg viewBox="0 0 280 20" preserveAspectRatio="none" style="height:20px;width:100%">
+      <path class="u-path" d="M2,14 C40,4 80,18 140,10 C200,2 240,16 278,8"
+        stroke="#C42B1C" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    </svg></span>`;
+    html += '</span>';
 
     h1.innerHTML = html;
     requestAnimationFrame(() => {
@@ -1160,8 +1189,8 @@
         document.getElementById('e-sub').classList.add('show');
         document.getElementById('e-origin').classList.add('show');
         document.getElementById('e-cta').classList.add('show');
-      }, 600);
-    }, 2400);
+      }, 400);
+    }, 1200);
   });
 </script>
 </body>
